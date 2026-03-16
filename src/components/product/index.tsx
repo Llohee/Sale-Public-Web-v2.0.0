@@ -5,6 +5,7 @@ import {
   useGetAllProductCategories,
   useGetAllProducts,
 } from "@/services/product/product.query-options";
+import type { ProductDetail } from "@/services/product/product.schema";
 import SearchInput from "@/share/components/input/search";
 import { VercelTabs } from "@/share/ui/vercel-tabs";
 import { useTranslations } from "next-intl";
@@ -27,17 +28,20 @@ export function ProductsWrapper() {
     isSuccess: isSuccessProducts,
   } = useGetAllProducts(filter);
 
-  if (isLoadingProducts || isLoadingProductCategories)
+  if (isLoadingProducts || isLoadingProductCategories) {
     return <div>Loading...</div>;
-  if (isErrorProducts || isErrorProductCategories)
+  }
+
+  if (isErrorProducts || isErrorProductCategories) {
     return <div>Error loading products</div>;
+  }
 
   if (isSuccessProducts && isSuccessProductCategories) {
     return (
       <div className="flex h-full flex-col overflow-hidden bg-background">
         <div className="flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-6xl px-4 py-4 pb-6">
-            <h1 className="mt-4 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+          <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 pb-6">
+            <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
               {t("title")}
             </h1>
             <SearchInput
@@ -55,8 +59,8 @@ export function ProductsWrapper() {
               defaultTab="Overview"
             />
 
-            <div className="mt-6 grid grid-cols-2 gap-4">
-              {products?.data.map((product) => (
+            <div className="grid grid-cols-3 gap-6">
+              {products?.data.map((product: ProductDetail) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>

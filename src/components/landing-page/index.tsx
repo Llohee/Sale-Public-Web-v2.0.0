@@ -1,13 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/share/components/language-switcher";
-import { GooeyText } from "@/share/components/gooey-text-morphing";
 import { TypewriterText } from "@/share/components/typewriter-text";
 import { Button } from "@/share/ui/button";
 import { AnimatedThemeToggle } from "@/share/ui/animated-theme-toggle";
 import { useRouter } from "@/i18n/navigation";
-import { LandingIcon } from "@/share/icons";
 
 export default function LandingPage() {
   const t = useTranslations("LandingPage");
@@ -15,18 +14,26 @@ export default function LandingPage() {
   const headingTexts = t.raw("headingTexts") as string[];
 
   return (
-    <div className="flex h-screen flex-col bg-background text-foreground">
+    <div className="relative flex h-screen flex-col bg-background text-foreground">
       <div className="flex flex-1 items-center justify-center px-4">
-        <div className="flex w-full max-w-3xl flex-col items-center gap-4 px-4 py-8">
-          {/* <LandingIcon className="size-52" /> */}
+        <div className="flex w-full max-w-3xl flex-col items-center gap-5 px-4 py-10">
+          <div className="absolute right-4 top-4 flex items-center gap-2">
+            <AnimatedThemeToggle />
+            <LanguageSwitcher href="/" className="shrink-0" />
+          </div>
+          <Image
+            src="/images/icon-langdingpage.svg"
+            alt="App logo"
+            width={350}
+            height={350}
+            priority
+          />
           <div className="flex flex-col items-center gap-2 text-center">
-            <GooeyText
-              texts={headingTexts}
-              morphTime={1}
-              cooldownTime={1.5}
-              className="h-10 w-full sm:h-12"
-              textClassName="text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl"
-            />
+            <div className="w-full">
+              <p className="mx-auto text-3xl font-semibold leading-tight tracking-tight text-stone-900 sm:text-5xl">
+                {headingTexts[0]}
+              </p>
+            </div>
             <div className="flex flex-col items-center gap-6">
               <p className="mx-auto max-w-xl text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
                 <TypewriterText
@@ -43,10 +50,6 @@ export default function LandingPage() {
               >
                 {t("continue")}
               </Button>
-              <div className="flex items-center gap-2">
-                <AnimatedThemeToggle />
-                <LanguageSwitcher href="/" className="shrink-0" />
-              </div>
             </div>
           </div>
         </div>

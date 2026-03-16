@@ -4,5 +4,25 @@
       "landing_page": "Home",
       "products": "Products"
     }
+  },
+  "LandingPage": {
+    "headingTexts": [
+      "Great coffee for your day"
+    ],
+    "description": "Discover freshly roasted coffees, choose your favorite beans and get fast delivery.",
+    "continue": "Browse products"
+  },
+  "LanguageSwitcher": {
+    "label": "Language"
+  },
+  "ProductPage": {
+    "title": "Products",
+    "subtitle": "Pick the coffee you'd like to enjoy today.",
+    "empty": "No matching products found.",
+    "addToCart": "Add to cart",
+    "filter": {
+      "all": "All",
+      "search_placeholder": "Search your favorite drink"
+    }
   }
 }
