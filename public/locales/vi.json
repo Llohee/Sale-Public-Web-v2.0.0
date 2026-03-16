@@ -4,5 +4,25 @@
       "landing_page": "Trang chủ",
       "products": "Sản phẩm"
     }
+  },
+  "LandingPage": {
+    "headingTexts": [
+      "Cà phê ngon cho ngày mới"
+    ],
+    "description": "Khám phá các loại cà phê rang mới, chọn hạt theo gu vị và nhận giao hàng nhanh chóng.",
+    "continue": "Khám phá sản phẩm"
+  },
+  "LanguageSwitcher": {
+    "label": "Ngôn ngữ"
+  },
+  "ProductPage": {
+    "title": "Sản phẩm",
+    "subtitle": "Chọn món cà phê bạn muốn thưởng thức hôm nay.",
+    "empty": "Chưa có sản phẩm phù hợp.",
+    "addToCart": "Thêm vào giỏ",
+    "filter": {
+      "all": "Tất cả",
+      "search_placeholder": "Tìm kiếm đồ uống yêu thích"
+    }
   }
 }
