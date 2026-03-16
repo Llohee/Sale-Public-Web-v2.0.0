@@ -3,7 +3,9 @@ import { Filter } from '@/models/api/common';
 import { convertQueryAPI } from '@/util/filter';
 import type {
   GetAllProductCategoriesResponse,
-  GetAllProductsResponse
+  GetAllProductsResponse,
+  GetProductByIdResponse,
+  ProductDetail,
 } from './product.schema';
 
 const productApi = {
@@ -15,6 +17,10 @@ const productApi = {
   },
   getAllProductCategories(): Promise<GetAllProductCategoriesResponse> {
     const url = "/product-categories";
+    return axiosClient.get(url);
+  },
+  getProductById(id: string): Promise<GetProductByIdResponse> {
+    const url = `/products/${id}`;
     return axiosClient.get(url);
   },
 };

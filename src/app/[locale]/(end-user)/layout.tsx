@@ -1,11 +1,9 @@
-export default async function EndUserLayout({
+import { EndUserLayoutClient } from "@/share/layout/end-user/layout";
+
+export default function EndUserLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="flex h-screen flex-col bg-background text-foreground overflow-hidden">
-      {children}
-    </div>
-  );
+  return <EndUserLayoutClient>{children}</EndUserLayoutClient>;
 }

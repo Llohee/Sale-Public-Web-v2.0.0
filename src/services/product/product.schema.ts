@@ -35,3 +35,6 @@ export type ProductDetail = z.infer<typeof ProductDetailSchema>
 
 export const GetAllProductsResponseSchema = APIListResponseSchema(ProductDetailSchema)
 export type GetAllProductsResponse = z.infer<typeof GetAllProductsResponseSchema>
+
+export const GetProductByIdResponseSchema = APIResponseSchema(ProductDetailSchema)
+export type GetProductByIdResponse = z.infer<typeof GetProductByIdResponseSchema>

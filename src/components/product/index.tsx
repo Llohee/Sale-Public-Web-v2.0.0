@@ -38,7 +38,7 @@ export function ProductsWrapper() {
 
   if (isSuccessProducts && isSuccessProductCategories) {
     return (
-      <div className="flex h-full flex-col overflow-hidden bg-background">
+      <div className="flex h-full flex-col">
         <div className="flex-1 overflow-y-auto">
           <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 pb-6">
             <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
@@ -59,7 +59,7 @@ export function ProductsWrapper() {
               defaultTab="Overview"
             />
 
-            <div className="grid grid-cols-3 gap-6">
+            <div className="flex flex-wrap gap-8 items-center justify-center">
               {products?.data.map((product: ProductDetail) => (
                 <ProductCard key={product.id} product={product} />
               ))}
