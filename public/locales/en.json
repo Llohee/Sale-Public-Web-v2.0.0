@@ -24,5 +24,8 @@
       "all": "All",
       "search_placeholder": "Search your favorite drink"
     }
+  },
+  "LoadingPage": {
+    "loading": "Loading"
   }
 }
