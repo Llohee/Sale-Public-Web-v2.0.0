@@ -10,6 +10,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-oregon-700 text-white hover:bg-oregon-600',
+        chocolate:
+          'bg-oregon-700 text-white hover:bg-oregon-600 border border-oregon-700',
+        'chocolate-outline':
+          'border border-oregon-700/40 bg-white text-oregon-700 hover:bg-oregon-50',
         dive: 'bg-amber-900 text-amber-50 shadow-sm hover:bg-amber-950 hover:shadow-md hover:-translate-y-[1px]',
       },
       size: {
