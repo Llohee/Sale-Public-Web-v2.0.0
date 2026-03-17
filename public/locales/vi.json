@@ -24,5 +24,22 @@
       "all": "Tất cả",
       "search_placeholder": "Tìm kiếm đồ uống yêu thích"
     }
+  },
+  "LoadingPage": {
+    "loading": "Đang tải"
+  },
+  "product": {
+    "detail": {
+      "back": "Quay lại",
+      "descriptionLabel": "Mô tả",
+      "descriptionFallback": "Mô tả đang được cập nhật.",
+      "imageUnavailable": "Không có ảnh",
+      "sizeLabel": "Size",
+      "quantityLabel": "Số lượng",
+      "decrease": "Giảm",
+      "increase": "Tăng",
+      "totalLabel": "Tổng",
+      "addToOrder": "Thêm vào đơn hàng"
+    }
   }
 }

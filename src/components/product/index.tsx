@@ -10,6 +10,7 @@ import SearchInput from "@/share/components/input/search";
 import { VercelTabs } from "@/share/ui/vercel-tabs";
 import { useTranslations } from "next-intl";
 import { ProductCard } from "./card";
+import { LoadingPage } from "@/share/ui/loading-page";
 
 export function ProductsWrapper() {
   const t = useTranslations("ProductPage");
@@ -28,8 +29,9 @@ export function ProductsWrapper() {
     isSuccess: isSuccessProducts,
   } = useGetAllProducts(filter);
 
+
   if (isLoadingProducts || isLoadingProductCategories) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   if (isErrorProducts || isErrorProductCategories) {

@@ -28,12 +28,11 @@ export function LanguageSwitcher({ href, className }: LanguageSwitcherProps) {
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs text-stone-700 shadow-sm outline-none transition-colors",
+          "inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-2 py-1.5 text-xs text-stone-700 shadow-sm outline-none transition-colors",
           "hover:bg-stone-50 data-[state=open]:bg-stone-50",
           className,
         )}
       >
-        <span className="text-xs font-medium text-stone-500">{t("label")}</span>
         <span className="rounded-full bg-amber-600 px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
           {locale.toUpperCase()}
         </span>
