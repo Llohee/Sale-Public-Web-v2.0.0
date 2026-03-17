@@ -27,5 +27,19 @@
   },
   "LoadingPage": {
     "loading": "Loading"
+  },
+  "product": {
+    "detail": {
+      "back": "Back",
+      "descriptionLabel": "Description",
+      "descriptionFallback": "Description is being updated.",
+      "imageUnavailable": "No image",
+      "sizeLabel": "Size",
+      "quantityLabel": "Quantity",
+      "decrease": "Decrease",
+      "increase": "Increase",
+      "totalLabel": "Total",
+      "addToOrder": "Add to order"
+    }
   }
 }

@@ -4,8 +4,9 @@ import { Button } from "@/share/ui/button";
 import { useCart } from "@/providers/cart-provider";
 import { PRODUCT_SIZES, type ProductSize } from "@/types/cart";
 import { Link } from "@/i18n/navigation";
-import { ChevronLeft, Minus, Plus } from "lucide-react";
+import { ChevronLeft, ImageOff, Minus, Plus } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import type { ProductDetail } from "@/services/product/product.schema";
 import { cn } from "@/share/lib/utils";
@@ -15,8 +16,11 @@ interface ProductDetailViewProps {
 }
 
 export function ProductDetailView({ product }: ProductDetailViewProps) {
+  const t = useTranslations("product.detail");
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState<ProductSize>("M");
+  const hasImage = !!product.imageUrl?.trim();
+  const [imageErrored, setImageErrored] = useState(false);
   const { addItem } = useCart();
   const unitPrice = product.price ?? 0;
   const sizeMod = PRODUCT_SIZES.find((s) => s.value === size)?.priceModifier ?? 0;
@@ -31,10 +35,11 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
       <header className="hidden shrink-0 items-center justify-between px-4 py-3 sm:flex">
         <Link
           href="/product"
-          className="flex size-10 items-center justify-center rounded-full bg-muted text-foreground hover:bg-muted/80"
-          aria-label="Back"
+          className="inline-flex h-10 items-center gap-2 rounded-full bg-muted px-4 text-foreground shadow-sm transition hover:bg-muted/80"
+          aria-label={t("back")}
         >
           <ChevronLeft className="size-5" />
+          <span className="text-sm font-semibold">{t("back")}</span>
         </Link>
       </header>
 
@@ -44,19 +49,32 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
           {/* Mobile back button overlay */}
           <Link
             href="/product"
-            aria-label="Back"
-            className="absolute left-3 top-5 z-10 flex size-12 items-center justify-center rounded-full bg-white/90 text-foreground shadow-md ring-1 ring-black/5 backdrop-blur-sm transition hover:bg-white sm:hidden"
+            aria-label={t("back")}
+            className="absolute left-3 top-5 z-10 inline-flex h-12 items-center gap-2 rounded-full bg-white/90 px-4 text-foreground shadow-md ring-1 ring-black/5 backdrop-blur-sm transition hover:bg-white sm:hidden"
           >
             <ChevronLeft className="size-5" />
           </Link>
 
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            className="h-full w-full object-cover"
-            width={320}
-            height={320}
-          />
+          {hasImage && !imageErrored ? (
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              className="h-full w-full object-cover"
+              width={320}
+              height={320}
+              sizes="(max-width: 640px) 90vw, 420px"
+              onError={() => setImageErrored(true)}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-amber-50 to-amber-100 text-amber-900/60">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <ImageOff className="size-10" />
+                <span className="text-sm font-semibold tracking-wide">
+                  {t("imageUnavailable")}
+                </span>
+              </div>
+            </div>
+          )}
 
           {/* Mobile overlay title */}
           <div className="absolute inset-x-0 bottom-0 sm:hidden">
@@ -77,11 +95,11 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
             </h1>
             <div className="flex flex-col gap-1">
               <p className="text-lg font-extrabold text-oregon-800/90 sm:text-lg">
-                Mô tả
+                {t("descriptionLabel")}
               </p>
               {product.description && (
-                <p className="text-lg font-medium leading-relaxed text-oregon-700/80 line-clamp-3 sm:text-lg">
-                  {product.description}
+              <p className="text-lg font-medium leading-relaxed text-oregon-700/80 line-clamp-3 sm:text-lg">
+                {product.description}
                 </p>
               )}
             </div>
@@ -90,7 +108,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
           {/* Size */}
           <div className="flex items-start gap-4">
             <p className="shrink-0 pt-2 text-lg font-extrabold text-oregon-800/90 sm:text-lg">
-              Size
+              {t("sizeLabel")}
             </p>
             <div className="flex flex-1 flex-wrap gap-2">
               {PRODUCT_SIZES.map((s) => (
@@ -126,14 +144,14 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
           {/* Quantity */}
           <div className="flex items-center gap-4">
             <span className="text-lg font-extrabold text-oregon-800/90 sm:text-lg">
-              Số lượng
+              {t("quantityLabel")}
             </span>
             <div className="flex items-center gap-1 rounded-full border border-oregon-700/20 bg-white p-1 shadow-sm">
               <Button
                 type="button"
                 size="icon-sm"
                 variant="chocolate-outline"
-                aria-label="Giảm"
+                aria-label={t("decrease")}
                 disabled={quantity <= 1}
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 className="rounded-full bg-transparent text-oregon-800 hover:bg-oregon-50 disabled:opacity-40"
@@ -147,7 +165,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
                 type="button"
                 size="icon-sm"
                 variant="chocolate-outline"
-                aria-label="Tăng"
+                aria-label={t("increase")}
                 onClick={() => setQuantity((q) => q + 1)}
                 className="rounded-full bg-transparent text-oregon-800 hover:bg-oregon-50"
               >
@@ -160,7 +178,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
           <div className="flex flex-row items-end justify-between gap-3">
             <div className="flex flex-col gap-1">
               <p className="text-base font-bold text-oregon-700/90 sm:text-base">
-                Tổng
+                {t("totalLabel")}
               </p>
               <p className="text-4xl font-extrabold text-oregon-900 sm:text-4xl">
                 ${lineTotal.toFixed(2)}
@@ -172,7 +190,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
               className="w-auto rounded-full px-10 py-5 text-lg font-semibold sm:text-lg"
               onClick={handleAddToOrder}
             >
-              Thêm vào đơn hàng
+              {t("addToOrder")}
             </Button>
           </div>
           </div>

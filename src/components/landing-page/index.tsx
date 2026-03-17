@@ -7,6 +7,7 @@ import { TypewriterText } from "@/share/components/typewriter-text";
 import { Button } from "@/share/ui/button";
 import { AnimatedThemeToggle } from "@/share/ui/animated-theme-toggle";
 import { useRouter } from "@/i18n/navigation";
+import { MorphingText } from "@/share/ui/text-morphing";
 
 export default function LandingPage() {
   const t = useTranslations("LandingPage");
@@ -18,17 +19,21 @@ export default function LandingPage() {
       <div className="flex flex-1 items-center justify-center px-4">
         <div className="flex w-full max-w-3xl flex-col items-center gap-5 px-4 py-10">
           <Image
-            src="/images/icon-langdingpage.svg"
+            src="/images/coffee.png"
             alt="App logo"
             width={350}
             height={350}
+            className="rounded-full shadow-lg"
             priority
           />
           <div className="flex flex-col items-center gap-2 text-center">
             <div className="w-full">
-              <p className="mx-auto text-3xl font-semibold leading-tight tracking-tight text-stone-900 sm:text-5xl">
-                {headingTexts[0]}
-              </p>
+              <MorphingText
+                words={headingTexts}
+                interval={1800}
+                animationDuration={0.7}
+                className="mx-auto text-3xl font-semibold leading-tight tracking-tight text-stone-900 sm:text-5xl"
+              />
             </div>
             <div className="flex flex-col items-center gap-6">
               <p className="mx-auto max-w-xl text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
