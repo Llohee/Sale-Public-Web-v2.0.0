@@ -15,7 +15,7 @@ export default function LandingPage() {
   const headingTexts = t.raw("headingTexts") as string[];
 
   return (
-    <div className="relative flex h-screen flex-col bg-background text-foreground">
+    <div className="relative flex h-screen flex-col">
       <div className="flex flex-1 items-center justify-center px-4">
         <div className="flex w-full max-w-3xl flex-col items-center gap-5 px-4 py-10">
           <Image

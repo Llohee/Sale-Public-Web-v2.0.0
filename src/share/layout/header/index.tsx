@@ -4,10 +4,12 @@ import { Tabs, TabsList, TabsTrigger } from "@/share/ui/tabs";
 import { useState, useRef, useEffect } from "react";
 import { headerTabs } from "@/constants/layout";
 import { useRouter, usePathname } from "@/i18n/navigation";
+import { useCart } from "@/providers/cart-provider";
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  const { items } = useCart();
   const tabFromPath =
     headerTabs.find((tab) => pathname === `/${tab.value}`)?.value ?? "home";
   const [activeTab, setActiveTab] = useState(tabFromPath);
@@ -21,7 +23,7 @@ export default function Header() {
   }, [tabFromPath]);
 
   const activeIndex = headerTabs.findIndex(
-    (tab: { value: string }) => tab.value === activeTab
+    (tab: { value: string }) => tab.value === activeTab,
   );
 
   useEffect(() => {
@@ -82,7 +84,10 @@ export default function Header() {
               style={activeStyle}
             />
             {headerTabs.map(
-              (tab: { label: string; value: string }, index: number) => (
+              (
+                tab: { label: string; value: string; icon: React.ReactNode },
+                index: number,
+              ) => (
                 <TabsTrigger
                   key={tab.value}
                   value={tab.value}
@@ -98,11 +103,19 @@ export default function Header() {
                   onMouseLeave={() => setHoveredIndex(null)}
                   onClick={() => router.push(`/${tab.value}`)}
                 >
+                  <span className="whitespace-nowrap font-medium text-sm leading-5 relative">
+                    {tab.icon}
+                    {tab.value === "order" && (
+                      <span className="absolute -top-2 -right-2 bg-oregon-50 text-oregon-900 rounded-full px-1 text-xs">
+                        {items.length}
+                      </span>
+                    )}
+                  </span>
                   <span className="whitespace-nowrap font-medium text-sm leading-5">
                     {tab.label}
                   </span>
                 </TabsTrigger>
-              )
+              ),
             )}
           </TabsList>
         </Tabs>

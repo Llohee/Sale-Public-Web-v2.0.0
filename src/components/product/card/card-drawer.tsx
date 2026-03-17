@@ -20,12 +20,22 @@ import { useState } from "react";
 interface AddToCartDrawerProps {
   product: ProductDetail;
   trigger: React.ReactNode;
+  onClose?: () => void;
 }
 
-export function AddToCartDrawer({ product, trigger }: AddToCartDrawerProps) {
+export function AddToCartDrawer({
+  product,
+  trigger,
+  onClose,
+}: AddToCartDrawerProps) {
   const price = product.price ?? 0;
   const { addItem } = useCart();
   const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (next: boolean) => {
+    if (!next) onClose?.();
+    setOpen(next);
+  };
   const [size, setSize] = useState<ProductSize>("M");
   const [quantity, setQuantity] = useState(1);
 
@@ -40,7 +50,7 @@ export function AddToCartDrawer({ product, trigger }: AddToCartDrawerProps) {
   };
 
   return (
-    <Drawer open={open} onOpenChange={setOpen} direction="bottom">
+    <Drawer open={open} onOpenChange={handleOpenChange} direction="bottom">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent className="rounded-t-3xl bg-background">
         <DrawerHeader>

@@ -10,7 +10,7 @@ import SearchInput from "@/share/components/input/search";
 import { VercelTabs } from "@/share/ui/vercel-tabs";
 import { useTranslations } from "next-intl";
 import { ProductCard } from "./card";
-import { LoadingPage } from "@/share/ui/loading-page";
+import { LoadingPage } from "@/share/components/full-page/loading";
 
 export function ProductsWrapper() {
   const t = useTranslations("ProductPage");
@@ -29,7 +29,6 @@ export function ProductsWrapper() {
     isSuccess: isSuccessProducts,
   } = useGetAllProducts(filter);
 
-
   if (isLoadingProducts || isLoadingProductCategories) {
     return <LoadingPage />;
   }
@@ -42,7 +41,7 @@ export function ProductsWrapper() {
     return (
       <div className="flex h-full flex-col">
         <div className="flex-1 overflow-y-auto">
-          <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 pb-6">
+          <div className="container mx-auto flex flex-col">
             <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
               {t("title")}
             </h1>
@@ -61,7 +60,7 @@ export function ProductsWrapper() {
               defaultTab="Overview"
             />
 
-            <div className="flex flex-wrap gap-8 items-center justify-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 items-center justify-center">
               {products?.data.map((product: ProductDetail) => (
                 <ProductCard key={product.id} product={product} />
               ))}
