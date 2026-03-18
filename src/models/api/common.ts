@@ -48,7 +48,7 @@ export const FilterSchema = z.object({
   limit: z.coerce.number().min(1).max(50).default(DEFAULT_PAGE_SIZE),
   offset: z.coerce.number().default(0),
   keyword: z.string().optional(),
-  category: z.string().optional(),
+  productCategoryId: z.string().optional(),
   query: z.array(FilterQuerySchema).optional(),
   sort: FilterSortSchema.optional(),
 })
@@ -60,7 +60,7 @@ export type FilterSearchParam = Partial<{
   limit: number
   page: number
   keyword: string
-  category: string
   sort: string
   query: string
+  productCategoryId: string
 }>

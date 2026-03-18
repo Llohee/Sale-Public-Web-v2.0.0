@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/share/lib/utils";
 import { buttonVariants } from "@/share/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/share/ui/tabs";
+import { useFilter } from "@/providers/filter-provider";
 
 interface TabData {
   label: string;
@@ -24,7 +25,7 @@ export function VercelTabs({ tabs, defaultTab, className }: VercelTabsProps) {
   const [hoverStyle, setHoverStyle] = useState({});
   const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" });
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-
+  const { updateParam } = useFilter();
   const activeIndex = tabs.findIndex((tab) => tab.value === activeTab);
 
   useEffect(() => {
@@ -106,6 +107,7 @@ export function VercelTabs({ tabs, defaultTab, className }: VercelTabsProps) {
             )}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => updateParam('productCategoryId', tab.value)}
           >
             <span className="whitespace-nowrap text-base font-medium leading-none">
               {tab.label}
