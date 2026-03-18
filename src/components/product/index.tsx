@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useFilter } from "@/providers/filter-provider";
 import {
@@ -9,7 +9,8 @@ import {
 } from "@/services/product/product.query-options";
 import type { ProductDetail } from "@/services/product/product.schema";
 import SearchInput from "@/share/components/input/search";
-import { VercelTabs } from "@/share/ui/vercel-tabs";
+import { cn } from "@/share/lib/utils";
+import { Button } from "@/share/ui/button";
 import { useTranslations } from "next-intl";
 import { ProductCard } from "./card";
 import { LoadingPage } from "@/share/components/full-page/loading";
@@ -24,7 +25,7 @@ import {
 
 export function ProductsWrapper() {
   const t = useTranslations("ProductPage");
-  const { filter, onSearchChange } = useFilter();
+  const { filter, onSearchChange, updateParam } = useFilter();
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -40,6 +41,18 @@ export function ProductsWrapper() {
     isError: isErrorProducts,
     isSuccess: isSuccessProducts,
   } = useGetAllProducts(filter);
+
+  const filterOptions = useMemo(() => {
+    const categories = productCategories?.data ?? [];
+
+    return [
+      { value: "", label: t("filter.all") },
+      ...categories.map((c) => ({
+        value: c.code,
+        label: c.name,
+      })),
+    ];
+  }, [productCategories, t]);
 
   useEffect(() => {
     if (!carouselApi) return;
@@ -109,14 +122,26 @@ export function ProductsWrapper() {
                 />
               </div>
               <div className="flex items-center gap-3">
-                <VercelTabs
-                  tabs={productCategories?.data.map((category) => ({
-                    label: category.name,
-                    value: category.id,
-                    content: <></>,
-                  }))}
-                  defaultTab="Overview"
-                />
+                <div className="flex items-center gap-2.5">
+                  {filterOptions.map((option) => {
+                    const selected =
+                      option.value === ""
+                        ? !filter.category || filter.category === "all"
+                        : filter.category === option.value;
+
+                    return (
+                      <Button
+                        key={option.value}
+                        variant={selected ? "chocolate" : "chocolate-outline"}
+                        size="lg"
+                        className={cn("rounded-[33px] px-4 py-2")}
+                        onClick={() => updateParam("category", option.value)}
+                      >
+                        {option.label}
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
 
               <Carousel
