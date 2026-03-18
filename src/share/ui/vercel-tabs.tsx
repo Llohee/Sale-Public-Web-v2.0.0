@@ -2,6 +2,8 @@
 
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
+import { cn } from "@/share/lib/utils";
+import { buttonVariants } from "@/share/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/share/ui/tabs";
 
 interface TabData {
@@ -66,12 +68,12 @@ export function VercelTabs({ tabs, defaultTab, className }: VercelTabsProps) {
     <Tabs
       defaultValue={activeTab}
       onValueChange={setActiveTab}
-      className={`flex w-full flex-col items-center ${className}`}
+      className={cn("flex w-full flex-col items-start gap-4", className)}
     >
-      <TabsList className="relative h-auto select-none gap-[6px] bg-transparent p-0">
+      <TabsList className="relative h-auto w-full max-w-max select-none gap-4 bg-transparent p-0">
         {/* Hover Highlight */}
         <div
-          className="absolute top-0 left-0 flex h-[30px] items-center rounded-[6px] bg-[#0e0f1114] transition-all duration-300 ease-out dark:bg-[#ffffff1a]"
+          className="hidden"
           style={{
             ...hoverStyle,
             opacity: hoveredIndex !== null ? 1 : 0,
@@ -80,7 +82,7 @@ export function VercelTabs({ tabs, defaultTab, className }: VercelTabsProps) {
 
         {/* Active Indicator */}
         <div
-          className="absolute bottom-[-6px] h-[2px] bg-[#0e0f11] transition-all duration-300 ease-out dark:bg-white"
+          className="hidden"
           style={activeStyle}
         />
 
@@ -91,15 +93,21 @@ export function VercelTabs({ tabs, defaultTab, className }: VercelTabsProps) {
             ref={(el) => {
               tabRefs.current[index] = el;
             }}
-            className={`z-10 h-[30px] cursor-pointer rounded-md border-0 bg-transparent px-3 py-2 outline-none transition-colors duration-300 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none ${
+            className={cn(
+              buttonVariants({
+                variant:
+                  activeTab === tab.value ? "chocolate" : "chocolate-outline",
+                size: "lg",
+              }),
+              "z-10 h-11 rounded-full px-6 text-base shadow-sm focus-visible:ring-0 focus-visible:ring-offset-0 data-[state=active]:bg-oregon-700 data-[state=active]:text-white data-[state=active]:border-oregon-700 data-[state=active]:shadow-[0_8px_18px_rgba(120,53,15,0.18)]",
               activeTab === tab.value
-                ? "text-[#0e0e10] dark:text-white"
-                : "text-[#0e0f1199] dark:text-[#ffffff99]"
-            }`}
+                ? "border-oregon-700 text-white hover:text-white"
+                : "border-oregon-700/40 bg-white text-oregon-700 hover:bg-oregon-50 hover:text-oregon-700",
+            )}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            <span className="whitespace-nowrap font-medium text-sm leading-5">
+            <span className="whitespace-nowrap text-base font-medium leading-none">
               {tab.label}
             </span>
           </TabsTrigger>
@@ -107,7 +115,7 @@ export function VercelTabs({ tabs, defaultTab, className }: VercelTabsProps) {
       </TabsList>
 
       {/* Content Area */}
-      <div className="mt-8 w-full px-4">
+      <div className="w-full px-0">
         {tabs.map((tab) => (
           <TabsContent
             key={tab.value}

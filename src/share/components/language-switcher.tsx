@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { LOCALES_LIST_PLUS } from "@/constants/locales";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/share/lib/utils";
+import { buttonVariants } from "@/share/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,16 +29,20 @@ export function LanguageSwitcher({ href, className }: LanguageSwitcherProps) {
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-2 py-1.5 text-xs text-stone-700 shadow-sm outline-none transition-colors",
-          "hover:bg-stone-50 data-[state=open]:bg-stone-50",
+          buttonVariants({
+            variant: "chocolate-outline",
+            size: "lg",
+          }),
+          "h-10 min-w-20 rounded-full px-2 text-xs shadow-sm data-[state=open]:bg-oregon-50",
           className,
         )}
+        aria-label={t("label")}
       >
-        <span className="rounded-full bg-amber-600 px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
+        <span className="rounded-full bg-amber-600 px-3 py-1 text-[11px] font-semibold uppercase text-white shadow-sm">
           {locale.toUpperCase()}
         </span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="min-w-28 rounded-2xl">
         {LOCALES_LIST_PLUS.map((item) => {
           const isActive = item.key === locale;
 
@@ -47,13 +52,13 @@ export function LanguageSwitcher({ href, className }: LanguageSwitcherProps) {
                 href={targetHref}
                 locale={item.key}
                 className={cn(
-                  "flex w-full items-center justify-between gap-2 rounded-sm px-1 py-0.5 text-xs",
-                  isActive ? "text-amber-700" : "text-stone-600",
+                  "flex w-full items-center justify-between gap-2 rounded-xl px-2 py-1.5 text-xs uppercase tracking-wide",
+                  isActive
+                    ? "bg-oregon-50 font-semibold text-oregon-700"
+                    : "text-stone-600",
                 )}
               >
-                <span className="text-[11px] uppercase tracking-wide">
-                  {item.key}
-                </span>
+                <span className="text-[11px]">{item.key}</span>
                 {isActive && (
                   <span
                     className="h-1.5 w-1.5 rounded-full bg-amber-600"

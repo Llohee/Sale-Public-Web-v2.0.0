@@ -2,7 +2,8 @@
   "layout": {
     "header": {
       "landing_page": "Home",
-      "products": "Products"
+      "products": "Products",
+      "order": "Order"
     }
   },
   "LandingPage": {
@@ -28,18 +29,113 @@
   "LoadingPage": {
     "loading": "Loading"
   },
+  "common": {
+    "error": {
+      "description": "<p>Something went wrong while loading this page.</p><p>Please try again or come back later.</p><p><retry>Try again</retry></p>"
+    }
+  },
+  "form": {
+    "btn": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "leave": "Leave"
+    },
+    "confirm": {
+      "title": "Do you want to close this dialog?",
+      "description": "Your unsaved changes will be lost."
+    }
+  },
   "product": {
     "detail": {
       "back": "Back",
       "descriptionLabel": "Description",
       "descriptionFallback": "Description is being updated.",
       "imageUnavailable": "No image",
+      "relatedTitle": "Related products",
+      "relatedSubtitle": "Explore more items from the same category.",
       "sizeLabel": "Size",
       "quantityLabel": "Quantity",
       "decrease": "Decrease",
       "increase": "Increase",
       "totalLabel": "Total",
       "addToOrder": "Add to order"
+    },
+    "add_to_cart": {
+      "size": "Size",
+      "quantity": "Quantity",
+      "total": "Total: ${total}",
+      "choose_size_and_quantity": "Choose size and quantity",
+      "add_to_cart": "Add to cart",
+      "close": "Close",
+      "close_confirm": {
+        "title": "Close this sheet?",
+        "description": "Your changes (size, quantity) won’t be saved.",
+        "cancel": "Cancel",
+        "confirm": "Close"
+      }
+    }
+  },
+  "order": {
+    "empty": {
+      "title": "Your order",
+      "description": "There are no items in your order yet.",
+      "hint": "Pick your favorite drinks and come back here to review your order before checkout.",
+      "browse_products": "Browse products"
+    },
+    "title": "Your order",
+    "subtitle": "Review items, quantities, and total before checkout.",
+    "clear_all": "Clear all",
+    "remove": "Remove",
+    "image_unavailable": "No image",
+    "size": "Size {size}",
+    "line_total_label": "Line total",
+    "note_label": "Note",
+    "note_placeholder": "Example: less ice, less sugar, add a straw...",
+    "summary_title": "Order summary",
+    "subtotal_label": "{count, plural, one {# item} other {# items}}",
+    "subtotal_money": "Subtotal",
+    "total_money": "Total",
+    "checkout": "Checkout",
+    "confirm_clear": {
+      "title": "Clear your order?",
+      "description": "All items in your order will be removed and cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Clear all"
+    },
+    "confirm_remove_item": {
+      "title": "Remove this item?",
+      "description_with_name": "{name} will be removed from your order.",
+      "description": "This item will be removed from your order.",
+      "cancel": "Cancel",
+      "confirm": "Remove"
+    },
+    "success": {
+      "eyebrow": "Payment successful",
+      "title": "Your order has been received",
+      "description": "Thank you for your purchase. We will start preparing your drink shortly.",
+      "fields": {
+        "amount": "Total amount",
+        "paid_at": "Payment time",
+        "payment_method": "Payment method",
+        "location": "Location"
+      },
+      "fallbacks": {
+        "amount": "Updating",
+        "time": "Updating",
+        "payment_method": "Updating",
+        "location": "Updating"
+      },
+      "browse": "Browse more drinks",
+      "review_order": "Review order",
+      "review_title": "Recently paid order",
+      "review_description": "This is a read-only preview of your order.",
+      "empty_review": "There is no order data to display.",
+      "size_label": "Size",
+      "quantity_label": "Quantity",
+      "note_label": "Note",
+      "line_total_label": "Line total",
+      "no_image": "No image",
+      "close": "Close"
     }
   }
 }

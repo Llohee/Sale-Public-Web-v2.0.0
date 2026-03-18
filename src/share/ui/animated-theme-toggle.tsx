@@ -24,7 +24,12 @@ export const AnimatedThemeToggle = ({ className }: { className?: string }) => {
   // Show a placeholder during SSR to avoid hydration mismatch
   if (!mounted) {
     return (
-      <Button className={cn("px-2.5", className)} disabled>
+      <Button
+        variant="chocolate-outline"
+        size="icon-lg"
+        className={cn("rounded-full shadow-sm", className)}
+        disabled
+      >
         <div className="h-5 w-5" />
       </Button>
     );
@@ -33,8 +38,9 @@ export const AnimatedThemeToggle = ({ className }: { className?: string }) => {
   return (
     <Button
       onClick={toggleTheme}
-      className={cn("px-2.5", className)}
-      variant="default"
+      className={cn("rounded-full shadow-sm", className)}
+      variant="chocolate-outline"
+      size="icon-lg"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       <SolarSwitch isDark={isDark} />

@@ -10,6 +10,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-oregon-700 text-white hover:bg-oregon-600',
+        outline:
+          'border border-border bg-background text-foreground hover:bg-muted/60',
         chocolate:
           'bg-oregon-700 text-white hover:bg-oregon-600 border border-oregon-700',
         'chocolate-outline':

@@ -2,7 +2,8 @@
   "layout": {
     "header": {
       "landing_page": "Trang chủ",
-      "products": "Sản phẩm"
+      "products": "Sản phẩm",
+      "order": "Đơn hàng"
     }
   },
   "LandingPage": {
@@ -28,18 +29,113 @@
   "LoadingPage": {
     "loading": "Đang tải"
   },
+  "common": {
+    "error": {
+      "description": "<p>Đã xảy ra lỗi khi tải trang này.</p><p>Vui lòng thử lại hoặc quay lại sau.</p><p><retry>Thử lại</retry></p>"
+    }
+  },
+  "form": {
+    "btn": {
+      "cancel": "Hủy",
+      "save": "Lưu",
+      "leave": "Rời đi"
+    },
+    "confirm": {
+      "title": "Bạn muốn đóng cửa sổ này?",
+      "description": "Các thay đổi chưa lưu sẽ bị mất."
+    }
+  },
   "product": {
     "detail": {
       "back": "Quay lại",
       "descriptionLabel": "Mô tả",
       "descriptionFallback": "Mô tả đang được cập nhật.",
       "imageUnavailable": "Không có ảnh",
+      "relatedTitle": "Sản phẩm liên quan",
+      "relatedSubtitle": "Khám phá thêm những món cùng danh mục.",
       "sizeLabel": "Size",
       "quantityLabel": "Số lượng",
       "decrease": "Giảm",
       "increase": "Tăng",
       "totalLabel": "Tổng",
       "addToOrder": "Thêm vào đơn hàng"
+    },
+    "add_to_cart": {
+      "size": "Size",
+      "quantity": "Số lượng",
+      "total": "Tổng: ${total}",
+      "choose_size_and_quantity": "Chọn size và số lượng",
+      "add_to_cart": "Thêm vào giỏ hàng",
+      "close": "Đóng",
+      "close_confirm": {
+        "title": "Đóng cửa sổ?",
+        "description": "Các thay đổi (size, số lượng) sẽ không được lưu.",
+        "cancel": "Hủy",
+        "confirm": "Đóng"
+      }
+    }
+  },
+  "order": {
+    "empty": {
+      "title": "Đơn hàng của bạn",
+      "description": "Chưa có sản phẩm nào trong đơn hàng.",
+      "hint": "Hãy chọn món bạn yêu thích và quay lại đây để kiểm tra đơn hàng trước khi thanh toán.",
+      "browse_products": "Xem sản phẩm"
+    },
+    "title": "Đơn hàng của bạn",
+    "subtitle": "Kiểm tra lại món, số lượng và tổng tiền trước khi thanh toán.",
+    "clear_all": "Xóa tất cả",
+    "remove": "Xóa",
+    "image_unavailable": "Không có ảnh",
+    "size": "Size {size}",
+    "line_total_label": "Thành tiền",
+    "note_label": "Ghi chú",
+    "note_placeholder": "Ví dụ: ít đá, ít ngọt, thêm ống hút...",
+    "summary_title": "Tổng đơn hàng",
+    "subtotal_label": "{count, plural, one {# sản phẩm} other {# sản phẩm}}",
+    "subtotal_money": "Tạm tính",
+    "total_money": "Tổng cộng",
+    "checkout": "Thanh toán",
+    "confirm_clear": {
+      "title": "Xóa toàn bộ đơn hàng?",
+      "description": "Tất cả sản phẩm trong đơn hàng sẽ bị xóa và không thể hoàn tác.",
+      "cancel": "Hủy",
+      "confirm": "Xóa tất cả"
+    },
+    "confirm_remove_item": {
+      "title": "Xóa sản phẩm này?",
+      "description_with_name": "{name} sẽ bị xóa khỏi đơn hàng.",
+      "description": "Sản phẩm này sẽ bị xóa khỏi đơn hàng.",
+      "cancel": "Hủy",
+      "confirm": "Xóa"
+    },
+    "success": {
+      "eyebrow": "Thanh toán thành công",
+      "title": "Đơn hàng của bạn đã được ghi nhận",
+      "description": "Cảm ơn bạn đã đặt hàng. Chúng tôi sẽ chuẩn bị thức uống của bạn trong giây lát.",
+      "fields": {
+        "amount": "Tổng số tiền",
+        "paid_at": "Thời gian thanh toán",
+        "payment_method": "Phương thức thanh toán",
+        "location": "Địa điểm"
+      },
+      "fallbacks": {
+        "amount": "Đang cập nhật",
+        "time": "Đang cập nhật",
+        "payment_method": "Đang cập nhật",
+        "location": "Đang cập nhật"
+      },
+      "browse": "Tiếp tục chọn món",
+      "review_order": "Xem lại đơn hàng",
+      "review_title": "Đơn hàng vừa thanh toán",
+      "review_description": "Đây là bản xem lại đơn hàng, không thể chỉnh sửa tại đây.",
+      "empty_review": "Chưa có dữ liệu đơn hàng để hiển thị.",
+      "size_label": "Size",
+      "quantity_label": "Số lượng",
+      "note_label": "Ghi chú",
+      "line_total_label": "Thành tiền",
+      "no_image": "Không có ảnh",
+      "close": "Đóng"
     }
   }
 }
