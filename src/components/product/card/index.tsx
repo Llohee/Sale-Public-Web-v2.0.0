@@ -105,7 +105,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") e.stopPropagation();
                 }}
-                className="inline-flex h-14 shrink-0 items-center justify-center gap-2 rounded-[20px_0px_10px_00px] bg-oregon-700 px-3 text-base font-medium text-white hover:bg-oregon-600"
+                className="inline-flex h-18 shrink-0 items-center justify-center gap-2 rounded-[20px_0px_10px_00px] bg-oregon-700 px-3 text-base font-medium text-white hover:bg-oregon-600"
               >
                 <Plus className="size-8" />
               </span>
