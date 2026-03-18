@@ -51,7 +51,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
       <div className="grid grid-cols-12 gap-4">
         <div className="flex flex-col gap-6 sm:gap-8 col-span-7">
           <Button
-            variant="default"
+            variant="outline"
             size="sm"
             onClick={() => router.back()}
             className="hidden sm:inline-flex"
@@ -110,7 +110,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
                       aria-label={t("decrease")}
                       disabled={quantity <= 1}
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                      className="rounded-full bg-transparent text-oregon-800 hover:bg-oregon-50 disabled:opacity-40"
+                      className="rounded-full"
                     >
                       <Minus className="size-4" />
                     </Button>
@@ -123,7 +123,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
                       variant="chocolate-outline"
                       aria-label={t("increase")}
                       onClick={() => setQuantity((q) => q + 1)}
-                      className="rounded-full bg-transparent text-oregon-800 hover:bg-oregon-50"
+                      className="rounded-full"
                     >
                       <Plus className="size-4" />
                     </Button>
