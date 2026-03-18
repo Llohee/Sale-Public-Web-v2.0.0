@@ -17,12 +17,12 @@ export function parseFilterSearchParams(
   const page = (params.page ?? DEFAULT_PAGE_START) - DEFAULT_PAGE_START
   const limit = params.limit ?? DEFAULT_PAGE_SIZE
   return FilterSchema.safeParse({
-    limit: params.limit,
+    limit,
     offset: page * limit,
     keyword: params.keyword,
-    category: params.category,
     sort: deserializeSort(params.sort),
     query: decodeQueryParams(params.query),
+    productCategoryId: params.productCategoryId,
   })
 }
 
@@ -30,22 +30,43 @@ export const convertQueryAPI = (
   filter: Filter,
   nameSearch?: string | string[],
 ) => {
-  const filters = serializeFiltersParam(filter.category)
   const query = serializeQueryParam(filter.keyword, filter.query, {
     searchName: nameSearch,
   })
-  return {
+  const params: Record<string, unknown> = {
     offset: filter.offset,
     limit: filter.limit,
-    ...(filters && { filters }),
-    ...(query && { query }),
-    sort: serializeSort(filter.sort),
   }
-}
 
-function serializeFiltersParam(category?: string): string | undefined {
-  if (!category?.trim() || category === 'all') return undefined
-  return `category:${category.trim()}`
+  if (query) params.query = query
+
+  const sort = serializeSort(filter.sort)
+  if (sort) params.sort = sort
+
+  for (const [key, value] of Object.entries(filter)) {
+    if (
+      key === "offset" ||
+      key === "limit" ||
+      key === "keyword" ||
+      key === "query" ||
+      key === "sort"
+    ) {
+      continue
+    }
+
+    if (value === undefined) continue
+
+    if (typeof value === "string") {
+      const trimmed = value.trim()
+      if (!trimmed || trimmed === "all") continue
+      params[key] = trimmed
+      continue
+    }
+
+    params[key] = value
+  }
+
+  return params
 }
 
 function addKeywordParts(
