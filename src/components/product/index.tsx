@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useFilter } from "@/providers/filter-provider";
 import {
@@ -13,13 +13,20 @@ import { VercelTabs } from "@/share/ui/vercel-tabs";
 import { useTranslations } from "next-intl";
 import { ProductCard } from "./card";
 import { LoadingPage } from "@/share/components/full-page/loading";
-import { Button } from "@/share/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/share/ui/carousel";
 
 export function ProductsWrapper() {
   const t = useTranslations("ProductPage");
   const { filter, onSearchChange } = useFilter();
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   const {
     data: productCategories,
@@ -34,6 +41,25 @@ export function ProductsWrapper() {
     isSuccess: isSuccessProducts,
   } = useGetAllProducts(filter);
 
+  useEffect(() => {
+    if (!carouselApi) return;
+    if (isPaused) return;
+    if (!isSuccessProducts || !isSuccessProductCategories) return;
+
+    const intervalId = window.setInterval(() => {
+      carouselApi.scrollNext();
+    }, 3000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [
+    carouselApi,
+    isPaused,
+    isSuccessProducts,
+    isSuccessProductCategories,
+  ]);
+
   if (isLoadingProducts || isLoadingProductCategories) {
     return <LoadingPage />;
   }
@@ -43,20 +69,9 @@ export function ProductsWrapper() {
   }
 
   if (isSuccessProducts && isSuccessProductCategories) {
-    const scrollSlider = (direction: "left" | "right") => {
-      const container = sliderRef.current;
-      if (!container) return;
-
-      const cardWidth = container.clientWidth * 0.8;
-      container.scrollBy({
-        left: direction === "left" ? -cardWidth : cardWidth,
-        behavior: "smooth",
-      });
-    };
-
     return (
       <div className="flex min-h-screen flex-col ">
-        <div className="relative overflow-hidden !h-[400px] flex items-center justify-center">
+        <div className="relative overflow-hidden h-[400px]! flex items-center justify-center">
           <Image
             src="/images/background.jpg"
             alt="Hero banner"
@@ -93,7 +108,7 @@ export function ProductsWrapper() {
                   className="max-w-md"
                 />
               </div>
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
                 <VercelTabs
                   tabs={productCategories?.data.map((category) => ({
                     label: category.name,
@@ -102,42 +117,39 @@ export function ProductsWrapper() {
                   }))}
                   defaultTab="Overview"
                 />
-                <div className="hidden items-center gap-2 sm:flex">
-                  <Button
-                    type="button"
-                    variant="chocolate-outline"
-                    size="icon-sm"
-                    className="rounded-full"
-                    onClick={() => scrollSlider("left")}
-                    aria-label="Scroll left"
-                  >
-                    <ChevronLeft className="size-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="chocolate-outline"
-                    size="icon-sm"
-                    className="rounded-full"
-                    onClick={() => scrollSlider("right")}
-                    aria-label="Scroll right"
-                  >
-                    <ChevronRight className="size-4" />
-                  </Button>
-                </div>
               </div>
-              <div
-                ref={sliderRef}
-                className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-1 py-3 scroll-px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+
+              <Carousel
+                className="px-1 py-3"
+                opts={{ loop: true }}
+                setApi={setCarouselApi}
               >
-                {products?.data.map((product: ProductDetail) => (
-                  <div
-                    key={product.id}
-                    className="w-[calc(100%-3rem)] shrink-0 snap-start sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.875rem)] xl:w-[calc(25%-0.9375rem)]"
-                  >
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-              </div>
+                <CarouselContent
+                  className="gap-5"
+                  onPointerEnter={() => setIsPaused(true)}
+                  onPointerLeave={() => setIsPaused(false)}
+                >
+                  {products?.data.map((product: ProductDetail) => (
+                    <CarouselItem
+                      key={product.id}
+                      className="basis-[calc(100%-3rem)] shrink-0 sm:basis-[calc(50%-0.625rem)] lg:basis-[calc(33.333%-0.875rem)] xl:basis-[calc(25%-0.9375rem)]"
+                    >
+                      <ProductCard product={product} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+
+                <CarouselPrevious
+                  variant="chocolate-outline"
+                  size="icon-sm"
+                  className="hidden rounded-full sm:flex -left-3"
+                />
+                <CarouselNext
+                  variant="chocolate-outline"
+                  size="icon-sm"
+                  className="hidden rounded-full sm:flex -right-3"
+                />
+              </Carousel>
             </div>
           </div>
         </div>

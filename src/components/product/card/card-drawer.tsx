@@ -4,6 +4,7 @@ import { cn } from "@/share/lib/utils";
 import { Minus, Plus } from "lucide-react";
 import { ProductDetail } from "@/services/product/product.schema";
 import { Button } from "@/share/ui/button";
+import { Badge } from "@/share/ui/badge";
 import {
   Drawer,
   DrawerContent,
@@ -12,7 +13,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/share/ui/drawer";
-import ConfirmModal from "@/share/components/modal/confirm";
 import { useCart } from "@/providers/cart-provider";
 import { PRODUCT_SIZES, type ProductSize } from "@/types/cart";
 import { useEffect, useState } from "react";
@@ -35,7 +35,6 @@ export function AddToCartDrawer({
   const price = product.price ?? 0;
   const { addItem } = useCart();
   const [open, setOpen] = useState(false);
-  const [confirmCloseOpen, setConfirmCloseOpen] = useState(false);
   const [size, setSize] = useState<ProductSize>(DEFAULT_SIZE);
   const [quantity, setQuantity] = useState(DEFAULT_QUANTITY);
 
@@ -73,48 +72,57 @@ export function AddToCartDrawer({
 
   const modalContent = (
     <div className="space-y-4">
+      {product.description ? (
+        <p className="text-sm italic leading-relaxed text-oregon-700/80">
+          {product.description}
+        </p>
+      ) : null}
       <div>
         <p className="mb-2 text-sm font-medium">{t("size")}</p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-3">
           {PRODUCT_SIZES.map((s) => (
-            <button
+            <Button
               key={s.value}
               type="button"
               onClick={() => setSize(s.value as ProductSize)}
-              className={cn(
-                "rounded-xl border px-3 py-1.5 text-sm font-medium transition-colors",
-                size === s.value
-                  ? "border-oregon-500 bg-oregon-100 text-oregon-900 dark:bg-oregon-800 dark:text-oregon-50"
-                  : "border-border bg-muted/50 hover:bg-muted",
-              )}
+              aria-pressed={size === s.value}
+              variant={size === s.value ? "chocolate" : "chocolate-outline"}
+              className={cn("rounded-full px-8 text-md font-semibold")}
+              size="sm"
             >
               {s.label}
-              {s.priceModifier > 0 && ` +$${s.priceModifier}`}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
 
       <div className="flex items-center gap-4">
         <p className="text-sm font-medium">{t("quantity")}</p>
-        <div className="flex items-center gap-2 rounded-full border bg-muted/30 p-1">
-          <button
+        <div className="flex items-center gap-3 bg-white">
+          <Button
             type="button"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            className="flex size-8 items-center justify-center rounded-full hover:bg-muted"
+            size="icon-sm"
+            variant="chocolate-outline"
+            aria-label={t("decrease")}
+            disabled={quantity <= 1}
+            className="rounded-full"
           >
             <Minus className="size-4" />
-          </button>
-          <span className="min-w-8 text-center text-sm font-medium">
+          </Button>
+          <span className="min-w-8 text-center text-lg font-bold text-oregon-900">
             {quantity}
           </span>
-          <button
+          <Button
             type="button"
             onClick={() => setQuantity((q) => q + 1)}
-            className="flex size-8 items-center justify-center rounded-full hover:bg-muted"
+            size="icon-sm"
+            variant="chocolate-outline"
+            aria-label={t("increase")}
+            className="rounded-full"
           >
             <Plus className="size-4" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -139,50 +147,37 @@ export function AddToCartDrawer({
   }
 
   return (
-    <>
-      <Drawer open={open} onOpenChange={handleOpenChange} direction="bottom">
-        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-        <DrawerContent className="rounded-t-3xl bg-background">
-          <DrawerHeader>
+    <Drawer open={open} onOpenChange={handleOpenChange} direction="bottom">
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      <DrawerContent className="rounded-t-3xl bg-background">
+        <DrawerHeader>
+          <div className="flex w-full items-center justify-between gap-3">
             <DrawerTitle>{product.name}</DrawerTitle>
-            <p className="text-sm text-muted-foreground">
-              {t("choose_size_and_quantity")}
-            </p>
-          </DrawerHeader>
-          <div className="px-4">{modalContent}</div>
-          <DrawerFooter>
-            <Button
-              variant="dive"
-              size="xl"
-              className="w-full"
-              onClick={handleAddToCart}
-            >
-              {t("add_to_cart")}
-            </Button>
-            <Button
-              type="button"
-              variant="default"
-              className="w-full"
-              onClick={() => setConfirmCloseOpen(true)}
-            >
-              {t("close")}
-            </Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-      <ConfirmModal
-        open={confirmCloseOpen}
-        onOpenChange={setConfirmCloseOpen}
-        title={t("close_confirm.title")}
-        description={t("close_confirm.description")}
-        onConfirm={() => {
-          setOpen(false);
-          resetSelection();
-          onClose?.();
-        }}
-        cancelTitle={t("close_confirm.cancel")}
-        confirmTitle={t("close_confirm.confirm")}
-      />
-    </>
+            <Badge variant="outline" className="px-3 h-fit">
+              {product.productCategoryName}
+            </Badge>
+          </div>
+        </DrawerHeader>
+        <div className="px-4">{modalContent}</div>
+        <DrawerFooter>
+          <Button
+            variant="dive"
+            size="xl"
+            className="w-full"
+            onClick={handleAddToCart}
+          >
+            {t("add_to_cart")}
+          </Button>
+          <Button
+            type="button"
+            variant="default"
+            className="w-full"
+            onClick={() => handleOpenChange(false)}
+          >
+            {t("close")}
+          </Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 }

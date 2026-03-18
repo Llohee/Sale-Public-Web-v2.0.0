@@ -14,16 +14,13 @@ import {
 } from "@/share/ui/dialog";
 import { cn } from "@/share/lib/utils";
 
-import ConfirmModal from "./confirm";
-
 type ModalProps = Readonly<
   React.ComponentProps<typeof Dialog> & {
-    title: string;
+    title: React.ReactNode;
     description?: string;
     onConfirm: () => void;
     children: React.ReactNode;
     showCloseButton?: boolean;
-    isConfirmClose?: boolean;
     confirmTitle?: string;
     cancelTitle?: string;
     confirmDisabled?: boolean;
@@ -42,7 +39,6 @@ export default function Modal({
   children,
   confirmTitle,
   showCloseButton = true,
-  isConfirmClose = true,
   cancelTitle,
   confirmDisabled,
   contentClassName,
@@ -50,27 +46,15 @@ export default function Modal({
   confirmFullWidth = false,
 }: ModalProps) {
   const t = useTranslations("form");
-  const [confirmOpen, setConfirmOpen] = React.useState(false);
-
-  const requestClose = React.useCallback(() => {
-    if (isConfirmClose) {
-      setConfirmOpen(true);
-      return;
-    }
-
+  const close = React.useCallback(() => {
     onOpenChange?.(false);
-  }, [isConfirmClose, onOpenChange]);
+  }, [onOpenChange]);
 
   const handleDialogOpenChange = React.useCallback(
     (nextOpen: boolean) => {
-      if (nextOpen) {
-        onOpenChange?.(true);
-        return;
-      }
-
-      requestClose();
+      onOpenChange?.(nextOpen);
     },
-    [onOpenChange, requestClose],
+    [onOpenChange],
   );
 
   return (
@@ -84,7 +68,7 @@ export default function Modal({
             <div className="flex justify-end p-4 pb-0">
               <button
                 type="button"
-                onClick={requestClose}
+                onClick={close}
                 className="inline-flex size-10 items-center justify-center rounded-full border border-border/60 text-foreground transition-colors hover:bg-muted"
                 aria-label={cancelTitle ?? t("btn.cancel")}
               >
@@ -112,7 +96,7 @@ export default function Modal({
                   variant="chocolate-outline"
                   size="lg"
                   className="w-full sm:w-auto"
-                  onClick={requestClose}
+                  onClick={close}
                 >
                   {cancelTitle ?? t("btn.cancel")}
                 </Button>
@@ -131,17 +115,6 @@ export default function Modal({
           </div>
         </DialogContent>
       </Dialog>
-
-      <ConfirmModal
-        open={confirmOpen}
-        onOpenChange={setConfirmOpen}
-        title={t("confirm.title")}
-        description={t("confirm.description")}
-        onConfirm={() => {
-          setConfirmOpen(false);
-          onOpenChange?.(false);
-        }}
-      />
     </>
   );
 }
