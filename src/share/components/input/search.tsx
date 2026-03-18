@@ -33,16 +33,18 @@ export default function SearchInput({
   return (
     <InputGroup
       className={cn(
-        size === 'xl' ? 'h-16 py-4 px-6' : 'rounded-md',
-        'relative overflow-hidden rounded-full'
+        size === 'xl'
+          ? 'h-16 px-6'
+          : 'h-12 border-amber-900/10 bg-white/80 px-4 shadow-sm supports-backdrop-filter:bg-white/70 supports-backdrop-filter:backdrop-blur-md',
+        'relative overflow-hidden rounded-full transition-colors focus-within:border-amber-900/25 focus-within:shadow-md'
       )}
     >
       <InputGroupAddon align="inline-start">
         <InputGroupText>
           <SearchIcon
             className={cn(
-              size === 'xl' ? 'size-8 !text-grey-6' : 'size-5',
-              'stroke-2 text-black-1'
+              size === 'xl' ? 'size-8 text-grey-6!' : 'size-[18px]',
+              'stroke-2 text-amber-900/55'
             )}
           />
         </InputGroupText>
@@ -57,7 +59,7 @@ export default function SearchInput({
           ...props,
           size: size,
           className:
-            'rounded-none border-0 bg-transparent dark:bg-transparent p-0' +
+            'rounded-none border-0 bg-transparent p-0 text-sm text-foreground placeholder:text-amber-900/35 focus-visible:ring-0 dark:bg-transparent' +
             className,
         })}
         onChange={(e) => {
@@ -77,10 +79,10 @@ export default function SearchInput({
           }}
           className={cn(
             size === 'xl' ? 'right-6' : 'right-3',
-            'absolute top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full bg-grey-6 hover:bg-grey-5 transition-colors cursor-pointer'
+            'absolute top-1/2 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-amber-900/8 text-amber-900/65 transition-colors hover:bg-amber-900/14 hover:text-amber-900 cursor-pointer'
           )}
         >
-          <X className="size-5 text-white" />
+          <X className="size-4" />
         </button>
       )}
     </InputGroup>

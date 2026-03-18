@@ -11,7 +11,9 @@ export default function Header() {
   const router = useRouter();
   const { items } = useCart();
   const tabFromPath =
-    headerTabs.find((tab) => pathname === `/${tab.value}`)?.value ?? "home";
+    headerTabs.find(
+      (tab) => pathname === `/${tab.value}` || pathname.startsWith(`/${tab.value}/`),
+    )?.value ?? "home";
   const [activeTab, setActiveTab] = useState(tabFromPath);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hoverStyle, setHoverStyle] = useState({});
@@ -64,14 +66,14 @@ export default function Header() {
   }, [activeIndex]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 !bg-transparent">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent!">
       <div className="container mx-auto py-4 flex items-center justify-between ">
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
           className="flex w-full flex-col items-center py-2 bg-oregon-700/85 backdrop-blur-sm rounded-xl shadow-md border border-oregon-50"
         >
-          <TabsList className="relative !h-8 select-none gap-[6px] bg-transparent p-0">
+          <TabsList className="relative h-8! select-none gap-[6px] bg-transparent p-0">
             <div
               className="absolute top-0 left-0 flex h-8 items-center rounded-[6px] bg-oregon-50/50 transition-all duration-300 ease-out dark:bg-[#ffffff1a]"
               style={{
