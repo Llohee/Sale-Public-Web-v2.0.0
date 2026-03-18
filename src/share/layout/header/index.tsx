@@ -71,7 +71,7 @@ export default function Header() {
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="flex w-full flex-col items-center py-2 bg-oregon-700/85 backdrop-blur-sm rounded-xl shadow-md border border-oregon-50"
+          className="flex w-full flex-col items-center py-2 bg-oregon-800/85 backdrop-blur-sm rounded-xl shadow-md"
         >
           <TabsList className="relative h-8! select-none gap-[6px] bg-transparent p-0">
             <div

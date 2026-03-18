@@ -33,10 +33,11 @@ export default function SearchInput({
   return (
     <InputGroup
       className={cn(
+        className,
         size === 'xl'
           ? 'h-16 px-6'
-          : 'h-12 border-amber-900/10 bg-white/80 px-4 shadow-sm supports-backdrop-filter:bg-white/70 supports-backdrop-filter:backdrop-blur-md',
-        'relative overflow-hidden rounded-full transition-colors focus-within:border-amber-900/25 focus-within:shadow-md'
+          : 'h-12 border-amber-900/10 bg-white/80 px-4 supports-backdrop-filter:bg-white/70 supports-backdrop-filter:backdrop-blur-md',
+        'relative overflow-hidden rounded-full transition-colors focus-within:border-amber-900/25'
       )}
     >
       <InputGroupAddon align="inline-start">
@@ -59,7 +60,7 @@ export default function SearchInput({
           ...props,
           size: size,
           className:
-            'rounded-none border-0 bg-transparent p-0 text-sm text-foreground placeholder:text-amber-900/35 focus-visible:ring-0 dark:bg-transparent' +
+            'rounded-none border-0 !bg-transparent p-0 text-sm text-foreground placeholder:text-amber-900/35 focus-visible:ring-0 dark:bg-transparent' +
             className,
         })}
         onChange={(e) => {

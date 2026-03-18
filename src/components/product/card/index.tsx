@@ -52,19 +52,18 @@ export function ProductCard({ product, className }: ProductCardProps) {
         }
       }}
       className={cn(
-        "relative group flex h-[420px] w-full flex-col gap-3 overflow-hidden rounded-2xl bg-white/70 shadow-sm ring-1 ring-amber-900/10 transition-all duration-300 text-left cursor-pointer supports-backdrop-filter:backdrop-blur-md hover:shadow-md hover:ring-amber-900/15",
+        "relative group flex w-full flex-col gap-3 drop-shadow-md overflow-hidden rounded-2xl bg-white/70 transition-all duration-300 text-left cursor-pointer supports-backdrop-filter:backdrop-blur-md hover:ring-amber-900/15",
         className,
       )}
     >
-      <div className="flex items-center justify-center px-2 pt-2 pb-0">
-        <div className="relative aspect-square w-full max-w-[220px] overflow-hidden rounded-[30px] bg-linear-to-br from-amber-50 to-amber-100 ring-1 ring-amber-900/10">
+      <div className="flex items-center justify-center p-4 pb-0">
+        <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-linear-to-br from-oregon-400 to-oregon-600 ring-1 ring-amber-900/10">
           {hasImage && !imageErrored ? (
             <Image
               src={imageSrc}
               alt={imageAlt}
               className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-              width={220}
-              height={220}
+              fill
               onError={() => setImageErrored(true)}
             />
           ) : (

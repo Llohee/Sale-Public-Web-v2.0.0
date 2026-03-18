@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { useFilter } from "@/providers/filter-provider";
 import {
   useGetAllProductCategories,
@@ -54,73 +55,89 @@ export function ProductsWrapper() {
     };
 
     return (
-      <div className="flex h-full flex-col">
-        <div className="flex-1 overflow-y-auto">
-          <div className="container mx-auto flex flex-col gap-4">
-            <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-              {t("title")}
-            </h1>
-            <SearchInput
-              value={filter.keyword}
-              onChange={onSearchChange}
-              placeholder={t("filter.search_placeholder")}
-            />
-
-            <VercelTabs
-              tabs={productCategories?.data.map((category) => ({
-                label: category.name,
-                value: category.id,
-                content: <div>Content for {category.name}</div>,
-              }))}
-              defaultTab="Overview"
-              className="pt-1"
-            />
-
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <h2 className="text-lg font-bold text-oregon-900 sm:text-xl">
+      <div className="flex min-h-screen flex-col ">
+        <div className="relative overflow-hidden !h-[400px] flex items-center justify-center">
+          <Image
+            src="/images/background.jpg"
+            alt="Hero banner"
+            fill
+            priority
+            className="object-cover"
+          />
+          {/* <div className="absolute inset-0 bg-gradient-to-b from-oregon-900/70 via-oregon-900/30 to-amber-50/0" /> */}
+          <div className="container mx-auto relative px-4 py-12 sm:py-14">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-xs font-semibold uppercase tracking-widest text-amber-50/80">
+                  Order Coffee
+                </p>
+                <h1 className="text-4xl font-extrabold tracking-tight text-amber-50 sm:text-5xl">
                   {t("title")}
-                </h2>
-                <p className="text-sm text-oregon-700/70">
-                  {products?.data.length ?? 0} {t("filter.all").toLowerCase()}
+                </h1>
+                <p className="mt-2 text-sm text-amber-50/90 sm:text-base">
+                  {t("subtitle")}
                 </p>
               </div>
-              <div className="hidden items-center gap-2 sm:flex">
-                <Button
-                  type="button"
-                  variant="chocolate-outline"
-                  size="icon-sm"
-                  className="rounded-full"
-                  onClick={() => scrollSlider("left")}
-                  aria-label="Scroll left"
-                >
-                  <ChevronLeft className="size-4" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="chocolate-outline"
-                  size="icon-sm"
-                  className="rounded-full"
-                  onClick={() => scrollSlider("right")}
-                  aria-label="Scroll right"
-                >
-                  <ChevronRight className="size-4" />
-                </Button>
-              </div>
             </div>
+          </div>
+        </div>
 
-            <div
-              ref={sliderRef}
-              className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-1 py-3 scroll-px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-            >
-              {products?.data.map((product: ProductDetail) => (
-                <div
-                  key={product.id}
-                  className="w-[calc(100%-3rem)] shrink-0 snap-start sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.875rem)] xl:w-[calc(25%-0.9375rem)]"
-                >
-                  <ProductCard product={product} />
+        <div className="flex-1 overflow-y-auto">
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-end">
+                <SearchInput
+                  value={filter.keyword}
+                  onChange={onSearchChange}
+                  placeholder={t("filter.search_placeholder")}
+                  className="max-w-md"
+                />
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <VercelTabs
+                  tabs={productCategories?.data.map((category) => ({
+                    label: category.name,
+                    value: category.id,
+                    content: <></>,
+                  }))}
+                  defaultTab="Overview"
+                />
+                <div className="hidden items-center gap-2 sm:flex">
+                  <Button
+                    type="button"
+                    variant="chocolate-outline"
+                    size="icon-sm"
+                    className="rounded-full"
+                    onClick={() => scrollSlider("left")}
+                    aria-label="Scroll left"
+                  >
+                    <ChevronLeft className="size-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="chocolate-outline"
+                    size="icon-sm"
+                    className="rounded-full"
+                    onClick={() => scrollSlider("right")}
+                    aria-label="Scroll right"
+                  >
+                    <ChevronRight className="size-4" />
+                  </Button>
                 </div>
-              ))}
+              </div>
+              <div
+                ref={sliderRef}
+                className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-1 py-3 scroll-px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              >
+                {products?.data.map((product: ProductDetail) => (
+                  <div
+                    key={product.id}
+                    className="w-[calc(100%-3rem)] shrink-0 snap-start sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.875rem)] xl:w-[calc(25%-0.9375rem)]"
+                  >
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

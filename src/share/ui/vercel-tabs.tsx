@@ -99,7 +99,7 @@ export function VercelTabs({ tabs, defaultTab, className }: VercelTabsProps) {
                   activeTab === tab.value ? "chocolate" : "chocolate-outline",
                 size: "lg",
               }),
-              "z-10 h-11 rounded-full px-6 text-base shadow-sm focus-visible:ring-0 focus-visible:ring-offset-0 data-[state=active]:bg-oregon-700 data-[state=active]:text-white data-[state=active]:border-oregon-700 data-[state=active]:shadow-[0_8px_18px_rgba(120,53,15,0.18)]",
+              "z-10 h-11 rounded-full px-6 text-base focus-visible:ring-0 focus-visible:ring-offset-0 data-[state=active]:bg-oregon-700 data-[state=active]:text-white data-[state=active]:border-oregon-700 data-[state=active]:shadow-[0_8px_18px_rgba(120,53,15,0.18)]",
               activeTab === tab.value
                 ? "border-oregon-700 text-white hover:text-white"
                 : "border-oregon-700/40 bg-white text-oregon-700 hover:bg-oregon-50 hover:text-oregon-700",

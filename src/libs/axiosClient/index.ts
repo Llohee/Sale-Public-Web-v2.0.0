@@ -8,7 +8,9 @@ const isSameOriginApi =
 
 const axiosClient = axios.create({
   baseURL: isSameOriginApi ? '/api/v1' : process.env.NEXT_PUBLIC_BACK_END_DOMAIN,
-  headers: {},
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+  },
   timeout: !isNaN(Number(process.env.NEXT_PUBLIC_TIME_OUT_API))
     ? Number(process.env.NEXT_PUBLIC_TIME_OUT_API)
     : 60000,

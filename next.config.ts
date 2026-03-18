@@ -14,6 +14,18 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'insanelygoodrecipes.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'png.pngtree.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.pinimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'free.vector6.com',
+      },
     ],
   },
   async headers() {

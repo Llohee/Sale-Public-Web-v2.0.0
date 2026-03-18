@@ -15,7 +15,7 @@ export function LoadingPage({ className }: LoadingPageProps) {
   return (
     <div
       className={cn(
-        "flex min-h-screen flex-col items-center justify-center bg-amber-50 text-foreground",
+        "flex min-h-screen flex-col items-center justify-center text-foreground",
         className,
       )}
     >
