@@ -5,13 +5,14 @@ import { useCart } from "@/providers/cart-provider";
 import { PRODUCT_SIZES, type ProductSize } from "@/types/cart";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useGetAllProducts } from "@/services/product/product.query-options";
-import { ChevronLeft, ImageOff, Minus, Plus } from "lucide-react";
+import { ChevronLeft, ImageOff, Minus, Plus, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import type { ProductDetail } from "@/services/product/product.schema";
 import { cn } from "@/share/lib/utils";
 import { RelatedProducts } from "./related-products";
+import { Badge } from "@/share/ui/badge";
 
 interface ProductDetailViewProps {
   product: ProductDetail;
@@ -32,12 +33,11 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
   const lineTotal = (unitPrice + sizeMod) * quantity;
   const relatedProducts = useMemo(
     () =>
-      (allProducts?.data ?? [])
-        .filter(
-          (item) =>
-            item.id !== product.id &&
-            item.productCategoryId === product.productCategoryId,
-        ),
+      (allProducts?.data ?? []).filter(
+        (item) =>
+          item.id !== product.id &&
+          item.productCategoryId === product.productCategoryId,
+      ),
     [allProducts?.data, product.id, product.productCategoryId],
   );
 
@@ -47,168 +47,137 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
   };
 
   return (
-    <div className="container mx-auto mt-4 flex flex-col gap-8">
-      <Button
-        variant="default"
-        size="sm"
-        onClick={() => router.back()}
-        className="hidden sm:inline-flex"
-      >
-        <ChevronLeft className="size-5" />
-        <span className="text-sm font-semibold">{t("back")}</span>
-      </Button>
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8 xl:gap-10">
-        <div className="relative flex w-full shrink-0 justify-center px-4 pb-0 pt-4 lg:w-1/4 lg:justify-start lg:px-0 lg:pt-0">
-          <div className="relative aspect-square w-full max-w-[420px] overflow-hidden rounded-2xl bg-muted sm:rounded-3xl sm:shadow-lg sm:ring-1 sm:ring-black/5 lg:max-w-none">
-            <Link
-              href="/product"
-              aria-label={t("back")}
-              className="absolute left-3 top-5 z-10 inline-flex h-12 items-center gap-2 rounded-full bg-white/90 px-4 text-foreground shadow-md ring-1 ring-black/5 backdrop-blur-sm transition hover:bg-white sm:hidden"
-            >
-              <ChevronLeft className="size-5" />
-            </Link>
-
-            {hasImage && !imageErrored ? (
-              <Image
-                src={product.imageUrl}
-                alt={product.name}
-                className="h-full w-full object-cover"
-                width={320}
-                height={320}
-                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 420px, 25vw"
-                onError={() => setImageErrored(true)}
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-amber-50 to-amber-100 text-amber-900/60">
-                <div className="flex flex-col items-center justify-center gap-2">
-                  <ImageOff className="size-10" />
-                  <span className="text-sm font-semibold tracking-wide">
-                    {t("imageUnavailable")}
-                  </span>
+    <div className="container mx-auto py-28 flex flex-col gap-8">
+      <div className="grid grid-cols-12 gap-4">
+        <div className="flex flex-col gap-6 sm:gap-8 col-span-7">
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => router.back()}
+            className="hidden sm:inline-flex"
+          >
+            <ChevronLeft className="size-5" />
+            <span className="text-sm font-semibold">{t("back")}</span>
+          </Button>
+          <div className="grid grid-cols-2 h-full gap-8">
+            <div className="flex flex-col gap-8 h-full justify-between">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-end gap-4">
+                  <h1 className="text-5xl font-extrabold text-oregon-800 truncate">
+                    {product.name}
+                  </h1>
                 </div>
-              </div>
-            )}
-
-            {/* Mobile overlay title */}
-            <div className="absolute inset-x-0 bottom-0 sm:hidden">
-              <div className="min-h-28 rounded-t-[2.5rem] bg-oregon-900/35 px-5 py-8 text-oregon-50 shadow-md ring-1 ring-white/10 backdrop-blur-sm">
-                <p className="text-lg font-extrabold leading-tight">
-                  {product.name}
+                <p className="text-2xl font-extrabold text-oregon-900">
+                  ${lineTotal.toFixed(2)}
                 </p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="w-full flex-1 rounded-t-3xl bg-background px-6 pb-8 pt-6 text-oregon-900 sm:rounded-3xl sm:bg-[#fffaf5] sm:px-10 sm:py-10 sm:shadow-lg sm:ring-1 sm:ring-amber-900/10 lg:w-3/4">
-          <div className="flex flex-col gap-6 sm:gap-8">
-          <div className="flex flex-col gap-2">
-            <h1 className="hidden text-3xl font-extrabold text-oregon-900 sm:block sm:text-3xl">
-              {product.name}
-            </h1>
-            <div className="flex flex-col gap-1">
-              <p className="text-lg font-extrabold text-oregon-800/90 sm:text-lg">
-                {t("descriptionLabel")}
-              </p>
-              {product.description && (
-                <p className="text-lg font-medium leading-relaxed text-oregon-700/80 line-clamp-3 sm:text-lg">
-                  {product.description}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Size */}
-          <div className="flex items-start gap-4">
-            <p className="shrink-0 pt-2 text-lg font-extrabold text-oregon-800/90 sm:text-lg">
-              {t("sizeLabel")}
-            </p>
-            <div className="flex flex-1 flex-wrap gap-2">
-              {PRODUCT_SIZES.map((s) => (
-                <Button
-                  key={s.value}
-                  type="button"
-                  size="sm"
-                  aria-pressed={size === s.value}
-                  onClick={() => setSize(s.value as ProductSize)}
-                  variant={size === s.value ? "chocolate" : "chocolate-outline"}
-                  className={cn(
-                    "h-auto rounded-full px-5 py-2.5 text-base font-semibold sm:text-base",
-                  )}
-                >
-                  <span className="inline-flex items-center justify-center gap-1">
-                    {s.label}
-                    {s.priceModifier > 0 && (
-                      <span
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col items-start gap-2">
+                  <p className="text-md leading-none text-oregon-900 sm:text-lg">
+                    {t("sizeLabel")}
+                  </p>
+                  <div className="flex flex-1 flex-wrap gap-3">
+                    {PRODUCT_SIZES.map((s) => (
+                      <Button
+                        key={s.value}
+                        type="button"
+                        size="sm"
+                        aria-pressed={size === s.value}
+                        onClick={() => setSize(s.value as ProductSize)}
+                        variant={
+                          size === s.value ? "chocolate" : "chocolate-outline"
+                        }
                         className={cn(
-                          "text-sm sm:text-xs",
-                          size === s.value
-                            ? "text-white/80"
-                            : "text-oregon-700/70",
+                          "rounded-full px-8 text-md font-semibold",
                         )}
                       >
-                        +${s.priceModifier.toFixed(2)}
-                      </span>
-                    )}
+                        <span className="inline-flex items-center justify-center gap-1">
+                          {s.label}
+                        </span>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex flex-col items-start gap-2">
+                  <span className="text-lg leading-none text-oregon-900 sm:text-lg">
+                    {t("quantityLabel")}
                   </span>
+                  <div className="flex items-center gap-3 bg-white">
+                    <Button
+                      type="button"
+                      size="icon-sm"
+                      variant="chocolate-outline"
+                      aria-label={t("decrease")}
+                      disabled={quantity <= 1}
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      className="rounded-full bg-transparent text-oregon-800 hover:bg-oregon-50 disabled:opacity-40"
+                    >
+                      <Minus className="size-4" />
+                    </Button>
+                    <div className="text-center text-xl font-bold text-oregon-900">
+                      {quantity}
+                    </div>
+                    <Button
+                      type="button"
+                      size="icon-sm"
+                      variant="chocolate-outline"
+                      aria-label={t("increase")}
+                      onClick={() => setQuantity((q) => q + 1)}
+                      className="rounded-full bg-transparent text-oregon-800 hover:bg-oregon-50"
+                    >
+                      <Plus className="size-4" />
+                    </Button>
+                  </div>
+                </div>
+                <Button
+                  variant="dive"
+                  size="xl"
+                  className="w-full rounded-full px-8 py-2 text-lg font-semibold gap-4"
+                  onClick={handleAddToOrder}
+                >
+                  <ShoppingCart className="size-5" />
+                  {t("addToOrder")}
                 </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* Quantity */}
-          <div className="flex items-center gap-4">
-            <span className="text-lg font-extrabold text-oregon-800/90 sm:text-lg">
-              {t("quantityLabel")}
-            </span>
-            <div className="flex items-center gap-1 rounded-full border border-oregon-700/20 bg-white p-1 shadow-sm">
-              <Button
-                type="button"
-                size="icon-sm"
-                variant="chocolate-outline"
-                aria-label={t("decrease")}
-                disabled={quantity <= 1}
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                className="rounded-full bg-transparent text-oregon-800 hover:bg-oregon-50 disabled:opacity-40"
-              >
-                <Minus className="size-4" />
-              </Button>
-              <div className="min-w-12 px-3 text-center text-base font-bold text-oregon-900 sm:text-sm">
-                {quantity}
               </div>
-              <Button
-                type="button"
-                size="icon-sm"
-                variant="chocolate-outline"
-                aria-label={t("increase")}
-                onClick={() => setQuantity((q) => q + 1)}
-                className="rounded-full bg-transparent text-oregon-800 hover:bg-oregon-50"
-              >
-                <Plus className="size-4" />
-              </Button>
             </div>
-          </div>
-
-          {/* Price + Add to order */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex flex-col gap-1">
-              <p className="text-base font-bold text-oregon-700/90 sm:text-base">
-                {t("totalLabel")}
-              </p>
-              <p className="text-3xl font-extrabold text-oregon-900 sm:text-4xl">
-                ${lineTotal.toFixed(2)}
+              <Badge variant="outline" className="text-md px-3 h-fit">
+                {product.productCategoryName}
+              </Badge>
+              <p className="text-lg font-medium italic leading-relaxed text-oregon-700/80 sm:text-lg">
+                {product.description}
               </p>
             </div>
-            <Button
-              variant="dive"
-              size="xl"
-              className="w-full rounded-full px-8 py-5 text-lg font-semibold sm:w-auto sm:px-10"
-              onClick={handleAddToOrder}
-            >
-              {t("addToOrder")}
-            </Button>
           </div>
         </div>
+        <div className="relative w-full h-full overflow-hidden rounded-2xl bg-muted sm:rounded-3xl sm:shadow-lg sm:ring-1 sm:ring-black/5 lg:max-w-none col-span-5">
+          {hasImage && !imageErrored ? (
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+              fill
+              onError={() => setImageErrored(true)}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-amber-50 to-amber-100 text-amber-900/60">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <ImageOff className="size-10" />
+                <span className="text-sm font-semibold tracking-wide">
+                  {t("imageUnavailable")}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Mobile overlay title */}
+          <div className="absolute inset-x-0 bottom-0 sm:hidden">
+            <div className="min-h-28 rounded-t-[2.5rem] bg-oregon-900/35 px-5 py-8 text-oregon-50 shadow-md ring-1 ring-white/10 backdrop-blur-sm">
+              <p className="text-lg font-extrabold leading-tight">
+                {product.name}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
