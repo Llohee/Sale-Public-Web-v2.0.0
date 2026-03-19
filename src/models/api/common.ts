@@ -49,6 +49,7 @@ export const FilterSchema = z.object({
   offset: z.coerce.number().default(0),
   keyword: z.string().optional(),
   productCategoryId: z.string().optional(),
+  productCategoryCode: z.string().optional(),
   query: z.array(FilterQuerySchema).optional(),
   sort: FilterSortSchema.optional(),
 })
@@ -63,4 +64,6 @@ export type FilterSearchParam = Partial<{
   sort: string
   query: string
   productCategoryId: string
+  category: string
+  productCategoryCode: string
 }>

@@ -82,6 +82,7 @@ export function ProductsWrapper() {
   }
 
   if (isSuccessProducts && isSuccessProductCategories) {
+    const selectedCategory = filter.productCategoryCode?.trim() || undefined;
     return (
       <div className="flex min-h-screen flex-col ">
         <div className="relative overflow-hidden h-[400px]! flex items-center justify-center">
@@ -124,10 +125,8 @@ export function ProductsWrapper() {
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2.5">
                   {filterOptions.map((option) => {
-                    const selected =
-                      option.value === ""
-                        ? !filter.category || filter.category === "all"
-                        : filter.category === option.value;
+                    const optionValue = option.value?.trim() || undefined;
+                    const selected = selectedCategory === optionValue;
 
                     return (
                       <Button
@@ -135,7 +134,9 @@ export function ProductsWrapper() {
                         variant={selected ? "chocolate" : "chocolate-outline"}
                         size="lg"
                         className={cn("rounded-[33px] px-4 py-2")}
-                        onClick={() => updateParam("category", option.value)}
+                        onClick={() =>
+                          updateParam("category", optionValue)
+                        }
                       >
                         {option.label}
                       </Button>

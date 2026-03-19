@@ -23,6 +23,7 @@ export function parseFilterSearchParams(
     sort: deserializeSort(params.sort),
     query: decodeQueryParams(params.query),
     productCategoryId: params.productCategoryId,
+    productCategoryCode: params.category ?? params.productCategoryCode,
   })
 }
 
