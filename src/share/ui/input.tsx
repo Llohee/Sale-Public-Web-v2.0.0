@@ -49,12 +49,35 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
     label,
     size,
     variant,
+    required,
     ...props
   }: InputFieldProps<T>,
   ref: React.Ref<HTMLInputElement>,
 ) {
   const t = useTranslations("form");
-  const registerResult = name && register ? register(name) : undefined;
+
+  const registerOptions =
+    name && register
+      ? {
+          ...(required
+            ? {
+                required: label
+                  ? `${label} không được để trống`
+                  : "error.required",
+              }
+            : {}),
+          ...(type === "tel"
+            ? {
+                pattern: {
+                  value: /^(0|\+84)[0-9]{9}$/,
+                  message: "Số điện thoại không hợp lệ",
+                },
+              }
+            : {}),
+        }
+      : undefined;
+
+  const registerResult = name && register ? register(name, registerOptions) : undefined;
   const registerPayload = registerResult ?? {};
   const {
     ref: registerRef,
@@ -70,7 +93,12 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
     [k: string]: unknown;
   };
 
-  const { onBlur: propsOnBlur, onFocus: propsOnFocus, ...restProps } = props;
+  const {
+    onBlur: propsOnBlur,
+    onFocus: propsOnFocus,
+    onKeyDown: propsOnKeyDown,
+    ...restProps
+  } = props;
 
   const [isShowPassword, setIsShowPassword] = React.useState(false);
 
@@ -104,6 +132,8 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
         id={id}
         type={inputType()}
         // data-slot="input"
+        inputMode={type === "tel" ? "tel" : undefined}
+        autoComplete={type === "tel" ? "tel" : undefined}
         placeholder={
           placeholder ??
           t("input.placeholder", {
@@ -111,6 +141,22 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
           })
         }
         disabled={disabled}
+        onKeyDown={(e) => {
+          if (type === "tel" && /[a-zA-Z]/.test(e.key)) {
+            e.preventDefault();
+            return;
+          }
+          propsOnKeyDown?.(e);
+        }}
+        onPaste={(e) => {
+          if (type === "tel") {
+            const text = e.clipboardData.getData("text");
+            if (/[a-zA-Z]/.test(text)) {
+              e.preventDefault();
+              return;
+            }
+          }
+        }}
         className={cn(
           inputVariants({
             variant,

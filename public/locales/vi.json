@@ -61,6 +61,7 @@
       "addToOrder": "Thêm vào đơn hàng"
     },
     "add_to_cart": {
+      "total_label": "Tổng tiền",
       "size": "Size",
       "quantity": "Số lượng",
       "total": "Tổng: ${total}",
@@ -86,6 +87,18 @@
       "back": "Quay lại",
       "checkout": "Thanh toán",
       "continue": "Tiếp tục"
+    },
+    "checkout_title": "Thông tin thanh toán",
+    "payment_method_choose": "Chọn phương thức thanh toán",
+    "fields": {
+      "name": {
+        "label": "Họ và tên",
+        "placeholder": "Nhập họ và tên"
+      },
+      "phone": {
+        "label": "Số điện thoại",
+        "placeholder": "Nhập số điện thoại"
+      }
     },
     "title": "Đơn hàng của bạn",
     "subtitle": "Kiểm tra lại món, số lượng và tổng tiền trước khi thanh toán.",

@@ -14,19 +14,14 @@ import { Button } from "@/share/ui/button";
 import { useTranslations } from "next-intl";
 import { ProductCard } from "./card";
 import { LoadingPage } from "@/share/components/full-page/loading";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/share/ui/carousel";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperClass } from "swiper";
+import "swiper/css";
 
 export function ProductsWrapper() {
   const t = useTranslations("ProductPage");
   const { filter, onSearchChange, updateParam } = useFilter();
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [swiper, setSwiper] = useState<SwiperClass | null>(null);
   const [isPaused, setIsPaused] = useState(false);
 
   const {
@@ -55,18 +50,23 @@ export function ProductsWrapper() {
   }, [productCategories, t]);
 
   useEffect(() => {
-    if (!carouselApi) return;
+    if (!swiper) return;
     if (isPaused) return;
     if (!isSuccessProducts || !isSuccessProductCategories) return;
 
     const intervalId = window.setInterval(() => {
-      carouselApi.scrollNext();
+      swiper.slideNext();
     }, 3000);
 
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [carouselApi, isPaused, isSuccessProducts, isSuccessProductCategories]);
+  }, [
+    swiper,
+    isPaused,
+    isSuccessProducts,
+    isSuccessProductCategories,
+  ]);
 
   if (isLoadingProducts || isLoadingProductCategories) {
     return <LoadingPage />;
@@ -88,7 +88,7 @@ export function ProductsWrapper() {
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 backdrop-blur-xs bg-gradient-to-t from-oregon-900/70 via-oregon-900/30 to-amber-50/0" />
+          <div className="absolute inset-0 backdrop-blur-xs bg-linear-to-t from-oregon-900/70 via-oregon-900/30 to-amber-50/0" />
           <div className="container mx-auto relative px-4 py-12 sm:py-14">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div className="max-w-2xl">
@@ -106,11 +106,11 @@ export function ProductsWrapper() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="order-2 md:order-1 flex items-center justify-between gap-3">
+                <div className="w-full flex flex-nowrap items-center gap-2.5 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                   {filterOptions.map((option) => {
                     const optionValue = option.value?.trim() || undefined;
                     const selected = selectedCategory === optionValue;
@@ -127,50 +127,51 @@ export function ProductsWrapper() {
                       </Button>
                     );
                   })}
+                  </div>
                 </div>
-                <SearchInput
-                  value={filter.keyword}
-                  onChange={onSearchChange}
-                  placeholder={t("filter.search_placeholder")}
-                  className="max-w-md"
-                />
+                <div className="order-1 md:order-2">
+                  <SearchInput
+                    value={filter.keyword}
+                    onChange={onSearchChange}
+                    placeholder={t("filter.search_placeholder")}
+                    className="w-full md:max-w-md"
+                  />
+                </div>
               </div>
 
-              <Carousel
-                className="px-1 py-3"
-                opts={{ loop: true }}
-                setApi={setCarouselApi}
-              >
-                <CarouselContent
-                  className="gap-5"
+              <div className="relative overflow-hidden py-3">
+                <div
                   onPointerEnter={() => setIsPaused(true)}
                   onPointerLeave={() => setIsPaused(false)}
                 >
-                  {products?.data.map((product: ProductDetail) => (
-                    <CarouselItem
-                      key={product.id}
-                      className="basis-[calc(100%-3rem)] shrink-0 sm:basis-[calc(50%-0.625rem)] lg:basis-[calc(33.333%-0.875rem)] xl:basis-[calc(25%-0.9375rem)]"
-                    >
-                      <ProductCard product={product} />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-
-                <CarouselPrevious
-                  variant="chocolate-outline"
-                  size="icon-sm"
-                  className="hidden rounded-full sm:flex -left-3"
-                />
-                <CarouselNext
-                  variant="chocolate-outline"
-                  size="icon-sm"
-                  className="hidden rounded-full sm:flex -right-3"
-                />
-              </Carousel>
+                  <Swiper
+                    loop
+                    slidesPerView={1}
+                    spaceBetween={20}
+                    breakpoints={{
+                      640: { slidesPerView: 2 },
+                      1024: { slidesPerView: 3 },
+                      1280: { slidesPerView: 4 },
+                    }}
+                    onSwiper={(instance) => {
+                      setSwiper(instance);
+                    }}
+                    className="w-full"
+                  >
+                    {products?.data.map((product: ProductDetail) => (
+                      <SwiperSlide key={product.id} className="h-auto!">
+                        <ProductCard
+                          product={product}
+                          className="scale-[0.96] origin-top sm:scale-100"
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
     );
   }
 }

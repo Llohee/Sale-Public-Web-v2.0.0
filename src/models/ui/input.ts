@@ -15,7 +15,7 @@ export type BaseLayoutInputProps = {
 interface BaseInputProps
   extends VariantProps<typeof inputVariants>,
   BaseLayoutInputProps {
-  type?: 'text' | 'number' | 'email' | 'password' | 'date' | 'time' | 'search'
+  type?: 'text' | 'number' | 'email' | 'password' | 'date' | 'time' | 'search' | 'tel'
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   variant?: 'default' | 'error' | 'success'
   value?: string

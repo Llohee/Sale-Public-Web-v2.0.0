@@ -11,9 +11,6 @@ export default function OrderForm() {
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
   const [openCheckoutModal, setOpenCheckoutModal] = useState(false);
   const {
-    items,
-    removeItem,
-    updateQuantity,
     totalItems,
     totalAmount,
     clearCart,

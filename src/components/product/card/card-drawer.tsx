@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { cn } from "@/share/lib/utils";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { ProductDetail } from "@/services/product/product.schema";
 import { Button } from "@/share/ui/button";
 import { Badge } from "@/share/ui/badge";
+import { Textarea } from "@/share/ui/textarea";
 import {
   Drawer,
   DrawerContent,
@@ -32,15 +34,21 @@ export function AddToCartDrawer({
   onClose,
 }: AddToCartDrawerProps) {
   const t = useTranslations("product.add_to_cart");
+  const tOrder = useTranslations("order");
   const price = product.price ?? 0;
   const { addItem } = useCart();
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState<ProductSize>(DEFAULT_SIZE);
   const [quantity, setQuantity] = useState(DEFAULT_QUANTITY);
+  const [note, setNote] = useState("");
+  const [imageErrored, setImageErrored] = useState(false);
+  const imageSrc = product.imageUrl?.trim() ?? "";
+  const imageAlt = product.name || "Product image";
 
   const resetSelection = () => {
     setSize(DEFAULT_SIZE);
     setQuantity(DEFAULT_QUANTITY);
+    setNote("");
   };
 
   const handleOpenChange = (next: boolean) => {
@@ -57,7 +65,12 @@ export function AddToCartDrawer({
   const lineTotal = (price + sizeMod) * quantity;
 
   const handleAddToCart = () => {
-    addItem({ product, size, quantity });
+    addItem({
+      product,
+      size,
+      quantity,
+      note: note.trim() ? note.trim() : undefined,
+    });
     setOpen(false);
     resetSelection();
   };
@@ -73,7 +86,7 @@ export function AddToCartDrawer({
   const modalContent = (
     <div className="space-y-4">
       {product.description ? (
-        <p className="text-sm italic leading-relaxed text-oregon-700/80">
+        <p className="text-sm italic leading-relaxed text-oregon-700/80 pt-2.5">
           {product.description}
         </p>
       ) : null}
@@ -126,7 +139,7 @@ export function AddToCartDrawer({
         </div>
       </div>
 
-      <p className="text-lg font-semibold">
+      <p className="hidden sm:block text-lg font-semibold">
         {t("total", { total: lineTotal.toFixed(2) })}
       </p>
     </div>
@@ -140,6 +153,8 @@ export function AddToCartDrawer({
         open={open}
         onOpenChange={handleOpenChange}
         onAddToCart={handleAddToCart}
+        note={note}
+        onNoteChange={setNote}
       >
         {modalContent}
       </AddToCartModal>
@@ -158,24 +173,60 @@ export function AddToCartDrawer({
             </Badge>
           </div>
         </DrawerHeader>
+        {imageSrc ? (
+          <div className="px-4">
+            <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-linear-to-br from-amber-50 to-amber-100 ring-1 ring-amber-900/10">
+              {!imageErrored ? (
+                <Image
+                  src={imageSrc}
+                  alt={imageAlt}
+                  fill
+                  sizes="340px"
+                  className="object-cover"
+                  onError={() => setImageErrored(true)}
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-amber-900/60">
+                  <span className="text-sm font-semibold tracking-wide">
+                    Image unavailable
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        ) : null}
         <div className="px-4">{modalContent}</div>
-        <DrawerFooter>
-          <Button
-            variant="dive"
-            size="xl"
-            className="w-full"
-            onClick={handleAddToCart}
-          >
-            {t("add_to_cart")}
-          </Button>
-          <Button
-            type="button"
-            variant="default"
-            className="w-full"
-            onClick={() => handleOpenChange(false)}
-          >
-            {t("close")}
-          </Button>
+        <DrawerFooter className="pt-1! gap-4!">
+          <div className="space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-wide text-oregon-700/60">
+              {tOrder("note_label")}
+            </p>
+            <Textarea
+              value={note}
+              onChange={(event) => setNote(event.target.value)}
+              placeholder={tOrder("note_placeholder")}
+              className="min-h-20 max-h-64 resize-y rounded-xl border-oregon-700/10 bg-amber-50/35 text-sm text-oregon-900 placeholder:text-oregon-700/35 focus-visible:border-oregon-700/25 focus-visible:ring-oregon-700/10"
+            />
+          </div>
+          <div className="flex items-center gap-3 w-full justify-between">
+            <p className="flex-none text-sm font-semibold text-oregon-900 flex flex-col">
+              <span className="text-xs font-normal text-oregon-700/60">
+                {t("total_label")}
+              </span>
+              <span className="text-lg font-extrabold text-oregon-900">
+                ${lineTotal.toFixed(2)}
+              </span>
+            </p>
+            <Button
+              variant="dive"
+              size="lg"
+              className="rounded-full"
+              onClick={handleAddToCart}
+            >
+              <ShoppingCart className="size-5" />
+              {t("add_to_cart")}
+            </Button>
+          </div>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

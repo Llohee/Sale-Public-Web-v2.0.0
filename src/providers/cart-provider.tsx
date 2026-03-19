@@ -24,6 +24,7 @@ interface CartContextType {
     product: ProductDetail;
     size: ProductSize;
     quantity: number;
+    note?: string;
   }) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
@@ -71,12 +72,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       product,
       size,
       quantity,
+      note,
     }: {
       product: ProductDetail;
       size: ProductSize;
       quantity: number;
+      note?: string;
     }) => {
       const unitPrice = product.price ?? 0;
+      const normalizedNote = note?.trim();
       setItems((prev) => {
         const existing = prev.find(
           (i) => i.productId === product.id && i.size === size
@@ -84,7 +88,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         if (existing) {
           return prev.map((i) =>
             i.id === existing.id
-              ? { ...i, quantity: i.quantity + quantity }
+              ? {
+                  ...i,
+                  quantity: i.quantity + quantity,
+                  note: normalizedNote
+                    ? normalizedNote
+                    : i.note,
+                }
               : i
           );
         }
@@ -96,6 +106,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           unitPrice,
           size,
           quantity,
+          note: normalizedNote || undefined,
         };
         return [...prev, newItem];
       });

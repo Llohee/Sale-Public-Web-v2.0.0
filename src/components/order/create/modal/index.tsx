@@ -6,8 +6,10 @@ import { useCart } from "@/providers/cart-provider";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import Image from "next/image";
-import { CheckIcon, ImageOff } from "lucide-react";
+import { ImageOff } from "lucide-react";
 import { Checkbox } from "@/share/ui/checkbox";
+import { LAST_ORDER_SNAPSHOT_KEY } from "@/constants/order";
+import { getCartItemLineTotal } from "@/types/cart";
 
 type OrderCheckoutModalProps = {
   open: boolean;
@@ -18,20 +20,46 @@ type OrderCheckoutModalProps = {
 };
 
 export default function OrderCheckoutModal(props: OrderCheckoutModalProps) {
-  return <OrderCheckout {...props} />;
+  // Remount on `open` to reset local UI state without setState-in-effect.
+  return <OrderCheckout key={props.open ? "open" : "closed"} {...props} />;
 }
 
 function OrderCheckout(props: OrderCheckoutModalProps) {
   const t = useTranslations("order");
   const { open, onOpenChange, title, confirmDisabled, paymentMethods } = props;
 
-  const { items } = useCart();
+  const { items, clearCart } = useCart();
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<PaymentMethodDetail>(paymentMethods[0]);
     
   const { orderForm, handleFormSubmit } = useOrderForm({
-    onSuccess: () => {},
+    onSuccess: () => {
+      if (typeof window !== "undefined") {
+        const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
+        const totalAmount = items
+          .reduce((sum, i) => sum + getCartItemLineTotal(i), 0)
+          .toFixed(2);
+
+        sessionStorage.setItem(
+          LAST_ORDER_SNAPSHOT_KEY,
+          JSON.stringify({
+            items: items.map((i) => ({
+              ...i,
+              note: i.note ?? "",
+            })),
+            amount: totalAmount,
+            totalItems,
+            paidAt: new Date().toISOString(),
+            paymentMethod: selectedPaymentMethod.display_name ?? "",
+            location: "",
+          }),
+        );
+      }
+
+      clearCart();
+      onOpenChange(false);
+    },
     items,
     paymentMethod: selectedPaymentMethod,
   });
@@ -57,16 +85,17 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
             placeholder={t("fields.name.placeholder")}
           />
           <InputField
-            label="Số điện thoại"
+            label={t("fields.phone.label")}
             name="phoneNumber"
             register={orderForm.register}
+            type="tel"
             errors={orderForm.formState.errors.phoneNumber?.message}
-            placeholder="Nhập số điện thoại"
+            placeholder={t("fields.phone.placeholder")}
             required
           />
         </div>
         <div className="flex flex-col gap-4">
-          <div>Chọn phương thức thanh toán</div>
+          <div>{t("payment_method_choose")}</div>
           <div className="flex flex-col gap-2">
             {paymentMethods.map((paymentMethod) => (
               <div
