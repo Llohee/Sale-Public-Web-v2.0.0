@@ -93,7 +93,7 @@ export function AnimatedToastProvider({
       {children}
       <div
         className={cn(
-          "pointer-events-none fixed z-50 flex flex-col gap-2",
+          "pointer-events-none fixed z-[9999] flex flex-col gap-2",
           positionClasses[position],
         )}
       >
@@ -267,7 +267,7 @@ export function MinimalToast({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
           className={cn(
-            "fixed bottom-8 left-1/2 z-50 -translate-x-1/2 rounded-full px-6 py-3 font-medium text-background text-black text-sm shadow-lg dark:text-white",
+            "fixed bottom-8 left-1/2 z-[9999] -translate-x-1/2 rounded-full px-6 py-3 font-medium text-background text-black text-sm shadow-lg dark:text-white",
             bgColors[type],
           )}
         >
@@ -320,7 +320,7 @@ export function UndoToast({
           initial={{ opacity: 0, y: 50, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.9 }}
-          className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2 overflow-hidden rounded-lg bg-foreground text-background shadow-xl"
+          className="fixed bottom-8 left-1/2 z-[9999] -translate-x-1/2 overflow-hidden rounded-lg bg-foreground text-background shadow-xl"
         >
           <div className="flex items-center gap-4 px-4 py-3">
             <span className="text-sm">{message}</span>
@@ -377,7 +377,7 @@ export function NotificationToast({
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: 100, scale: 0.9 }}
           transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          className="fixed top-4 right-4 z-50 w-80 overflow-hidden rounded-xl border border-border bg-card shadow-2xl"
+          className="fixed top-4 right-4 z-[9999] w-80 overflow-hidden rounded-xl border border-border bg-card shadow-2xl"
         >
           <div className="p-4">
             <div className="flex items-start gap-3">
@@ -455,7 +455,7 @@ export function StackedNotifications({
   };
 
   return (
-    <div className="fixed top-4 right-4 z-50 w-80">
+    <div className="fixed top-4 right-4 z-[9999] w-80">
       <AnimatePresence mode="popLayout">
         {visibleToasts.map((toast, index) => (
           <motion.div

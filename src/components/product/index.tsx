@@ -88,7 +88,7 @@ export function ProductsWrapper() {
             priority
             className="object-cover"
           />
-          {/* <div className="absolute inset-0 bg-gradient-to-b from-oregon-900/70 via-oregon-900/30 to-amber-50/0" /> */}
+          <div className="absolute inset-0 backdrop-blur-xs bg-gradient-to-t from-oregon-900/70 via-oregon-900/30 to-amber-50/0" />
           <div className="container mx-auto relative px-4 py-12 sm:py-14">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div className="max-w-2xl">
