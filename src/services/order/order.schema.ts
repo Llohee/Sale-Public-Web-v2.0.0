@@ -1,10 +1,11 @@
+import { TRANSACTION_STATUS } from "@/constants/transaction";
 import { APIResponseSchema } from "@/models/api/common";
 import { z } from "zod";
 
 export const AmountDetailSchema = z.object({
   currency_code: z.string(),
   value: z.number(),
-})
+});
 
 export const OrderItemDetailSchema = z.object({
   id: z.string(),
@@ -15,77 +16,70 @@ export const OrderItemDetailSchema = z.object({
   unit_amount: AmountDetailSchema,
   category: z.string(),
   currency: z.string(),
-})
+});
 
 export const OrderDetailSchema = z.object({
   id: z.string(),
-  additional_information: z.object({
-    purchase_unit: z.object({
-      order_id_ref: z.string(),
-      amount: AmountDetailSchema,
-      items: z.array(OrderItemDetailSchema),
-    })
-  }),
-  channel_id: z.string(),
-  created_at: z.string(),
-  currency: z.string(),
-  order_code: z.string(),
-  merchant_code: z.string(),
-  merchant_id: z.string(),
-  merchant_name: z.string(),
-  order_date: z.string(),
-  order_desc: z.string(),
-  order_id_ref: z.string(),
-  service_code: z.string(),
-  status: z.enum(["pending", "paid", "failed"]),
-  total_amount: z.string(),
-  updated_at: z.string(),
-}
-)
+  orderNumber: z.string(),
+  orderDate: z.string(),
+  status: z.enum(TRANSACTION_STATUS),
+  ordererName: z.string(),
+  phoneNumber: z.string(),
+  subtotal: z.number(),
+  discountAmount: z.number(),
+  totalAmount: z.number(),
+  comboId: z.string().optional(),
+  customerId: z.string().optional(),
+  customerName: z.string().optional(),
+  items: z.array(
+    z.object({
+      id: z.string(),
+      productId: z.string(),
+      productName: z.string(),
+      quantity: z.number(),
+      unitPrice: z.number(),
+      attribute: z.string().optional(),
+      note: z.string().optional(),
+      lineTotal: z.number(),
+    }),
+  ),
+  createdAt: z.string(),
+  externalOrderId: z.string(),
+  externalOrderCode: z.string(),
+});
 
 export type OrderDetail = z.infer<typeof OrderDetailSchema>;
 
-export const OrderDetailResponseSchema = APIResponseSchema(OrderDetailSchema)
-export type OrderDetailResponse = z.infer<typeof OrderDetailResponseSchema>
+export const OrderDetailResponseSchema = APIResponseSchema(OrderDetailSchema);
+export type OrderDetailResponse = z.infer<typeof OrderDetailResponseSchema>;
 
-export const OrderResponseSchema = z.object({
-  serviceCode: z.string(),
-  merchantCode: z.string(),
-  merchantName: z.string(),
-  channelId: z.string(),
-  tranDate: z.string(),
-  tranDesc: z.string(),
-  buyerInfo: z.object({
-    name: z.string(),
-    phone: z.string(),
-    position: z.string(),
-    email: z.string(),
-  }),
-  invoiceInfo: z.object({
-    type: z.enum(["business", "individual"]),
-    taxCode: z.string(),
-    name: z.string(),
-    country: z.string(),
-    province: z.string(),
-    district: z.string(),
-    address: z.string(),
-    email: z.string(),
-  }),
-  additionalInformation: z.object({
-    purchase_unit: {
-      order_id_ref: z.string(),
-      amount: AmountDetailSchema,
-      items: z.array(OrderItemDetailSchema),
-    }
-  }),
-})
-export type OrderResponse = z.infer<typeof OrderResponseSchema>
+export const OrderFormRequestSchema = z.object({
+  ordererName: z.string().min(1, "error.required"),
+  phoneNumber: z.string().min(1, "error.required"),
+  comboItems: z
+    .array(
+      z.object({
+        comboId: z.string(),
+        quantity: z.number(),
+      }),
+    )
+    .optional(),
+  items: z.array(
+    z.object({
+      productId: z.string(),
+      quantity: z.number(),
+      note: z.string().optional(),
+    }),
+  ),
+});
+export type OrderFormRequest = z.infer<typeof OrderFormRequestSchema>;
 
 export const OrderCheckoutRequestSchema = z.object({
   method: z.string(),
   provider_code: z.string(),
-})
-export type OrderCheckoutRequest = z.infer<typeof OrderCheckoutRequestSchema>
+  order_id: z.string(),
+});
+export type OrderCheckoutRequest = z.infer<typeof OrderCheckoutRequestSchema>;
 
 export const CheckoutPaymentDetailSchema = z.object({
   order: z.object({
@@ -115,8 +109,12 @@ export const CheckoutPaymentDetailSchema = z.object({
     transaction_code: z.string(),
     transaction_id: z.string(),
   }),
-})
-export type CheckoutPaymentDetail = z.infer<typeof CheckoutPaymentDetailSchema>
+});
+export type CheckoutPaymentDetail = z.infer<typeof CheckoutPaymentDetailSchema>;
 
-export const CheckoutPaymentDetailResponseSchema = APIResponseSchema(CheckoutPaymentDetailSchema)
-export type CheckoutPaymentDetailResponse = z.infer<typeof CheckoutPaymentDetailResponseSchema>
+export const CheckoutPaymentDetailResponseSchema = APIResponseSchema(
+  CheckoutPaymentDetailSchema,
+);
+export type CheckoutPaymentDetailResponse = z.infer<
+  typeof CheckoutPaymentDetailResponseSchema
+>;

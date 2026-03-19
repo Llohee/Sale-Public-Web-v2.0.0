@@ -129,3 +129,26 @@
     @apply font-mono;
   }
 }
+@supports (scrollbar-width: auto) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #bebdbf #ffffff;
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
+  *::-webkit-scrollbar {
+    position: absolute;
+    max-height: 8px; /* height of horizontal scrollbar ← You're missing this */
+    max-width: 8px; /* width of vertical scrollbar */
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #bebdbf;
+    border-radius: 100px;
+  }
+}

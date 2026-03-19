@@ -82,12 +82,19 @@
       "hint": "Hãy chọn món bạn yêu thích và quay lại đây để kiểm tra đơn hàng trước khi thanh toán.",
       "browse_products": "Xem sản phẩm"
     },
+    "btn": {
+      "back": "Quay lại",
+      "checkout": "Thanh toán",
+      "continue": "Tiếp tục"
+    },
     "title": "Đơn hàng của bạn",
     "subtitle": "Kiểm tra lại món, số lượng và tổng tiền trước khi thanh toán.",
     "clear_all": "Xóa tất cả",
     "remove": "Xóa",
     "image_unavailable": "Không có ảnh",
-    "size": "Size {size}",
+    "size": "Size: {size}",
+    "note": "Ghi chú: {note}",
+    "quantity": "Số lượng",
     "line_total_label": "Thành tiền",
     "note_label": "Ghi chú",
     "note_placeholder": "Ví dụ: ít đá, ít ngọt, thêm ống hút...",
@@ -95,7 +102,6 @@
     "subtotal_label": "{count, plural, one {# sản phẩm} other {# sản phẩm}}",
     "subtotal_money": "Tạm tính",
     "total_money": "Tổng cộng",
-    "checkout": "Thanh toán",
     "confirm_clear": {
       "title": "Xóa toàn bộ đơn hàng?",
       "description": "Tất cả sản phẩm trong đơn hàng sẽ bị xóa và không thể hoàn tác.",

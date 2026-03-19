@@ -1,11 +1,11 @@
-import axiosClient from "@/libs/axiosClient"
-import { GetAllPaymentMethodResponse } from "./payment.schema"
+import koiAxiosClient from "@/libs/KOI-axiosClient";
+import { GetAllPaymentMethodResponse } from "./payment.schema";
 
 const paymentApi = {
   getAllPaymentMethod(): Promise<GetAllPaymentMethodResponse> {
-    const url = `/payment-methods`
-    return axiosClient.get(url)
+    const url = `/payment-methods`;
+    return koiAxiosClient.get(url);
   },
-}
+};
 
-export default paymentApi
+export default paymentApi;

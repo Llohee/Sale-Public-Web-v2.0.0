@@ -82,12 +82,19 @@
       "hint": "Pick your favorite drinks and come back here to review your order before checkout.",
       "browse_products": "Browse products"
     },
+    "btn": {
+      "back": "Back",
+      "checkout": "Checkout",
+      "continue": "Continue"
+    },
     "title": "Your order",
     "subtitle": "Review items, quantities, and total before checkout.",
     "clear_all": "Clear all",
     "remove": "Remove",
     "image_unavailable": "No image",
-    "size": "Size {size}",
+    "size": "Size: {size}",
+    "note": "Note: {note}",
+    "quantity": "Quantity",
     "line_total_label": "Line total",
     "note_label": "Note",
     "note_placeholder": "Example: less ice, less sugar, add a straw...",

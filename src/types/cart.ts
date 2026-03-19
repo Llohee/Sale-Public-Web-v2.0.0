@@ -13,6 +13,7 @@ export interface CartItem {
   imageUrl: string;
   unitPrice: number;
   size: ProductSize;
+  note?: string;
   quantity: number;
 }
 

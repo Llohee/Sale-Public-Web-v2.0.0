@@ -45,7 +45,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
   };
 
   return (
-    <div className='container mx-auto px-4 pt-24 pb-16 md:pt-28 md:pb-28 flex flex-col gap-6 md:gap-8'>
+    <div className='container mx-auto pt-24 pb-16 md:pt-28 md:pb-28 flex flex-col gap-6 md:gap-8'>
       <div className='rounded-3xl bg-white p-5 ring-1 ring-black/5 md:bg-transparent md:p-0 md:shadow-none md:ring-0'>
         <div className='grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4'>
           <div className='flex flex-col gap-6 md:gap-8 col-span-12 md:col-span-7 order-2 md:order-1'>

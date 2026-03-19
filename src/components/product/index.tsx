@@ -66,12 +66,7 @@ export function ProductsWrapper() {
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [
-    carouselApi,
-    isPaused,
-    isSuccessProducts,
-    isSuccessProductCategories,
-  ]);
+  }, [carouselApi, isPaused, isSuccessProducts, isSuccessProductCategories]);
 
   if (isLoadingProducts || isLoadingProductCategories) {
     return <LoadingPage />;
@@ -114,15 +109,7 @@ export function ProductsWrapper() {
         <div className="flex-1 overflow-y-auto">
           <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col gap-4">
-              <div className="flex justify-end">
-                <SearchInput
-                  value={filter.keyword}
-                  onChange={onSearchChange}
-                  placeholder={t("filter.search_placeholder")}
-                  className="max-w-md"
-                />
-              </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
                   {filterOptions.map((option) => {
                     const optionValue = option.value?.trim() || undefined;
@@ -134,15 +121,19 @@ export function ProductsWrapper() {
                         variant={selected ? "chocolate" : "chocolate-outline"}
                         size="lg"
                         className={cn("rounded-[33px] px-4 py-2")}
-                        onClick={() =>
-                          updateParam("category", optionValue)
-                        }
+                        onClick={() => updateParam("category", optionValue)}
                       >
                         {option.label}
                       </Button>
                     );
                   })}
                 </div>
+                <SearchInput
+                  value={filter.keyword}
+                  onChange={onSearchChange}
+                  placeholder={t("filter.search_placeholder")}
+                  className="max-w-md"
+                />
               </div>
 
               <Carousel
