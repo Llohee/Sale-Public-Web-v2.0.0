@@ -107,7 +107,7 @@ export function VercelTabs({ tabs, defaultTab, className }: VercelTabsProps) {
             )}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
-            onClick={() => updateParam('productCategoryId', tab.value)}
+            onClick={() => updateParam('category', tab.value)}
           >
             <span className="whitespace-nowrap text-base font-medium leading-none">
               {tab.label}

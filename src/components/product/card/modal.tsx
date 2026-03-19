@@ -1,9 +1,13 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { ProductDetail } from "@/services/product/product.schema";
 import Modal from "@/share/components/modal";
 import { useTranslations } from "next-intl";
+import { Button } from "@/share/ui/button";
+import { Badge } from "@/share/ui/badge";
+import { useRouter } from "@/i18n/navigation";
 
 type TriggerElementProps = {
   onClick?: React.MouseEventHandler<HTMLElement>;
@@ -28,6 +32,10 @@ export function AddToCartModal({
   onAddToCart,
 }: AddToCartModalProps) {
   const t = useTranslations("product.add_to_cart");
+  const tOrderEmpty = useTranslations("order.empty");
+  const router = useRouter();
+  const price = product.price ?? 0;
+
   const handleOpen = React.useCallback(() => {
     onOpenChange(true);
   }, [onOpenChange]);
@@ -75,15 +83,62 @@ export function AddToCartModal({
       <Modal
         open={open}
         onOpenChange={onOpenChange}
-        title={product.name}
-        description={t("choose_size_and_quantity")}
+        title={
+          <span className="inline-flex items-center gap-3">
+            <span>{product.name}</span>
+            <Badge variant="outline" className="px-3 h-fit">
+              {product.productCategoryName}
+            </Badge>
+          </span>
+        }
         onConfirm={onAddToCart}
         confirmTitle={t("add_to_cart")}
-        contentClassName="max-w-lg"
+        contentClassName="max-w-3xl"
         showCancelButton={false}
         confirmFullWidth
       >
-        {children}
+        <div className="flex flex-col gap-6 px-1 md:flex-row md:items-start">
+          <div className="min-w-0 flex-1">
+            <p className="hidden">
+              {price.toFixed(2)}
+            </p>
+
+            <div>{children}</div>
+          </div>
+
+          <div className="flex w-full justify-center md:w-[320px] md:justify-end">
+            <div className="relative aspect-4/3 w-full max-w-[320px] overflow-hidden rounded-2xl bg-linear-to-br from-amber-50 to-amber-100 ring-1 ring-amber-900/10">
+              {product.imageUrl?.trim() ? (
+                <Image
+                  src={product.imageUrl}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                  sizes="320px"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-amber-900/60">
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <span className="text-sm font-semibold tracking-wide">
+                      {tOrderEmpty("browse_products")}
+                    </span>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="rounded-full bg-white/70 px-4 text-amber-900"
+                      onClick={() => {
+                        onOpenChange(false);
+                        router.push("/product");
+                      }}
+                    >
+                      {tOrderEmpty("browse_products")}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </Modal>
     </>
   );
