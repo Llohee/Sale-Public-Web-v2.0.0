@@ -43,7 +43,7 @@ export function ProductsWrapper() {
     return [
       { value: "", label: t("filter.all") },
       ...categories.map((c) => ({
-        value: c.code,
+        value: c.id,
         label: c.name,
       })),
     ];
@@ -77,10 +77,11 @@ export function ProductsWrapper() {
   }
 
   if (isSuccessProducts && isSuccessProductCategories) {
-    const selectedCategory = filter.productCategoryCode?.trim() || undefined;
+    const selectedCategoryId =
+      filter.productCategoryId?.trim() || undefined;
     return (
-      <div className="flex min-h-screen flex-col ">
-        <div className="relative overflow-hidden h-[400px]! flex items-center justify-center">
+      <div className="flex min-h-0 w-full flex-col">
+        <div className="relative flex h-[400px]! shrink-0 items-center justify-center overflow-hidden">
           <Image
             src="/images/background.jpg"
             alt="Hero banner"
@@ -106,72 +107,80 @@ export function ProductsWrapper() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="w-full">
           <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="order-2 md:order-1 flex items-center justify-between gap-3">
-                <div className="w-full flex flex-nowrap items-center gap-2.5 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:gap-x-6">
+              <div className="order-2 md:order-1 min-w-0 max-w-full shrink-0 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div className="flex w-max max-w-full min-w-0 flex-nowrap items-center gap-2.5">
                   {filterOptions.map((option) => {
                     const optionValue = option.value?.trim() || undefined;
-                    const selected = selectedCategory === optionValue;
+                    const selected = selectedCategoryId === optionValue;
 
                     return (
                       <Button
-                        key={option.value}
+                        key={option.value || "all"}
                         variant={selected ? "chocolate" : "chocolate-outline"}
                         size="lg"
                         className={cn("rounded-[33px] px-4 py-2")}
-                        onClick={() => updateParam("category", optionValue)}
+                        onClick={() =>
+                          updateParam("productCategoryId", optionValue, {
+                            removeKeys: ["category", "productCategoryCode"],
+                          })
+                        }
                       >
                         {option.label}
                       </Button>
                     );
                   })}
-                  </div>
-                </div>
-                <div className="order-1 md:order-2">
-                  <SearchInput
-                    value={filter.keyword}
-                    onChange={onSearchChange}
-                    placeholder={t("filter.search_placeholder")}
-                    className="w-full md:max-w-md"
-                  />
                 </div>
               </div>
+              <div
+                className="hidden shrink-0 md:order-2 md:block md:w-60"
+                aria-hidden
+              />
+              <div className="order-1 md:order-3 min-w-0 flex-1 w-full">
+                <SearchInput
+                  value={filter.keyword}
+                  onChange={onSearchChange}
+                  placeholder={t("filter.search_placeholder")}
+                  className="w-full"
+                />
+              </div>
+            </div>
 
-              <div className="relative overflow-hidden py-3">
-                <div
-                  onPointerEnter={() => setIsPaused(true)}
-                  onPointerLeave={() => setIsPaused(false)}
+            <div className="relative overflow-hidden py-3">
+              <div
+                onPointerEnter={() => setIsPaused(true)}
+                onPointerLeave={() => setIsPaused(false)}
+              >
+                <Swiper
+                  loop
+                  slidesPerView={1}
+                  spaceBetween={20}
+                  breakpoints={{
+                    640: { slidesPerView: 2 },
+                    1024: { slidesPerView: 3 },
+                    1280: { slidesPerView: 4 },
+                  }}
+                  onSwiper={(instance) => {
+                    setSwiper(instance);
+                  }}
+                  className="w-full"
                 >
-                  <Swiper
-                    loop
-                    slidesPerView={1}
-                    spaceBetween={20}
-                    breakpoints={{
-                      640: { slidesPerView: 2 },
-                      1024: { slidesPerView: 3 },
-                      1280: { slidesPerView: 4 },
-                    }}
-                    onSwiper={(instance) => {
-                      setSwiper(instance);
-                    }}
-                    className="w-full"
-                  >
-                    {products?.data.map((product: ProductDetail) => (
-                      <SwiperSlide key={product.id} className="h-auto!">
-                        <ProductCard
-                          product={product}
-                          className="scale-[0.96] origin-top sm:scale-100"
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                </div>
+                  {products?.data.map((product: ProductDetail) => (
+                    <SwiperSlide key={product.id} className="h-auto!">
+                      <ProductCard
+                        product={product}
+                        className="scale-[0.96] origin-top sm:scale-100"
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             </div>
           </div>
         </div>
+      </div>
     );
   }
 }

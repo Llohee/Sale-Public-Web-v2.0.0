@@ -4,13 +4,17 @@ import { useRouter } from "@/i18n/navigation";
 import { Filter, FilterSort } from "@/models/api/common";
 import { serializeSort } from "@/util/filter";
 import { useSearchParams } from "next/navigation";
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext } from "react";
 
 interface FilterContextType {
   filter: Filter;
   onSortChange: (sort?: FilterSort) => void;
   onSearchChange: (keyword?: string) => void;
-  updateParam: (key: string, value?: string) => void;
+  updateParam: (
+    key: string,
+    value?: string,
+    options?: { removeKeys?: string[] },
+  ) => void;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -36,9 +40,17 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({
     updateParam("keyword", keyword);
   };
 
-  function updateParam(key: string, value?: string) {
+  function updateParam(
+    key: string,
+    value?: string,
+    options?: { removeKeys?: string[] },
+  ) {
     const params = new URLSearchParams(searchParams.toString());
-    if (value) params.set(key, value);
+    for (const k of options?.removeKeys ?? []) {
+      params.delete(k);
+    }
+    const trimmed = value?.trim();
+    if (trimmed) params.set(key, trimmed);
     else params.delete(key);
     router.push(`?${params.toString()}`);
   }

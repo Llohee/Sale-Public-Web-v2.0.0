@@ -158,7 +158,7 @@ export function AddToCartModal({
                 value={note ?? ""}
                 onChange={(event) => onNoteChange(event.target.value)}
                 placeholder={tOrder("note_placeholder")}
-                className="min-h-20 w-full resize-y rounded-2xl border-oregon-700/10 bg-amber-50/35 text-sm text-oregon-900 placeholder:text-oregon-700/35 focus-visible:border-oregon-700/25 focus-visible:ring-oregon-700/10"
+                className="min-h-20 w-full resize-y rounded-lg border-oregon-700/10 bg-amber-50/35 text-sm text-oregon-900 placeholder:text-oregon-700/35 focus-visible:border-oregon-700/25 focus-visible:ring-oregon-700/10"
               />
             </div>
           </div>

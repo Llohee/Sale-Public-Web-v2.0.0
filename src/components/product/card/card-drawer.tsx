@@ -205,7 +205,7 @@ export function AddToCartDrawer({
               value={note}
               onChange={(event) => setNote(event.target.value)}
               placeholder={tOrder("note_placeholder")}
-              className="min-h-20 max-h-64 resize-y rounded-xl border-oregon-700/10 bg-amber-50/35 text-sm text-oregon-900 placeholder:text-oregon-700/35 focus-visible:border-oregon-700/25 focus-visible:ring-oregon-700/10"
+              className="min-h-20 max-h-64 resize-y rounded-lg border-oregon-700/10 bg-amber-50/35 text-sm text-oregon-900 placeholder:text-oregon-700/35 focus-visible:border-oregon-700/25 focus-visible:ring-oregon-700/10"
             />
           </div>
           <div className="flex items-center gap-3 w-full justify-between">

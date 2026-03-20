@@ -49,18 +49,20 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
 
   return (
     <div className='container mx-auto px-4 pt-6 pb-16 md:pt-28 md:pb-28 flex flex-col gap-6 md:gap-8'>
+      <div className='shrink-0'>
+        <Button
+          variant='outline'
+          size='sm'
+          onClick={() => router.back()}
+          className='inline-flex rounded-full bg-white/90 shadow-sm ring-1 ring-black/5 backdrop-blur-sm md:rounded-lg md:bg-background md:shadow-none md:ring-0 md:backdrop-blur-none'
+        >
+          <ChevronLeft className='size-5' />
+          <span className='text-sm font-semibold'>{t('back')}</span>
+        </Button>
+      </div>
       <div className='p-5 md:bg-transparent md:p-0 md:shadow-none md:ring-0'>
         <div className='grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4'>
           <div className='flex flex-col gap-6 md:gap-8 col-span-12 md:col-span-7 order-2 md:order-1'>
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => router.back()}
-              className='hidden md:inline-flex'
-            >
-              <ChevronLeft className='size-5' />
-              <span className='text-sm font-semibold'>{t('back')}</span>
-            </Button>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8'>
               <div className='flex flex-col gap-5 md:gap-8 h-full justify-between'>
                 <div className='flex flex-row items-end justify-between gap-6 md:flex-col md:items-start md:gap-1'>
@@ -148,7 +150,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
                     value={note}
                     onChange={(event) => setNote(event.target.value)}
                     placeholder={tOrder('note_placeholder')}
-                    className='min-h-20 w-full resize-y rounded-xl border-oregon-700/10 bg-amber-50/35 text-sm text-oregon-900 placeholder:text-oregon-700/35 focus-visible:border-oregon-700/25 focus-visible:ring-oregon-700/10'
+                    className='min-h-20 w-full resize-y rounded-lg border-oregon-700/10 bg-amber-50/35 text-sm text-oregon-900 placeholder:text-oregon-700/35 focus-visible:border-oregon-700/25 focus-visible:ring-oregon-700/10'
                   />
                 </div>
                 <div className='md:hidden flex w-full items-center justify-between gap-4'>
@@ -190,15 +192,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
               </div>
             </div>
           </div>
-          <div className='relative w-full overflow-hidden rounded-none bg-transparent md:rounded-3xl md:ring-1 md:ring-black/5 lg:max-w-none col-span-12 md:col-span-5 order-1 md:order-2 aspect-3/4 max-h-[360px] md:aspect-auto md:max-h-none md:h-full'>
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => router.back()}
-              className='absolute left-3 top-3 z-10 md:hidden inline-flex rounded-full bg-white/70'
-            >
-              <ChevronLeft className='size-5' />
-            </Button>
+          <div className='relative w-full overflow-hidden rounded-lg bg-transparent md:rounded-3xl md:ring-1 md:ring-black/5 lg:max-w-none col-span-12 md:col-span-5 order-1 md:order-2 aspect-3/4 max-h-[360px] md:aspect-auto md:max-h-none md:h-full'>
             {hasImage && !imageErrored ? (
               <Image
                 src={product.imageUrl}

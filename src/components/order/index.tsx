@@ -16,31 +16,37 @@ export function OrderWrapper() {
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto flex max-w-2xl flex-col items-center justify-center gap-5 px-4 py-16 text-center">
-        <div className="rounded-full bg-oregon-50 p-4 text-oregon-700 shadow-sm ring-1 ring-oregon-700/10">
-          <Receipt className="size-7" />
+      <div className="flex min-h-0 w-full flex-1 flex-col">
+        <div className="flex flex-1 flex-col items-center justify-center gap-5 px-4 py-8 text-center">
+          <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-5">
+            <div className="rounded-full bg-oregon-50 p-4 text-oregon-700 shadow-sm ring-1 ring-oregon-700/10">
+              <Receipt className="size-7" />
+            </div>
+            <div className="space-y-2">
+              <h1 className="text-2xl font-extrabold text-oregon-900">
+                {t("empty.title")}
+              </h1>
+              <p className="text-center text-muted-foreground">
+                {t("empty.description")}
+              </p>
+            </div>
+            <p className="max-w-md text-sm text-oregon-700/70">
+              {t("empty.hint")}
+            </p>
+            <Link href="/product">
+              <Button variant="dive" size="lg" className="rounded-full px-8">
+                {t("empty.browse_products")}
+              </Button>
+            </Link>
+          </div>
         </div>
-        <div className="space-y-2">
-          <h1 className="text-2xl font-extrabold text-oregon-900">
-            {t("empty.title")}
-          </h1>
-          <p className="text-center text-muted-foreground">
-            {t("empty.description")}
-          </p>
-        </div>
-        <p className="max-w-md text-sm text-oregon-700/70">{t("empty.hint")}</p>
-        <Link href="/product">
-          <Button variant="dive" size="lg" className="rounded-full px-8">
-            {t("empty.browse_products")}
-          </Button>
-        </Link>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto flex flex-col gap-8 pt-28">
-      <div className="relative flex flex-col flex-1 items-center justify-center gap-8 mb-4">
+    <div className="container mx-auto flex flex-col gap-6 pt-5 md:gap-8 md:pt-28">
+      <div className="relative mb-2 flex flex-col items-center gap-4 md:mb-4 md:gap-8">
         <Button
           variant="outline"
           size="sm"
