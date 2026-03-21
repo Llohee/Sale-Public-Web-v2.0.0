@@ -55,7 +55,7 @@ export function OrderWrapper() {
   }
 
   return (
-    <div className="container mx-auto flex flex-col gap-6 pt-[calc(7rem+env(safe-area-inset-top,0px))] md:gap-8 md:pt-28">
+    <div className="container mx-auto flex flex-col gap-6 pt-6 pb-16 md:gap-8 md:py-28">
       <div className="relative mb-2 flex flex-col gap-3 md:mb-4 md:gap-8">
         <Button
           variant="outline"

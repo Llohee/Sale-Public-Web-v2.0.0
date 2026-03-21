@@ -57,13 +57,13 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
   };
 
   return (
-    <div className="container mx-auto px-4 pt-6 pb-16 md:pt-28 md:pb-28 flex flex-col gap-6 md:gap-8">
+    <div className="container mx-auto pt-6 pb-16 md:py-28 flex flex-col gap-6 md:gap-8">
       <div className="shrink-0">
         <Button
           variant="outline"
           size="sm"
           onClick={() => router.back()}
-          className="inline-flex rounded-full bg-white/90 shadow-sm ring-1 ring-black/5 backdrop-blur-sm md:rounded-lg md:bg-background md:shadow-none md:ring-0 md:backdrop-blur-none"
+          className="w-fit shrink-0 md:absolute md:left-0 md:top-0"
         >
           <ChevronLeft className="size-5" />
           <span className="text-sm font-semibold">{t("back")}</span>

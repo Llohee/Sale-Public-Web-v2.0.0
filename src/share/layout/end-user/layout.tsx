@@ -1,6 +1,7 @@
 "use client";
 
 import { CartProvider } from "@/providers/cart-provider";
+import { Footer } from "@/share/layout/footer";
 import Header from "@/share/layout/header";
 
 export function EndUserLayoutClient({
@@ -15,6 +16,7 @@ export function EndUserLayoutClient({
         <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden pb-24 md:pb-0">
           <div className="flex min-h-0 w-full flex-1 flex-col">{children}</div>
         </div>
+        <Footer />
       </div>
     </CartProvider>
   );
