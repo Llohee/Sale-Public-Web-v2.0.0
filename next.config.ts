@@ -1,76 +1,80 @@
 import type { NextConfig } from "next";
-import createNextIntlPlugin from 'next-intl/plugin'
+import createNextIntlPlugin from "next-intl/plugin";
 
-const withNextIntl = createNextIntlPlugin()
+const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   output: "standalone",
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'upload.wikimedia.org',
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
       },
       {
-        protocol: 'https',
-        hostname: 'insanelygoodrecipes.com',
+        protocol: "https",
+        hostname: "insanelygoodrecipes.com",
       },
       {
-        protocol: 'https',
-        hostname: 'png.pngtree.com',
+        protocol: "https",
+        hostname: "png.pngtree.com",
       },
       {
-        protocol: 'https',
-        hostname: 'i.pinimg.com',
+        protocol: "https",
+        hostname: "i.pinimg.com",
       },
       {
-        protocol: 'https',
-        hostname: 'free.vector6.com',
+        protocol: "https",
+        hostname: "free.vector6.com",
+      },
+      {
+        protocol: "https",
+        hostname: "api.payment-hub.ducnv25.id.vn",
       },
     ],
   },
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
         ],
       },
       {
-        source: '/sw.js',
+        source: "/sw.js",
         headers: [
           {
-            key: 'Content-Type',
-            value: 'application/javascript; charset=utf-8',
+            key: "Content-Type",
+            value: "application/javascript; charset=utf-8",
           },
           {
-            key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate',
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
           },
           {
-            key: 'Content-Security-Policy',
+            key: "Content-Security-Policy",
             value: "default-src 'self'; script-src 'self'",
           },
         ],
       },
-    ]
+    ];
   },
   turbopack: {
     rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
       },
     },
   },

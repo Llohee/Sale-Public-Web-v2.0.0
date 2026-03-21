@@ -1,25 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
+import { BANNER_BACKGROUND_URL } from "@/constants/product";
 import { useFilter } from "@/providers/filter-provider";
 import {
   useGetAllProductCategories,
   useGetAllProducts,
 } from "@/services/product/product.query-options";
 import type { ProductDetail } from "@/services/product/product.schema";
-import SearchInput from "@/share/components/input/search";
+import { LoadingPage } from "@/share/components/full-page/loading";
 import { cn } from "@/share/lib/utils";
 import { Button } from "@/share/ui/button";
 import { useTranslations } from "next-intl";
-import { ProductCard } from "./card";
-import { LoadingPage } from "@/share/components/full-page/loading";
-import { Swiper, SwiperSlide } from "swiper/react";
+import Image from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Swiper as SwiperClass } from "swiper";
-import { Autoplay, FreeMode } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/free-mode";
 import "swiper/css/autoplay";
+import "swiper/css/free-mode";
+import { Autoplay, FreeMode } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { ProductCard } from "./card";
 
 export function ProductsWrapper() {
   const t = useTranslations("ProductPage");
@@ -96,7 +96,7 @@ export function ProductsWrapper() {
       <div className="flex min-h-0 w-full flex-col">
         <div className="relative flex h-[min(38vh,240px)] min-h-[200px] shrink-0 items-center justify-center overflow-hidden sm:h-[min(42vh,320px)] sm:min-h-[260px] md:h-[380px] md:min-h-0 lg:h-[400px]">
           <Image
-            src="/images/background.jpg"
+            src={BANNER_BACKGROUND_URL}
             alt="Hero banner"
             fill
             priority
