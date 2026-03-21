@@ -26,7 +26,7 @@ export function OrderWrapper() {
 
   if (items.length === 0) {
     return (
-      <div className="flex min-h-0 w-full flex-1 flex-col">
+      <div className="flex min-h-0 w-full flex-1 flex-col pt-[calc(7rem+env(safe-area-inset-top,0px))] md:pt-28">
         <div className="flex flex-1 flex-col items-center justify-center gap-5 px-4 py-8 text-center">
           <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-5">
             <div className="rounded-full bg-oregon-50 p-4 text-oregon-700 shadow-sm ring-1 ring-oregon-700/10">
@@ -55,7 +55,7 @@ export function OrderWrapper() {
   }
 
   return (
-    <div className="container mx-auto flex flex-col gap-6 pt-5 md:gap-8 md:pt-28">
+    <div className="container mx-auto flex flex-col gap-6 pt-[calc(7rem+env(safe-area-inset-top,0px))] md:gap-8 md:pt-28">
       <div className="relative mb-2 flex flex-col gap-3 md:mb-4 md:gap-8">
         <Button
           variant="outline"

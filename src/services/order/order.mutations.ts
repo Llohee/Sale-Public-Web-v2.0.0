@@ -8,12 +8,44 @@ import {
 } from "./order.schema";
 import { useAnimatedToast } from "@/share/ui/animated-toast";
 import { useMutation } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 import orderApi from "./order.service";
 import { BaseAPIResponse } from "@/models/api/common";
 import { CartItem } from "@/types/cart";
 import { PaymentMethodDetail } from "../payment/payment.schema";
+
+export function useAddCartItemToasts() {
+  const t = useTranslations("order.toast");
+  const { addToast } = useAnimatedToast();
+
+  const onMutate = useCallback(() => {
+    addToast({
+      message: t("adding_cart_item"),
+      type: "info",
+      dismissOthers: true,
+    });
+  }, [addToast, t]);
+
+  const onSuccess = useCallback(() => {
+    addToast({
+      message: t("cart_item_added_success"),
+      type: "success",
+      dismissOthers: true,
+    });
+  }, [addToast, t]);
+
+  const onError = useCallback(() => {
+    addToast({
+      message: t("cart_item_added_error"),
+      type: "error",
+      dismissOthers: true,
+    });
+  }, [addToast, t]);
+
+  return { onMutate, onSuccess, onError };
+}
 
 export type UseOrderFormProps = {
   items: CartItem[];

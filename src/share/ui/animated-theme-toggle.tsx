@@ -25,7 +25,7 @@ export const AnimatedThemeToggle = ({ className }: { className?: string }) => {
   if (!mounted) {
     return (
       <Button
-        variant="default"
+        variant="chocolate-outline"
         size="icon-lg"
         className={cn("rounded-full shadow-sm", className)}
         disabled
@@ -39,7 +39,7 @@ export const AnimatedThemeToggle = ({ className }: { className?: string }) => {
     <Button
       onClick={toggleTheme}
       className={cn("rounded-full shadow-sm", className)}
-      variant="default"
+      variant="chocolate-outline"
       size="icon-lg"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
