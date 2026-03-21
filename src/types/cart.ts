@@ -15,10 +15,10 @@ export interface CartItem {
   size: ProductSize;
   note?: string;
   quantity: number;
-  note?: string;
 }
 
 export function getCartItemLineTotal(item: CartItem): number {
-  const sizeMod = PRODUCT_SIZES.find((s) => s.value === item.size)?.priceModifier ?? 0;
+  const sizeMod =
+    PRODUCT_SIZES.find((s) => s.value === item.size)?.priceModifier ?? 0;
   return (item.unitPrice + sizeMod) * item.quantity;
 }
