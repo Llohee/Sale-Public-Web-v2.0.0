@@ -19,17 +19,15 @@ export type UseOrderFormProps = {
   items: CartItem[];
   paymentMethod: PaymentMethodDetail;
   onSuccess: () => void;
-  onNoPaymentUrl?: () => void;
 };
 
 export const useCreateOrderMutation = (props: UseOrderFormProps) => {
-  const { paymentMethod, onSuccess, onNoPaymentUrl } = props;
+  const { paymentMethod, onSuccess } = props;
   const t = useTranslations("order.toast");
   const { addToast } = useAnimatedToast();
 
   const checkoutMutation = useOrderCheckoutMutation({
     onSuccess,
-    onNoPaymentUrl,
   });
 
   return useMutation<
@@ -71,12 +69,10 @@ export const useCreateOrderMutation = (props: UseOrderFormProps) => {
 
 export type UseOrderCheckoutProps = {
   onSuccess: () => void;
-  onNoPaymentUrl?: () => void;
 };
 
 export const useOrderCheckoutMutation = ({
   onSuccess,
-  onNoPaymentUrl,
 }: UseOrderCheckoutProps) => {
   const t = useTranslations("order.toast");
   const { addToast } = useAnimatedToast();
@@ -112,7 +108,6 @@ export const useOrderCheckoutMutation = ({
         type: "success",
         dismissOthers: true,
       });
-      onNoPaymentUrl?.();
     },
     onError: () => {
       addToast({

@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { ProductDetail } from "@/services/product/product.schema";
 import { AddToCartDrawer } from "./card-drawer";
 import { useMemo, useState } from "react";
+import { costFormat } from "@/util/format";
 
 interface ProductCardProps {
   product: ProductDetail;
@@ -93,7 +94,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
               {t("addToCart")}
             </div>
             <div className="text-lg font-bold tracking-tight text-oregon-900 sm:text-lg">
-              ${price.toFixed(2)}
+              {costFormat(price)}
             </div>
           </div>
 

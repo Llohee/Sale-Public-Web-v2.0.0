@@ -9,30 +9,20 @@ import { useTranslations } from "next-intl";
 import { useLayoutEffect, useState } from "react";
 import OrderForm from "./create";
 import OrderListItem from "./list_item";
-import { PaymentSuccessView } from "./payment_success/success";
 
 export function OrderWrapper() {
   const router = useRouter();
   const t = useTranslations("order");
 
   const { items, isHydrated } = useCart();
-  const [showInAppPaymentSuccess, setShowInAppPaymentSuccess] = useState(false);
 
-  useLayoutEffect(() => {
-    if (!isHydrated) return;
-    if (items.length > 0) return;
-    const raw = sessionStorage.getItem(LAST_ORDER_SNAPSHOT_KEY);
-    if (!raw?.trim()) return;
-    router.replace("/order/success");
-  }, [isHydrated, items.length, router]);
-
-  if (showInAppPaymentSuccess) {
-    return (
-      <div className="flex min-h-0 w-full flex-1 flex-col">
-        <PaymentSuccessView />
-      </div>
-    );
-  }
+  // useLayoutEffect(() => {
+  //   if (!isHydrated) return;
+  //   if (items.length > 0) return;
+  //   const raw = sessionStorage.getItem(LAST_ORDER_SNAPSHOT_KEY);
+  //   if (!raw?.trim()) return;
+  //   router.replace("/order/success");
+  // }, [isHydrated, items.length, router]);
 
   if (items.length === 0) {
     return (
@@ -89,9 +79,7 @@ export function OrderWrapper() {
           <OrderListItem />
         </div>
         <div className="relative col-span-12 lg:col-span-4 lg:sticky lg:top-28 lg:z-10 lg:self-start">
-          <OrderForm
-            onInAppPaymentSuccess={() => setShowInAppPaymentSuccess(true)}
-          />
+          <OrderForm />
         </div>
       </div>
     </div>

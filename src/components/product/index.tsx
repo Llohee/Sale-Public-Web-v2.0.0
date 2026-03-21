@@ -176,14 +176,14 @@ export function ProductsWrapper() {
                 className="hidden shrink-0 md:order-2 md:block md:w-60"
                 aria-hidden
               />
-              <div className="order-1 md:order-3 min-w-0 flex-1 w-full">
+              {/* <div className="order-1 md:order-3 min-w-0 flex-1 w-full">
                 <SearchInput
                   value={filter.keyword}
                   onChange={onSearchChange}
                   placeholder={t("filter.search_placeholder")}
                   className="w-full"
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="relative overflow-hidden py-6">

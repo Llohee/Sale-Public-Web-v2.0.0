@@ -165,5 +165,44 @@
       "no_image": "No image",
       "close": "Close"
     }
+  },
+  "payment": {
+    "status": {
+      "initialized": {
+        "title": "Payment initialized",
+        "description": "Your transaction has started. Please complete the payment steps."
+      },
+      "pending": {
+        "title": "Payment pending",
+        "description": "We are still confirming this payment. Please check again shortly."
+      },
+      "completed": {
+        "title": "Payment succeeded!",
+        "description": "Your transaction was completed successfully. Thank you for your purchase!"
+      },
+      "failed": {
+        "title": "Payment failed",
+        "description": "Your transaction could not be completed. Please try again."
+      },
+      "canceled": {
+        "title": "Payment canceled",
+        "description": "This payment was canceled. You can create a new order anytime."
+      },
+      "expired": {
+        "title": "Payment expired",
+        "description": "This payment session has expired. Please place your order again."
+      }
+    },
+    "fields": {
+      "amount": "Total amount",
+      "order_code": "Order code",
+      "currency": "Currency"
+    },
+    "btn": {
+      "home": "Go to home"
+    },
+    "notice": {
+      "redirect_home": "You will be redirected to the home page in <count>{seconds}s</count>"
+    }
   }
 }

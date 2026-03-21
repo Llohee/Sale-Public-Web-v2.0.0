@@ -8,11 +8,12 @@ import { useCart } from "@/providers/cart-provider";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ImageOff } from "lucide-react";
+import { CreditCard, ImageOff } from "lucide-react";
 import { Checkbox } from "@/share/ui/checkbox";
 import { OrderCheckoutDrawer } from "./drawer";
 import { LAST_ORDER_SNAPSHOT_KEY } from "@/constants/order";
 import { getCartItemLineTotal } from "@/types/cart";
+import { cn } from "@/share/lib/utils";
 
 type OrderCheckoutModalProps = {
   open: boolean;
@@ -20,30 +21,21 @@ type OrderCheckoutModalProps = {
   title: string;
   confirmDisabled: boolean;
   paymentMethods: PaymentMethodDetail[];
-  onInAppPaymentSuccess?: () => void;
 };
 
 export default function OrderCheckoutModal(props: OrderCheckoutModalProps) {
-  // Remount on `open` to reset local UI state without setState-in-effect.
   return <OrderCheckout key={props.open ? "open" : "closed"} {...props} />;
 }
 
 function OrderCheckout(props: OrderCheckoutModalProps) {
   const t = useTranslations("order");
-  const {
-    open,
-    onOpenChange,
-    title,
-    confirmDisabled,
-    paymentMethods,
-    onInAppPaymentSuccess,
-  } = props;
+  const { open, onOpenChange, title, confirmDisabled, paymentMethods } = props;
 
   const { items, clearCart } = useCart();
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<PaymentMethodDetail>(paymentMethods[0]);
-    
+
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
@@ -55,7 +47,6 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
   }, []);
 
   const { orderForm, handleFormSubmit } = useOrderForm({
-    onNoPaymentUrl: onInAppPaymentSuccess,
     onSuccess: () => {
       if (typeof window !== "undefined") {
         const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
@@ -88,7 +79,7 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
 
   const checkoutFields = (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <InputField
           name="ordererName"
           register={orderForm.register}
@@ -107,14 +98,19 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
           required
         />
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <div>{t("payment_method_choose")}</div>
         <div className="flex flex-col gap-2">
           {paymentMethods.map((paymentMethod) => (
             <div
               key={paymentMethod.id}
               onClick={() => setSelectedPaymentMethod(paymentMethod)}
-              className="flex flex-1 cursor-pointer items-center justify-between gap-2 rounded-lg bg-muted/45 p-2 transition-colors active:bg-muted/70"
+              className={cn(
+                "flex flex-1 cursor-pointer items-center justify-between gap-2 rounded-lg p-2 transition-colors active:bg-muted/70",
+                selectedPaymentMethod?.id === paymentMethod.id
+                  ? "bg-muted/45"
+                  : "bg-transparent",
+              )}
             >
               <div className="flex items-center gap-2">
                 <div className="relative w-7 h-7 rounded-full overflow-hidden">
@@ -126,8 +122,8 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-full">
-                      <ImageOff className="size-4" />
+                    <div className="flex items-center justify-center w-full h-full rounded-full">
+                      <CreditCard className="size-4" />
                     </div>
                   )}
                 </div>

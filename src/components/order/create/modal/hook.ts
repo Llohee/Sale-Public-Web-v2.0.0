@@ -15,7 +15,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 export const useOrderForm = ({
   onSuccess,
-  onNoPaymentUrl,
   items,
   paymentMethod,
 }: UseOrderFormProps) => {
@@ -45,7 +44,6 @@ export const useOrderForm = ({
 
   const mutation = useCreateOrderMutation({
     onSuccess,
-    onNoPaymentUrl,
     items,
     paymentMethod,
   });

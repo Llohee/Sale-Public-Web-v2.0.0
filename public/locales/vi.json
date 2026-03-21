@@ -164,5 +164,44 @@
       "no_image": "Không có ảnh",
       "close": "Đóng"
     }
+  },
+  "payment": {
+    "status": {
+      "initialized": {
+        "title": "Thanh toán đã được khởi tạo",
+        "description": "Giao dịch đã bắt đầu. Vui lòng hoàn tất các bước thanh toán."
+      },
+      "pending": {
+        "title": "Thanh toán đang chờ xử lý",
+        "description": "Chúng tôi đang xác nhận giao dịch của bạn. Vui lòng kiểm tra lại sau ít phút."
+      },
+      "completed": {
+        "title": "Thanh toán thành công!",
+        "description": "Giao dịch của bạn đã hoàn tất thành công. Cảm ơn bạn đã mua hàng."
+      },
+      "failed": {
+        "title": "Thanh toán thất bại",
+        "description": "Không thể hoàn tất giao dịch của bạn. Vui lòng thử lại."
+      },
+      "canceled": {
+        "title": "Thanh toán đã bị hủy",
+        "description": "Giao dịch này đã bị hủy. Bạn có thể tạo đơn mới bất cứ lúc nào."
+      },
+      "expired": {
+        "title": "Phiên thanh toán đã hết hạn",
+        "description": "Phiên thanh toán đã hết hạn. Vui lòng đặt đơn lại."
+      }
+    },
+    "fields": {
+      "amount": "Tổng số tiền",
+      "order_code": "Mã đơn hàng",
+      "currency": "Đơn vị tiền tệ"
+    },
+    "btn": {
+      "home": "Về trang chủ"
+    },
+    "notice": {
+      "redirect_home": "Bạn sẽ được chuyển hướng về trang chủ sau <count>{seconds}s</count>"
+    }
   }
 }
