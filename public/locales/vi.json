@@ -94,7 +94,10 @@
       "order_created_error": "Tạo đơn thất bại",
       "processing_payment": "Đang xử lý thanh toán...",
       "payment_success": "Thanh toán thành công",
-      "payment_error": "Thanh toán thất bại"
+      "payment_error": "Thanh toán thất bại",
+      "adding_cart_item": "Đang thêm vào giỏ...",
+      "cart_item_added_success": "Đã thêm món vào giỏ hàng",
+      "cart_item_added_error": "Không thể thêm vào giỏ hàng"
     },
     "checkout_title": "Thông tin thanh toán",
     "payment_method_choose": "Chọn phương thức thanh toán",

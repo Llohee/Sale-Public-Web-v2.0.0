@@ -163,8 +163,10 @@ export function AddToCartDrawer({
   return (
     <Drawer open={open} onOpenChange={handleOpenChange} direction="bottom">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-      <DrawerContent className="rounded-t-3xl bg-background before:border-0">
-        <DrawerHeader>
+      <DrawerContent
+        className="flex max-h-[min(92dvh,calc(100dvh-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px)-0.5rem))] flex-col overflow-hidden rounded-t-3xl bg-background before:border-0 data-[vaul-drawer-direction=bottom]:mt-10!"
+      >
+        <DrawerHeader className="shrink-0">
           <div className="flex w-full items-center justify-between gap-3">
             <DrawerTitle>{product.name}</DrawerTitle>
             <Badge variant="outline" className="h-fit border-0 px-3">
@@ -172,31 +174,34 @@ export function AddToCartDrawer({
             </Badge>
           </div>
         </DrawerHeader>
-        {imageSrc ? (
-          <div className="px-4">
-            <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-linear-to-br from-amber-50 to-amber-100">
-              {!imageErrored ? (
-                <Image
-                  src={imageSrc}
-                  alt={imageAlt}
-                  fill
-                  sizes="340px"
-                  className="object-cover"
-                  onError={() => setImageErrored(true)}
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-amber-900/60">
-                  <span className="text-sm font-semibold tracking-wide">
-                    Image unavailable
-                  </span>
-                </div>
-              )}
+
+        <div
+          className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain px-4 [-webkit-overflow-scrolling:touch]"
+        >
+          {imageSrc ? (
+            <div className="pb-4">
+              <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-linear-to-br from-amber-50 to-amber-100">
+                {!imageErrored ? (
+                  <Image
+                    src={imageSrc}
+                    alt={imageAlt}
+                    fill
+                    sizes="340px"
+                    className="object-cover"
+                    onError={() => setImageErrored(true)}
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-amber-900/60">
+                    <span className="text-sm font-semibold tracking-wide">
+                      Image unavailable
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ) : null}
-        <div className="px-4">{renderModalContent()}</div>
-        <DrawerFooter className="pt-1! gap-4!">
-          <div className="space-y-2">
+          ) : null}
+          {renderModalContent()}
+          <div className="space-y-2 pb-4 pt-2">
             <p className="text-xs font-semibold uppercase tracking-wide text-oregon-700/60">
               {tOrder("note_label")}
             </p>
@@ -204,11 +209,14 @@ export function AddToCartDrawer({
               value={note}
               onChange={(event) => setNote(event.target.value)}
               placeholder={tOrder("note_placeholder")}
-              className="min-h-20 max-h-64 resize-y rounded-lg border-0 bg-amber-50/35 text-sm text-oregon-900 shadow-none placeholder:text-oregon-700/35 focus-visible:border-0 focus-visible:ring-oregon-700/10"
+              className="min-h-20 max-h-48 resize-y rounded-lg border-0 bg-amber-50/35 text-sm text-oregon-900 shadow-none placeholder:text-oregon-700/35 focus-visible:border-0 focus-visible:ring-oregon-700/10"
             />
           </div>
-          <div className="flex items-center gap-3 w-full justify-between">
-            <p className="flex-none text-sm font-semibold text-oregon-900 flex flex-col">
+        </div>
+
+        <DrawerFooter className="shrink-0 gap-3 border-t border-border/30 bg-background pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+          <div className="flex w-full items-center justify-between gap-3">
+            <p className="flex min-w-0 flex-none flex-col text-sm font-semibold text-oregon-900">
               <span className="text-xs font-normal text-oregon-700/60">
                 {t("total_label")}
               </span>
@@ -219,7 +227,7 @@ export function AddToCartDrawer({
             <Button
               variant="dive"
               size="lg"
-              className="rounded-full"
+              className="shrink-0 rounded-full"
               onClick={handleAddToCart}
             >
               <ShoppingCart className="size-5" />
