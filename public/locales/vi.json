@@ -64,7 +64,7 @@
       "total_label": "Tổng tiền",
       "size": "Size",
       "quantity": "Số lượng",
-      "total": "Tổng: ${total}",
+      "total": "Tổng: {total}",
       "choose_size_and_quantity": "Chọn size và số lượng",
       "add_to_cart": "Thêm vào giỏ hàng",
       "close": "Đóng",

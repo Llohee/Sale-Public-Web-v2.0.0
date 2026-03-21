@@ -1,6 +1,7 @@
 import { useCart } from "@/providers/cart-provider";
 import { Button } from "@/share/ui/button";
 import { getCartItemLineTotal } from "@/types/cart";
+import { costFormat } from "@/util/format";
 import { ImageOff, Minus, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -54,7 +55,7 @@ export default function OrderListItem() {
                 <div className="flex flex-wrap items-end justify-between gap-3">
                   <div className="text-right">
                     <p className="text-xl font-extrabold text-oregon-900">
-                      ${getCartItemLineTotal(item).toFixed(2)}
+                      {costFormat(getCartItemLineTotal(item))}
                     </p>
                   </div>
                   <div className="inline-flex items-center justify-center gap-3">

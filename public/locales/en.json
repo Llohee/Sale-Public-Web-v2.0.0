@@ -64,7 +64,7 @@
       "total_label": "Total",
       "size": "Size",
       "quantity": "Quantity",
-      "total": "Total: ${total}",
+      "total": "Total: {total}",
       "choose_size_and_quantity": "Choose size and quantity",
       "add_to_cart": "Add to cart",
       "close": "Close",

@@ -9,6 +9,7 @@ import { Button } from "@/share/ui/button";
 import { Badge } from "@/share/ui/badge";
 import { Textarea } from "@/share/ui/textarea";
 import { useRouter } from "@/i18n/navigation";
+import { costFormat } from "@/util/format";
 
 type TriggerElementProps = {
   onClick?: React.MouseEventHandler<HTMLElement>;
@@ -106,7 +107,7 @@ export function AddToCartModal({
         <div className="flex flex-col gap-6 px-1 md:flex-row md:items-start">
           <div className="min-w-0 flex-1">
             <p className="hidden">
-              {price.toFixed(2)}
+              {costFormat(price)}
             </p>
 
             <div className="space-y-6">

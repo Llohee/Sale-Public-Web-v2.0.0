@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { DEFAULT_QUANTITY, DEFAULT_SIZE } from "@/constants/product";
 import { AddToCartModal } from "./modal";
 import { useTranslations } from "next-intl";
+import { costFormat } from "@/util/format";
 
 interface AddToCartDrawerProps {
   product: ProductDetail;
@@ -139,7 +140,7 @@ export function AddToCartDrawer({
       </div>
 
       <p className="hidden sm:block text-lg font-semibold">
-        {t("total", { total: lineTotal.toFixed(2) })}
+        {t("total", { total: costFormat(lineTotal) })}
       </p>
     </div>
   );
@@ -213,7 +214,7 @@ export function AddToCartDrawer({
                 {t("total_label")}
               </span>
               <span className="text-lg font-extrabold text-oregon-900">
-                ${lineTotal.toFixed(2)}
+                {costFormat(lineTotal)}
               </span>
             </p>
             <Button

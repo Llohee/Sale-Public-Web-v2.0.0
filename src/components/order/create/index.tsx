@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import OrderCheckoutModal from "./modal";
 import { useGetAllPaymentMethods } from "@/services/payment/payment.query-options";
+import { costFormat } from "@/util/format";
 
 export default function OrderForm() {
   const t = useTranslations("order");
@@ -54,7 +55,7 @@ export default function OrderForm() {
             <div className="flex items-baseline justify-between gap-3 text-sm text-oregon-800/90">
               <span className="font-medium">{t("subtotal_money")}</span>
               <span className="tabular-nums font-semibold tracking-tight text-oregon-900">
-                ${totalAmount.toFixed(2)}
+                {costFormat(totalAmount)}
               </span>
             </div>
             <div
@@ -66,7 +67,7 @@ export default function OrderForm() {
                 {t("total_money")}
               </span>
               <span className="tabular-nums text-xl font-extrabold tracking-tight text-oregon-900 sm:text-2xl">
-                ${totalAmount.toFixed(2)}
+                {costFormat(totalAmount)}
               </span>
             </div>
           </div>
