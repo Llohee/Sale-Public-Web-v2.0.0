@@ -7,6 +7,7 @@ import {
   PRODUCT_SIZES,
   getCartItemLineTotal,
 } from "@/types/cart";
+import { useAddCartItemToasts } from "@/services/order/order.mutations";
 import {
   createContext,
   useCallback,
@@ -59,10 +60,13 @@ function saveCart(items: CartItem[]) {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const { onMutate, onSuccess, onError } = useAddCartItemToasts();
 
   useEffect(() => {
-    setItems(loadCart());
-    setHydrated(true);
+    queueMicrotask(() => {
+      setItems(loadCart());
+      setHydrated(true);
+    });
   }, []);
 
   useEffect(() => {
@@ -81,39 +85,45 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       quantity: number;
       note?: string;
     }) => {
-      const unitPrice = product.price ?? 0;
-      const normalizedNote = note?.trim();
-      setItems((prev) => {
-        const existing = prev.find(
-          (i) => i.productId === product.id && i.size === size
-        );
-        if (existing) {
-          return prev.map((i) =>
-            i.id === existing.id
-              ? {
-                  ...i,
-                  quantity: i.quantity + quantity,
-                  note: normalizedNote
-                    ? normalizedNote
-                    : i.note,
-                }
-              : i
+      onMutate();
+      try {
+        const unitPrice = product.price ?? 0;
+        const normalizedNote = note?.trim();
+        setItems((prev) => {
+          const existing = prev.find(
+            (i) => i.productId === product.id && i.size === size
           );
-        }
-        const newItem: CartItem = {
-          id: `${product.id}-${size}-${Date.now()}`,
-          productId: product.id,
-          productName: product.name,
-          imageUrl: product.imageUrl,
-          unitPrice,
-          size,
-          quantity,
-          note: normalizedNote || undefined,
-        };
-        return [...prev, newItem];
-      });
+          if (existing) {
+            return prev.map((i) =>
+              i.id === existing.id
+                ? {
+                    ...i,
+                    quantity: i.quantity + quantity,
+                    note: normalizedNote
+                      ? normalizedNote
+                      : i.note,
+                  }
+                : i
+            );
+          }
+          const newItem: CartItem = {
+            id: `${product.id}-${size}-${Date.now()}`,
+            productId: product.id,
+            productName: product.name,
+            imageUrl: product.imageUrl,
+            unitPrice,
+            size,
+            quantity,
+            note: normalizedNote || undefined,
+          };
+          return [...prev, newItem];
+        });
+        onSuccess();
+      } catch {
+        onError();
+      }
     },
-    []
+    [onMutate, onSuccess, onError]
   );
 
   const removeItem = useCallback((id: string) => {

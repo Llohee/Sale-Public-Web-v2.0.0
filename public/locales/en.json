@@ -94,7 +94,10 @@
       "order_created_error": "Could not create order",
       "processing_payment": "Processing payment...",
       "payment_success": "Payment successful",
-      "payment_error": "Payment failed"
+      "payment_error": "Payment failed",
+      "adding_cart_item": "Adding to cart...",
+      "cart_item_added_success": "Added to your cart",
+      "cart_item_added_error": "Could not add to cart"
     },
     "checkout_title": "Payment information",
     "payment_method_choose": "Select payment method",
