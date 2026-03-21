@@ -57,17 +57,22 @@ export function PaymentSuccessView({
     }
   });
 
-  const formattedPaidAt = paidAt
+  const displayAmount = amount ?? orderSnapshot?.amount;
+  const displayPaidAt = paidAt ?? orderSnapshot?.paidAt;
+  const displayPaymentMethod = paymentMethod ?? orderSnapshot?.paymentMethod;
+  const displayLocation = location ?? orderSnapshot?.location;
+
+  const formattedPaidAt = displayPaidAt
     ? new Intl.DateTimeFormat(locale === "vi" ? "vi-VN" : "en-US", {
         dateStyle: "medium",
         timeStyle: "short",
-      }).format(new Date(paidAt))
+      }).format(new Date(displayPaidAt))
     : t("fallbacks.time");
   const infoItems = [
     {
       icon: Wallet,
       label: t("fields.amount"),
-      value: amount ? `$${amount}` : t("fallbacks.amount"),
+      value: displayAmount ? `$${displayAmount}` : t("fallbacks.amount"),
     },
     {
       icon: CalendarClock,
@@ -77,12 +82,12 @@ export function PaymentSuccessView({
     {
       icon: CreditCard,
       label: t("fields.payment_method"),
-      value: paymentMethod ?? t("fallbacks.payment_method"),
+      value: displayPaymentMethod ?? t("fallbacks.payment_method"),
     },
     {
       icon: MapPin,
       label: t("fields.location"),
-      value: location ?? t("fallbacks.location"),
+      value: displayLocation ?? t("fallbacks.location"),
     },
   ];
   const reviewItems = useMemo(

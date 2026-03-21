@@ -5,14 +5,25 @@ import { useCart } from "@/providers/cart-provider";
 import { Button } from "@/share/ui/button";
 import { ChevronLeft, Receipt } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 import OrderForm from "./create";
 import OrderListItem from "./list_item";
+import { PaymentSuccessView } from "./payment_success/success";
 
 export function OrderWrapper() {
   const router = useRouter();
   const t = useTranslations("order");
 
   const { items } = useCart();
+  const [showInAppPaymentSuccess, setShowInAppPaymentSuccess] = useState(false);
+
+  if (showInAppPaymentSuccess) {
+    return (
+      <div className="container mx-auto flex flex-col gap-6 pt-5 md:gap-8 md:pt-28">
+        <PaymentSuccessView />
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -69,7 +80,9 @@ export function OrderWrapper() {
           <OrderListItem />
         </div>
         <div className="relative col-span-12 lg:col-span-4 lg:sticky lg:top-28 lg:z-10 lg:self-start">
-          <OrderForm />
+          <OrderForm
+            onInAppPaymentSuccess={() => setShowInAppPaymentSuccess(true)}
+          />
         </div>
       </div>
     </div>
