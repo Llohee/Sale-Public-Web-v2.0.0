@@ -102,7 +102,7 @@ export function PaymentSuccessView({
       .toFixed(2);
 
   return (
-    <div className="container mx-auto flex min-h-[calc(100vh-10rem)] items-center justify-center px-4 py-10">
+    <div className="container mx-auto flex w-full flex-1 flex-col items-center justify-center px-4 py-8 sm:py-10">
       <div className="flex w-full max-w-2xl flex-col items-center gap-6 rounded-[2.5rem] bg-white/80 px-6 py-10 text-center shadow-sm ring-1 ring-amber-900/10 supports-backdrop-filter:backdrop-blur-md sm:px-10 sm:py-12">
         <div className="flex size-20 items-center justify-center rounded-full bg-oregon-50 text-oregon-700 shadow-sm ring-1 ring-oregon-700/10">
           <CheckCircle2 className="size-10" />

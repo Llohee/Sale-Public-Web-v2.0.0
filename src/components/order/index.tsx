@@ -1,11 +1,12 @@
 "use client";
 
 import { Link, useRouter } from "@/i18n/navigation";
+import { LAST_ORDER_SNAPSHOT_KEY } from "@/constants/order";
 import { useCart } from "@/providers/cart-provider";
 import { Button } from "@/share/ui/button";
 import { ChevronLeft, Receipt } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import OrderForm from "./create";
 import OrderListItem from "./list_item";
 import { PaymentSuccessView } from "./payment_success/success";
@@ -14,12 +15,20 @@ export function OrderWrapper() {
   const router = useRouter();
   const t = useTranslations("order");
 
-  const { items } = useCart();
+  const { items, isHydrated } = useCart();
   const [showInAppPaymentSuccess, setShowInAppPaymentSuccess] = useState(false);
+
+  useLayoutEffect(() => {
+    if (!isHydrated) return;
+    if (items.length > 0) return;
+    const raw = sessionStorage.getItem(LAST_ORDER_SNAPSHOT_KEY);
+    if (!raw?.trim()) return;
+    router.replace("/order/success");
+  }, [isHydrated, items.length, router]);
 
   if (showInAppPaymentSuccess) {
     return (
-      <div className="container mx-auto flex flex-col gap-6 pt-5 md:gap-8 md:pt-28">
+      <div className="flex min-h-0 w-full flex-1 flex-col">
         <PaymentSuccessView />
       </div>
     );

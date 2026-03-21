@@ -25,11 +25,7 @@ export function ProductsWrapper() {
   const t = useTranslations("ProductPage");
   const { filter, onSearchChange, updateParam } = useFilter();
   const selectedCategoryId = filter.productCategoryId?.trim() || undefined;
-  const [productsSwiper, setProductsSwiper] = useState<SwiperClass | null>(
-    null,
-  );
   const categorySwiperRef = useRef<SwiperClass | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
   /** Autoplay category strip chỉ trên mobile (dưới breakpoint `md`). */
   const [isMobileCategoryStrip, setIsMobileCategoryStrip] = useState(false);
 
@@ -65,25 +61,6 @@ export function ProductsWrapper() {
       })),
     ];
   }, [productCategories, t]);
-
-  useEffect(() => {
-    if (!productsSwiper) return;
-    if (isPaused) return;
-    if (!isSuccessProducts || !isSuccessProductCategories) return;
-
-    const intervalId = window.setInterval(() => {
-      productsSwiper.slideNext();
-    }, 3000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [
-    productsSwiper,
-    isPaused,
-    isSuccessProducts,
-    isSuccessProductCategories,
-  ]);
 
   useEffect(() => {
     const swiper = categorySwiperRef.current;
@@ -210,34 +187,38 @@ export function ProductsWrapper() {
             </div>
 
             <div className="relative overflow-hidden py-6">
-              <div
-                onPointerEnter={() => setIsPaused(true)}
-                onPointerLeave={() => setIsPaused(false)}
+              <Swiper
+                modules={[Autoplay]}
+                slidesPerView={1}
+                spaceBetween={14}
+                breakpoints={{
+                  640: { slidesPerView: 2, spaceBetween: 20 },
+                  1024: { slidesPerView: 3, spaceBetween: 20 },
+                  1280: { slidesPerView: 4, spaceBetween: 20 },
+                }}
+                watchOverflow={false}
+                loop={false}
+                rewind={products.data.length > 1}
+                autoplay={
+                  products.data.length > 1
+                    ? {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true,
+                      }
+                    : false
+                }
+                className="w-full"
               >
-                <Swiper
-                  loop
-                  slidesPerView={1}
-                  spaceBetween={14}
-                  breakpoints={{
-                    640: { slidesPerView: 2, spaceBetween: 20 },
-                    1024: { slidesPerView: 3, spaceBetween: 20 },
-                    1280: { slidesPerView: 4, spaceBetween: 20 },
-                  }}
-                  onSwiper={(instance) => {
-                    setProductsSwiper(instance);
-                  }}
-                  className="w-full"
-                >
-                  {products?.data.map((product: ProductDetail) => (
-                    <SwiperSlide key={product.id} className="h-auto!">
-                      <ProductCard
-                        product={product}
-                        className="scale-[0.9] origin-top sm:scale-100"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </div>
+                {products.data.map((product: ProductDetail) => (
+                  <SwiperSlide key={product.id} className="h-auto!">
+                    <ProductCard
+                      product={product}
+                      className="scale-[0.9] origin-top sm:scale-100"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
           </div>
         </div>
