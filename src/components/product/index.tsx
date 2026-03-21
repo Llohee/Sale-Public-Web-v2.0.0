@@ -14,19 +14,14 @@ import { Button } from "@/share/ui/button";
 import { useTranslations } from "next-intl";
 import { ProductCard } from "./card";
 import { LoadingPage } from "@/share/components/full-page/loading";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/share/ui/carousel";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperClass } from "swiper";
+import "swiper/css";
 
 export function ProductsWrapper() {
   const t = useTranslations("ProductPage");
   const { filter, onSearchChange, updateParam } = useFilter();
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [swiper, setSwiper] = useState<SwiperClass | null>(null);
   const [isPaused, setIsPaused] = useState(false);
 
   const {
@@ -48,25 +43,30 @@ export function ProductsWrapper() {
     return [
       { value: "", label: t("filter.all") },
       ...categories.map((c) => ({
-        value: c.code,
+        value: c.id,
         label: c.name,
       })),
     ];
   }, [productCategories, t]);
 
   useEffect(() => {
-    if (!carouselApi) return;
+    if (!swiper) return;
     if (isPaused) return;
     if (!isSuccessProducts || !isSuccessProductCategories) return;
 
     const intervalId = window.setInterval(() => {
-      carouselApi.scrollNext();
+      swiper.slideNext();
     }, 3000);
 
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [carouselApi, isPaused, isSuccessProducts, isSuccessProductCategories]);
+  }, [
+    swiper,
+    isPaused,
+    isSuccessProducts,
+    isSuccessProductCategories,
+  ]);
 
   if (isLoadingProducts || isLoadingProductCategories) {
     return <LoadingPage />;
@@ -77,10 +77,11 @@ export function ProductsWrapper() {
   }
 
   if (isSuccessProducts && isSuccessProductCategories) {
-    const selectedCategory = filter.productCategoryCode?.trim() || undefined;
+    const selectedCategoryId =
+      filter.productCategoryId?.trim() || undefined;
     return (
-      <div className="flex min-h-screen flex-col ">
-        <div className="relative overflow-hidden h-[400px]! flex items-center justify-center">
+      <div className="flex min-h-0 w-full flex-col">
+        <div className="relative flex h-[400px]! shrink-0 items-center justify-center overflow-hidden">
           <Image
             src="/images/background.jpg"
             alt="Hero banner"
@@ -88,7 +89,7 @@ export function ProductsWrapper() {
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 backdrop-blur-xs bg-gradient-to-t from-oregon-900/70 via-oregon-900/30 to-amber-50/0" />
+          <div className="absolute inset-0 backdrop-blur-xs bg-linear-to-t from-oregon-900/70 via-oregon-900/30 to-amber-50/0" />
           <div className="container mx-auto relative px-4 py-12 sm:py-14">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div className="max-w-2xl">
@@ -106,67 +107,76 @@ export function ProductsWrapper() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="w-full">
           <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5">
+            <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:gap-x-6">
+              <div className="order-2 md:order-1 min-w-0 max-w-full shrink-0 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div className="flex w-max max-w-full min-w-0 flex-nowrap items-center gap-2.5">
                   {filterOptions.map((option) => {
                     const optionValue = option.value?.trim() || undefined;
-                    const selected = selectedCategory === optionValue;
+                    const selected = selectedCategoryId === optionValue;
 
                     return (
                       <Button
-                        key={option.value}
+                        key={option.value || "all"}
                         variant={selected ? "chocolate" : "chocolate-outline"}
                         size="lg"
                         className={cn("rounded-[33px] px-4 py-2")}
-                        onClick={() => updateParam("category", optionValue)}
+                        onClick={() =>
+                          updateParam("productCategoryId", optionValue, {
+                            removeKeys: ["category", "productCategoryCode"],
+                          })
+                        }
                       >
                         {option.label}
                       </Button>
                     );
                   })}
                 </div>
+              </div>
+              <div
+                className="hidden shrink-0 md:order-2 md:block md:w-60"
+                aria-hidden
+              />
+              <div className="order-1 md:order-3 min-w-0 flex-1 w-full">
                 <SearchInput
                   value={filter.keyword}
                   onChange={onSearchChange}
                   placeholder={t("filter.search_placeholder")}
-                  className="max-w-md"
+                  className="w-full"
                 />
               </div>
+            </div>
 
-              <Carousel
-                className="px-1 py-3"
-                opts={{ loop: true }}
-                setApi={setCarouselApi}
+            <div className="relative overflow-hidden py-3">
+              <div
+                onPointerEnter={() => setIsPaused(true)}
+                onPointerLeave={() => setIsPaused(false)}
               >
-                <CarouselContent
-                  className="gap-5"
-                  onPointerEnter={() => setIsPaused(true)}
-                  onPointerLeave={() => setIsPaused(false)}
+                <Swiper
+                  loop
+                  slidesPerView={1}
+                  spaceBetween={20}
+                  breakpoints={{
+                    640: { slidesPerView: 2 },
+                    1024: { slidesPerView: 3 },
+                    1280: { slidesPerView: 4 },
+                  }}
+                  onSwiper={(instance) => {
+                    setSwiper(instance);
+                  }}
+                  className="w-full"
                 >
                   {products?.data.map((product: ProductDetail) => (
-                    <CarouselItem
-                      key={product.id}
-                      className="basis-[calc(100%-3rem)] shrink-0 sm:basis-[calc(50%-0.625rem)] lg:basis-[calc(33.333%-0.875rem)] xl:basis-[calc(25%-0.9375rem)]"
-                    >
-                      <ProductCard product={product} />
-                    </CarouselItem>
+                    <SwiperSlide key={product.id} className="h-auto!">
+                      <ProductCard
+                        product={product}
+                        className="scale-[0.96] origin-top sm:scale-100"
+                      />
+                    </SwiperSlide>
                   ))}
-                </CarouselContent>
-
-                <CarouselPrevious
-                  variant="chocolate-outline"
-                  size="icon-sm"
-                  className="hidden rounded-full sm:flex -left-3"
-                />
-                <CarouselNext
-                  variant="chocolate-outline"
-                  size="icon-sm"
-                  className="hidden rounded-full sm:flex -right-3"
-                />
-              </Carousel>
+                </Swiper>
+              </div>
             </div>
           </div>
         </div>

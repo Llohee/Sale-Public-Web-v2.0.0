@@ -7,6 +7,7 @@ import Modal from "@/share/components/modal";
 import { useTranslations } from "next-intl";
 import { Button } from "@/share/ui/button";
 import { Badge } from "@/share/ui/badge";
+import { Textarea } from "@/share/ui/textarea";
 import { useRouter } from "@/i18n/navigation";
 
 type TriggerElementProps = {
@@ -21,6 +22,8 @@ interface AddToCartModalProps {
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
   onAddToCart: () => void;
+  note?: string;
+  onNoteChange?: (value: string) => void;
 }
 
 export function AddToCartModal({
@@ -30,9 +33,12 @@ export function AddToCartModal({
   onOpenChange,
   children,
   onAddToCart,
+  note,
+  onNoteChange,
 }: AddToCartModalProps) {
   const t = useTranslations("product.add_to_cart");
   const tOrderEmpty = useTranslations("order.empty");
+  const tOrder = useTranslations("order");
   const router = useRouter();
   const price = product.price ?? 0;
 
@@ -103,7 +109,9 @@ export function AddToCartModal({
               {price.toFixed(2)}
             </p>
 
-            <div>{children}</div>
+            <div className="space-y-6">
+              <div>{children}</div>
+            </div>
           </div>
 
           <div className="flex w-full justify-center md:w-[320px] md:justify-end">
@@ -139,6 +147,22 @@ export function AddToCartModal({
             </div>
           </div>
         </div>
+
+        {onNoteChange ? (
+          <div className="mt-4 px-1 md:px-0">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-oregon-700/60">
+                {tOrder("note_label")}
+              </p>
+              <Textarea
+                value={note ?? ""}
+                onChange={(event) => onNoteChange(event.target.value)}
+                placeholder={tOrder("note_placeholder")}
+                className="min-h-20 w-full resize-y rounded-lg border-oregon-700/10 bg-amber-50/35 text-sm text-oregon-900 placeholder:text-oregon-700/35 focus-visible:border-oregon-700/25 focus-visible:ring-oregon-700/10"
+              />
+            </div>
+          </div>
+        ) : null}
       </Modal>
     </>
   );

@@ -31,8 +31,16 @@ export const useOrderForm = ({
   });
 
   useEffect(() => {
-    orderForm.reset();
-  }, [orderForm]);
+    orderForm.reset({
+      ordererName: "",
+      phoneNumber: "",
+      items: items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        note: item.note,
+      })),
+    });
+  }, [orderForm, items]);
 
   const mutation = useCreateOrderMutation({ onSuccess, items, paymentMethod });
   const handleFormSubmit: SubmitHandler<OrderFormRequest> = (data) => {

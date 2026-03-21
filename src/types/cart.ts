@@ -15,6 +15,7 @@ export interface CartItem {
   size: ProductSize;
   note?: string;
   quantity: number;
+  note?: string;
 }
 
 export function getCartItemLineTotal(item: CartItem): number {

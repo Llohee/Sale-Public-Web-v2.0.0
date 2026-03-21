@@ -61,6 +61,7 @@
       "addToOrder": "Add to order"
     },
     "add_to_cart": {
+      "total_label": "Total",
       "size": "Size",
       "quantity": "Quantity",
       "total": "Total: ${total}",
@@ -86,6 +87,18 @@
       "back": "Back",
       "checkout": "Checkout",
       "continue": "Continue"
+    },
+    "checkout_title": "Payment information",
+    "payment_method_choose": "Select payment method",
+    "fields": {
+      "name": {
+        "label": "Full name",
+        "placeholder": "Enter full name"
+      },
+      "phone": {
+        "label": "Phone number",
+        "placeholder": "Enter phone number"
+      }
     },
     "title": "Your order",
     "subtitle": "Review items, quantities, and total before checkout.",

@@ -12,7 +12,10 @@ export default function Header() {
   const { items } = useCart();
   const tabFromPath =
     headerTabs.find(
-      (tab) => pathname === `/${tab.value}` || pathname.startsWith(`/${tab.value}/`),
+      (tab) =>
+        tab.value === "home"
+          ? pathname === "/"
+          : pathname === `/${tab.value}` || pathname.startsWith(`/${tab.value}/`),
     )?.value ?? "home";
   const [activeTab, setActiveTab] = useState(tabFromPath);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -66,15 +69,16 @@ export default function Header() {
   }, [activeIndex]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent!">
-      <div className="container mx-auto py-4 flex items-center justify-between ">
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="flex w-full flex-col items-center py-2 bg-oregon-800/85 backdrop-blur-sm rounded-xl shadow-md"
-        >
-          <TabsList className="relative h-8! select-none gap-[6px] bg-transparent p-0">
-            <div
+    <header className="fixed bottom-0 left-0 right-0 z-50 bg-transparent! md:top-0 md:bottom-auto">
+      <div className="w-full p-0 flex items-center justify-between md:container md:mx-auto md:py-4">
+        <div className="relative w-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="flex w-full flex-col items-center py-2 bg-oregon-800/85 backdrop-blur-sm rounded-none shadow-none md:rounded-xl md:shadow-md"
+          >
+            <TabsList className="relative h-8! w-full select-none gap-[6px] bg-transparent p-0 md:pl-0 pl-0">
+              <div
               className="absolute top-0 left-0 flex h-8 items-center rounded-[6px] bg-oregon-50/50 transition-all duration-300 ease-out dark:bg-[#ffffff1a]"
               style={{
                 ...hoverStyle,
@@ -103,7 +107,9 @@ export default function Header() {
                   }`}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
-                  onClick={() => router.push(`/${tab.value}`)}
+                  onClick={() =>
+                    tab.value === "home" ? router.push("/") : router.push(`/${tab.value}`)
+                  }
                 >
                   <span className="whitespace-nowrap font-medium text-sm leading-5 relative">
                     {tab.icon}
@@ -113,14 +119,16 @@ export default function Header() {
                       </span>
                     )}
                   </span>
-                  <span className="whitespace-nowrap font-medium text-sm leading-5">
+                  <span className="hidden md:inline-flex whitespace-nowrap font-medium text-sm leading-5">
                     {tab.label}
                   </span>
                 </TabsTrigger>
               ),
             )}
-          </TabsList>
-        </Tabs>
+            </TabsList>
+          </Tabs>
+
+        </div>
       </div>
     </header>
   );

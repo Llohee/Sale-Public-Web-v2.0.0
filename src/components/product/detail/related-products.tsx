@@ -4,14 +4,9 @@ import { useEffect, useState } from "react";
 import { ProductCard } from "@/components/product/card";
 import type { ProductDetail } from "@/services/product/product.schema";
 import { useTranslations } from "next-intl";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/share/ui/carousel";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperClass } from "swiper";
+import "swiper/css";
 
 interface RelatedProductsProps {
   products: ProductDetail[];
@@ -19,22 +14,22 @@ interface RelatedProductsProps {
 
 export function RelatedProducts({ products }: RelatedProductsProps) {
   const t = useTranslations("product.detail");
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [swiper, setSwiper] = useState<SwiperClass | null>(null);
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     if (!products.length) return;
-    if (!carouselApi) return;
+    if (!swiper) return;
     if (isPaused) return;
 
     const intervalId = window.setInterval(() => {
-      carouselApi.scrollNext();
+      swiper.slideNext();
     }, 3000);
 
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [products.length, carouselApi, isPaused]);
+  }, [products.length, swiper, isPaused]);
 
   if (!products.length) return null;
 
@@ -46,33 +41,35 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
         </h2>
         <p className="text-sm text-oregon-700/70">{t("relatedSubtitle")}</p>
       </div>
-      <Carousel opts={{ loop: true }} setApi={setCarouselApi} className="px-1 py-3">
-        <CarouselContent
-          className="gap-5"
-          onPointerEnter={() => setIsPaused(true)}
-          onPointerLeave={() => setIsPaused(false)}
+      <div
+        className="relative overflow-hidden px-1 py-3"
+        onPointerEnter={() => setIsPaused(true)}
+        onPointerLeave={() => setIsPaused(false)}
+      >
+        <Swiper
+          loop
+          slidesPerView={1}
+          spaceBetween={20}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4 },
+          }}
+          onSwiper={(instance) => {
+            setSwiper(instance);
+          }}
+          className="w-full"
         >
           {products.map((item) => (
-            <CarouselItem
-              key={item.id}
-              className="basis-[calc(100%-3rem)] shrink-0 sm:basis-[calc(50%-0.625rem)] lg:basis-[calc(33.333%-0.875rem)] xl:basis-[calc(25%-0.9375rem)]"
-            >
-              <ProductCard product={item} />
-            </CarouselItem>
+            <SwiperSlide key={item.id} className="h-auto!">
+              <ProductCard
+                product={item}
+                className="scale-[0.96] origin-top sm:scale-100"
+              />
+            </SwiperSlide>
           ))}
-        </CarouselContent>
-
-        <CarouselPrevious
-          variant="chocolate-outline"
-          size="icon-sm"
-          className="hidden rounded-full sm:flex -left-3"
-        />
-        <CarouselNext
-          variant="chocolate-outline"
-          size="icon-sm"
-          className="hidden rounded-full sm:flex -right-3"
-        />
-      </Carousel>
+        </Swiper>
+      </div>
     </section>
   );
 }

@@ -12,7 +12,7 @@ export function EndUserLayoutClient({
     <CartProvider>
       <div className="relative flex h-screen flex-col">
         <Header />
-        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden pb-24 md:pb-0">
           {children}
         </div>
       </div>
