@@ -30,15 +30,15 @@ export function LanguageSwitcher({ href, className }: LanguageSwitcherProps) {
       <DropdownMenuTrigger
         className={cn(
           buttonVariants({
-            variant: "chocolate-outline",
+            variant: "default",
             size: "lg",
           }),
-          "h-10 min-w-20 rounded-full px-2 text-xs shadow-sm data-[state=open]:bg-oregon-50",
+          "h-10 min-w-20 rounded-full px-4 text-xs shadow-sm data-[state=open]:bg-oregon-600",
           className,
         )}
         aria-label={t("label")}
       >
-        <span className="rounded-full bg-amber-600 px-3 py-1 text-[11px] font-semibold uppercase text-white shadow-sm">
+        <span className="text-[11px] font-semibold uppercase tracking-wide text-white">
           {locale.toUpperCase()}
         </span>
       </DropdownMenuTrigger>
