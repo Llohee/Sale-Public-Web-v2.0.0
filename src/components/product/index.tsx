@@ -189,12 +189,12 @@ export function ProductsWrapper() {
             <div className="relative overflow-hidden py-6">
               <Swiper
                 modules={[Autoplay]}
-                slidesPerView={1}
-                spaceBetween={14}
+                slidesPerView={products.data.length > 1 ? 1.2 : 1}
+                spaceBetween={8}
                 breakpoints={{
-                  640: { slidesPerView: 2, spaceBetween: 20 },
-                  1024: { slidesPerView: 3, spaceBetween: 20 },
-                  1280: { slidesPerView: 4, spaceBetween: 20 },
+                  640: { slidesPerView: 2, spaceBetween: 24 },
+                  1024: { slidesPerView: 3, spaceBetween: 28 },
+                  1280: { slidesPerView: 4, spaceBetween: 32 },
                 }}
                 watchOverflow={false}
                 loop={false}
