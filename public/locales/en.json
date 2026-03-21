@@ -23,7 +23,8 @@
     "addToCart": "Add to cart",
     "filter": {
       "all": "All",
-      "search_placeholder": "Search your favorite drink"
+      "search_placeholder": "Search your favorite drink",
+      "categories_region": "Filter by category"
     }
   },
   "LoadingPage": {
@@ -31,7 +32,14 @@
   },
   "common": {
     "error": {
-      "description": "<p>Something went wrong while loading this page.</p><p>Please try again or come back later.</p><p><retry>Try again</retry></p>"
+      "description": "<p>Something went wrong while loading this page.</p><p>Please try again or come back later.</p>",
+      "line1": "Something went wrong while loading this page.",
+      "line2": "Please try again or come back later.",
+      "image_alt": "Coffee cup and intro message",
+      "title": "Coffee so good,\nyour taste buds\nwill love it",
+      "subtitle": "the best grain, the finest roast,\nthe most powerful flavor",
+      "home": "Home",
+      "retry": "Try again"
     }
   },
   "form": {
@@ -97,7 +105,13 @@
       "payment_error": "Payment failed",
       "adding_cart_item": "Adding to cart...",
       "cart_item_added_success": "Added to your cart",
-      "cart_item_added_error": "Could not add to cart"
+      "cart_item_added_error": "Could not add to cart",
+      "removing_cart_item": "Removing item...",
+      "cart_item_removed_success": "Item removed from your order",
+      "cart_item_removed_error": "Could not remove item",
+      "clearing_cart_items": "Clearing cart...",
+      "cart_cleared_success": "All items removed from your order",
+      "cart_cleared_error": "Could not clear cart"
     },
     "checkout_title": "Payment information",
     "payment_method_choose": "Select payment method",

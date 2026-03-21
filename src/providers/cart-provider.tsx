@@ -7,7 +7,11 @@ import {
   PRODUCT_SIZES,
   getCartItemLineTotal,
 } from "@/types/cart";
-import { useAddCartItemToasts } from "@/services/order/order.mutations";
+import {
+  useAddCartItemToasts,
+  useClearCartItemsToasts,
+  useRemoveCartItemToasts,
+} from "@/services/order/order.mutations";
 import {
   createContext,
   useCallback,
@@ -33,7 +37,7 @@ interface CartContextType {
   updateQuantity: (id: string, quantity: number) => void;
   totalItems: number;
   totalAmount: number;
-  clearCart: () => void;
+  clearCart: (options?: { silent?: boolean }) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -61,6 +65,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
   const { onMutate, onSuccess, onError } = useAddCartItemToasts();
+  const {
+    onMutate: onRemoveMutate,
+    onSuccess: onRemoveSuccess,
+    onError: onRemoveError,
+  } = useRemoveCartItemToasts();
+  const {
+    onMutate: onClearMutate,
+    onSuccess: onClearSuccess,
+    onError: onClearError,
+  } = useClearCartItemsToasts();
 
   useEffect(() => {
     queueMicrotask(() => {
@@ -126,9 +140,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [onMutate, onSuccess, onError]
   );
 
-  const removeItem = useCallback((id: string) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
-  }, []);
+  const removeItem = useCallback(
+    (id: string) => {
+      onRemoveMutate();
+      try {
+        setItems((prev) => prev.filter((i) => i.id !== id));
+        onRemoveSuccess();
+      } catch {
+        onRemoveError();
+      }
+    },
+    [onRemoveMutate, onRemoveSuccess, onRemoveError]
+  );
 
   const updateQuantity = useCallback((id: string, quantity: number) => {
     if (quantity < 1) return;
@@ -137,7 +160,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     );
   }, []);
 
-  const clearCart = useCallback(() => setItems([]), []);
+  const clearCart = useCallback(
+    (options?: { silent?: boolean }) => {
+      if (options?.silent) {
+        setItems([]);
+        return;
+      }
+      onClearMutate();
+      try {
+        setItems([]);
+        onClearSuccess();
+      } catch {
+        onClearError();
+      }
+    },
+    [onClearMutate, onClearSuccess, onClearError]
+  );
 
   const totalItems = useMemo(
     () => items.reduce((sum, i) => sum + i.quantity, 0),

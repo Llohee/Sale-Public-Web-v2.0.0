@@ -47,6 +47,68 @@ export function useAddCartItemToasts() {
   return { onMutate, onSuccess, onError };
 }
 
+export function useRemoveCartItemToasts() {
+  const t = useTranslations("order.toast");
+  const { addToast } = useAnimatedToast();
+
+  const onMutate = useCallback(() => {
+    addToast({
+      message: t("removing_cart_item"),
+      type: "info",
+      dismissOthers: true,
+    });
+  }, [addToast, t]);
+
+  const onSuccess = useCallback(() => {
+    addToast({
+      message: t("cart_item_removed_success"),
+      type: "success",
+      dismissOthers: true,
+    });
+  }, [addToast, t]);
+
+  const onError = useCallback(() => {
+    addToast({
+      message: t("cart_item_removed_error"),
+      type: "error",
+      dismissOthers: true,
+    });
+  }, [addToast, t]);
+
+  return { onMutate, onSuccess, onError };
+}
+
+export function useClearCartItemsToasts() {
+  const t = useTranslations("order.toast");
+  const { addToast } = useAnimatedToast();
+
+  const onMutate = useCallback(() => {
+    addToast({
+      message: t("clearing_cart_items"),
+      type: "info",
+      dismissOthers: true,
+    });
+  }, [addToast, t]);
+
+  const onSuccess = useCallback(() => {
+    addToast({
+      message: t("cart_cleared_success"),
+      type: "success",
+      dismissOthers: true,
+    });
+  }, [addToast, t]);
+
+  const onError = useCallback(() => {
+    addToast({
+      message: t("cart_cleared_error"),
+      type: "error",
+      dismissOthers: true,
+    });
+  }, [addToast, t]);
+
+  return { onMutate, onSuccess, onError };
+}
+
 export type UseOrderFormProps = {
   items: CartItem[];
   paymentMethod: PaymentMethodDetail;

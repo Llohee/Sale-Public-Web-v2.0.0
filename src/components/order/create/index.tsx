@@ -1,3 +1,5 @@
+"use client";
+
 import { useCart } from "@/providers/cart-provider";
 import ConfirmModal from "@/share/components/modal/confirm";
 import { Button } from "@/share/ui/button";
@@ -31,51 +33,45 @@ export default function OrderForm() {
   if (isSuccessPaymentMethods) {
     return (
       <>
-        <div className="sticky top-6 flex flex-col gap-5 rounded-2xl bg-linear-to-br from-amber-50/70 via-amber-50/90 to-amber-100/55 p-6 md:top-8 lg:top-6">
-          <div className="flex items-start justify-between gap-4">
+        <div className="sticky top-6 flex flex-col gap-4 rounded-lg bg-muted px-4 py-4 shadow-md md:top-8 lg:top-6">
+          <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 flex-1 space-y-0.5">
-              <h2 className="text-lg font-extrabold tracking-tight text-oregon-900 sm:text-xl">
+              <h2 className="text-lg font-semibold leading-snug text-foreground">
                 {t("summary_title")}
               </h2>
-              <p className="text-sm font-medium text-oregon-700/65">
+              <p className="text-base text-muted-foreground">
                 {t("subtotal_label", { count: totalItems })}
               </p>
             </div>
             <Button
+              type="button"
               variant="chocolate-outline"
-              size="sm"
-              className="shrink-0 rounded-full px-3 text-xs font-semibold sm:text-sm"
+              size="default"
+              className="shrink-0 px-4 text-base"
               onClick={() => setClearConfirmOpen(true)}
             >
               {t("clear_all")}
             </Button>
           </div>
 
-          <div className="overflow-hidden rounded-xl bg-linear-to-b from-white/30 via-amber-50/40 to-amber-100/45 p-4">
-            <div className="flex items-baseline justify-between gap-3 text-sm text-oregon-800/90">
-              <span className="font-medium">{t("subtotal_money")}</span>
-              <span className="tabular-nums font-semibold tracking-tight text-oregon-900">
+          <div className="space-y-2 border-t border-border pt-3">
+            <div className="flex items-center justify-between gap-3 text-base text-muted-foreground">
+              <span>{t("subtotal_money")}</span>
+              <span className="tabular-nums font-medium text-foreground">
                 {costFormat(totalAmount)}
               </span>
             </div>
-            <div
-              className="my-3 h-px w-full bg-linear-to-r from-transparent via-amber-900/12 to-transparent"
-              aria-hidden
-            />
-            <div className="flex items-baseline justify-between gap-3">
-              <span className="text-base font-extrabold text-oregon-900 sm:text-lg">
-                {t("total_money")}
-              </span>
-              <span className="tabular-nums text-xl font-extrabold tracking-tight text-oregon-900 sm:text-2xl">
-                {costFormat(totalAmount)}
-              </span>
+            <div className="flex items-center justify-between gap-3 border-t border-border pt-2 text-lg font-semibold text-foreground">
+              <span>{t("total_money")}</span>
+              <span className="tabular-nums text-xl">{costFormat(totalAmount)}</span>
             </div>
           </div>
 
           <Button
-            variant="dive"
+            type="button"
+            variant="default"
             size="xl"
-            className="mt-1 w-full rounded-full font-semibold transition-transform active:scale-[0.99]"
+            className="w-full"
             onClick={() => setOpenCheckoutModal(true)}
             // onClick={() => {
             //   const paymentMethod = paymentMethods?.data[0]?.display_name;

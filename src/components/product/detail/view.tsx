@@ -56,22 +56,25 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
     router.push("/order");
   };
 
+  const backButton = (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={() => router.back()}
+      className="w-fit shrink-0"
+    >
+      <ChevronLeft className="size-5" />
+      <span className="text-sm font-semibold">{t("back")}</span>
+    </Button>
+  );
+
   return (
     <div className="container mx-auto pt-6 pb-16 md:py-28 flex flex-col gap-6 md:gap-8">
-      <div className="shrink-0">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => router.back()}
-          className="w-fit shrink-0 md:absolute md:left-0 md:top-0"
-        >
-          <ChevronLeft className="size-5" />
-          <span className="text-sm font-semibold">{t("back")}</span>
-        </Button>
-      </div>
+      <div className="shrink-0 md:hidden">{backButton}</div>
       <div className="p-5 md:bg-transparent md:p-0 md:shadow-none md:ring-0">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4">
           <div className="flex flex-col gap-6 md:gap-8 col-span-12 md:col-span-7 order-2 md:order-1">
+            <div className="hidden md:block shrink-0">{backButton}</div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               <div className="flex flex-col gap-5 md:gap-8 h-full justify-between">
                 <div className="flex flex-row items-end justify-between gap-6 md:flex-col md:items-start md:gap-1">
@@ -177,13 +180,18 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
                     </p>
                   </div>
                   <Button
+                    type="button"
                     variant="dive"
-                    size="xl"
-                    className="rounded-full px-6 py-2 text-base font-semibold gap-4 w-fit"
+                    aria-label={t("addToOrder")}
+                    className={cn(
+                      "h-12 w-12 shrink-0 rounded-full p-0 shadow-md ring-1 ring-amber-950/20",
+                      "hover:shadow-lg hover:-translate-y-px active:translate-y-0 active:scale-[0.98]",
+                      "[&_svg]:size-6",
+                    )}
                     onClick={handleAddToOrder}
                   >
-                    <ShoppingCart className="size-5" />
-                    {t("addToOrder")}
+                    <ShoppingCart aria-hidden />
+                    <span className="sr-only">{t("addToOrder")}</span>
                   </Button>
                 </div>
                 <Button

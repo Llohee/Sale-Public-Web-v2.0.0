@@ -70,7 +70,7 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
         );
       }
 
-      clearCart();
+      clearCart({ silent: true });
       onOpenChange(false);
     },
     items,

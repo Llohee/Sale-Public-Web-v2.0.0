@@ -9,6 +9,7 @@ import { Button } from "@/share/ui/button";
 import { Badge } from "@/share/ui/badge";
 import { Textarea } from "@/share/ui/textarea";
 import { useRouter } from "@/i18n/navigation";
+import { ShoppingCart } from "lucide-react";
 import { costFormat } from "@/util/format";
 
 type TriggerElementProps = {
@@ -100,6 +101,7 @@ export function AddToCartModal({
         }
         onConfirm={onAddToCart}
         confirmTitle={t("add_to_cart")}
+        confirmIcon={<ShoppingCart className="size-5 shrink-0" aria-hidden />}
         contentClassName="max-w-3xl"
         showCancelButton={false}
         confirmFullWidth

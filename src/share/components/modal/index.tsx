@@ -22,6 +22,7 @@ type ModalProps = Readonly<
     children: React.ReactNode;
     showCloseButton?: boolean;
     confirmTitle?: string;
+    confirmIcon?: React.ReactNode;
     cancelTitle?: string;
     confirmDisabled?: boolean;
     contentClassName?: string;
@@ -38,6 +39,7 @@ export default function Modal({
   onConfirm,
   children,
   confirmTitle,
+  confirmIcon,
   showCloseButton = true,
   cancelTitle,
   confirmDisabled,
@@ -109,7 +111,14 @@ export default function Modal({
                 onClick={onConfirm}
                 disabled={confirmDisabled}
               >
-                {confirmTitle ?? t("btn.save")}
+                {confirmIcon ? (
+                  <span className="inline-flex items-center gap-2">
+                    {confirmIcon}
+                    {confirmTitle ?? t("btn.save")}
+                  </span>
+                ) : (
+                  (confirmTitle ?? t("btn.save"))
+                )}
               </Button>
             </div>
           </div>

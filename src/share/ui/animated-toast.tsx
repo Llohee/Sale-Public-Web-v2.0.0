@@ -82,12 +82,18 @@ export function AnimatedToastProvider({
   }, []);
 
   const positionClasses: Record<ToastPosition, string> = {
-    "top-right": "top-4 right-4",
-    "top-left": "top-4 left-4",
-    "top-center": "top-4 left-1/2 -translate-x-1/2",
-    "bottom-right": "bottom-4 right-4",
-    "bottom-left": "bottom-4 left-4",
-    "bottom-center": "bottom-4 left-1/2 -translate-x-1/2",
+    "top-right":
+      "left-3 right-3 top-[max(0.75rem,calc(env(safe-area-inset-top,0px)+0.25rem))] sm:inset-x-auto sm:left-auto sm:right-4 sm:top-4 sm:w-max sm:items-end",
+    "top-left":
+      "left-3 right-3 top-[max(0.75rem,calc(env(safe-area-inset-top,0px)+0.25rem))] sm:inset-x-auto sm:left-4 sm:right-auto sm:top-4 sm:w-max sm:items-start",
+    "top-center":
+      "left-3 right-3 top-[max(0.75rem,calc(env(safe-area-inset-top,0px)+0.25rem))] sm:inset-x-auto sm:left-1/2 sm:right-auto sm:top-4 sm:w-max sm:-translate-x-1/2 sm:items-center",
+    "bottom-right":
+      "left-3 right-3 bottom-[max(0.75rem,calc(env(safe-area-inset-bottom,0px)+0.25rem))] sm:inset-x-auto sm:left-auto sm:right-4 sm:bottom-4 sm:top-auto sm:w-max sm:items-end",
+    "bottom-left":
+      "left-3 right-3 bottom-[max(0.75rem,calc(env(safe-area-inset-bottom,0px)+0.25rem))] sm:inset-x-auto sm:left-4 sm:right-auto sm:bottom-4 sm:top-auto sm:w-max sm:items-start",
+    "bottom-center":
+      "left-3 right-3 bottom-[max(0.75rem,calc(env(safe-area-inset-bottom,0px)+0.25rem))] sm:inset-x-auto sm:left-1/2 sm:right-auto sm:bottom-4 sm:top-auto sm:w-max sm:-translate-x-1/2 sm:items-center",
   };
 
   const isTop = position.startsWith("top");
@@ -136,11 +142,11 @@ function ToastItem({ toast, index, onRemove, isTop }: ToastItemProps) {
   }, [duration, onRemove]);
 
   const icons: Record<ToastType, React.ReactNode> = {
-    success: <CheckCircle className="h-5 w-5 text-emerald-500" />,
-    error: <AlertCircle className="h-5 w-5 text-red-500" />,
-    warning: <AlertTriangle className="h-5 w-5 text-amber-500" />,
-    info: <Info className="h-5 w-5 text-blue-500" />,
-    default: <Bell className="h-5 w-5 text-muted-foreground" />,
+    success: <CheckCircle className="size-4 text-emerald-500 sm:size-5" />,
+    error: <AlertCircle className="size-4 text-red-500 sm:size-5" />,
+    warning: <AlertTriangle className="size-4 text-amber-500 sm:size-5" />,
+    info: <Info className="size-4 text-blue-500 sm:size-5" />,
+    default: <Bell className="size-4 text-muted-foreground sm:size-5" />,
   };
 
   const borderColors: Record<ToastType, string> = {
@@ -168,26 +174,35 @@ function ToastItem({ toast, index, onRemove, isTop }: ToastItemProps) {
       }}
       exit={{
         opacity: 0,
-        scale: 0.9,
-        x: 100,
+        scale: 0.96,
+        y: isTop ? -10 : 10,
         transition: { duration: 0.2 },
       }}
       className={cn(
-        "pointer-events-auto relative min-w-[320px] max-w-[420px] rounded-lg border border-l-4 bg-card p-4 shadow-lg",
+        "pointer-events-auto relative w-full min-w-0 max-w-full rounded-lg border border-l-4 bg-card p-3 shadow-lg sm:min-w-[280px] sm:max-w-[420px] sm:p-4",
         borderColors[type],
       )}
     >
-      <div className="flex items-start gap-3">
-        <div className="mt-0.5 flex-shrink-0">{icons[type]}</div>
+      <div className="flex items-start gap-2 sm:gap-3">
+        <div className="mt-0.5 shrink-0">{icons[type]}</div>
         <div className="min-w-0 flex-1">
-          {title && <p className="font-medium text-card-foreground">{title}</p>}
-          <p className={cn("text-muted-foreground text-sm", title && "mt-1")}>
+          {title && (
+            <p className="text-sm font-medium text-card-foreground sm:text-base">
+              {title}
+            </p>
+          )}
+          <p
+            className={cn(
+              "text-muted-foreground text-xs sm:text-sm",
+              title && "mt-0.5 sm:mt-1",
+            )}
+          >
             {message}
           </p>
           {action && (
             <button
               onClick={action.onClick}
-              className="mt-2 font-medium text-primary text-sm hover:underline"
+              className="mt-1.5 text-xs font-medium text-primary hover:underline sm:mt-2 sm:text-sm"
             >
               {action.label}
             </button>
@@ -196,10 +211,10 @@ function ToastItem({ toast, index, onRemove, isTop }: ToastItemProps) {
         <button
           type="button"
           onClick={onRemove}
-          className="flex-shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Đóng thông báo"
         >
-          <X className="h-4 w-4" />
+          <X className="size-3.5 sm:size-4" />
         </button>
       </div>
 
@@ -273,7 +288,8 @@ export function MinimalToast({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
           className={cn(
-            "fixed bottom-8 left-1/2 z-[9999] -translate-x-1/2 rounded-full px-6 py-3 font-medium text-background text-black text-sm shadow-lg dark:text-white",
+            "fixed left-1/2 z-[9999] w-[min(calc(100vw-1.5rem),28rem)] -translate-x-1/2 rounded-full px-4 py-2.5 text-center text-xs font-medium text-white drop-shadow-sm sm:bottom-8 sm:w-auto sm:max-w-[min(100vw-2rem,28rem)] sm:px-6 sm:py-3 sm:text-sm",
+            "bottom-[max(1rem,calc(env(safe-area-inset-bottom,0px)+0.75rem))]",
             bgColors[type],
           )}
         >

@@ -23,7 +23,8 @@
     "addToCart": "Thêm vào giỏ",
     "filter": {
       "all": "Tất cả",
-      "search_placeholder": "Tìm kiếm đồ uống yêu thích"
+      "search_placeholder": "Tìm kiếm đồ uống yêu thích",
+      "categories_region": "Lọc theo danh mục"
     }
   },
   "LoadingPage": {
@@ -31,7 +32,14 @@
   },
   "common": {
     "error": {
-      "description": "<p>Đã xảy ra lỗi khi tải trang này.</p><p>Vui lòng thử lại hoặc quay lại sau.</p><p><retry>Thử lại</retry></p>"
+      "description": "<p>Đã xảy ra lỗi khi tải trang này.</p><p>Vui lòng thử lại hoặc quay lại sau.</p>",
+      "line1": "Đã xảy ra lỗi khi tải trang này.",
+      "line2": "Vui lòng thử lại hoặc quay lại sau.",
+      "image_alt": "Ly cà phê và thông điệp giới thiệu",
+      "title": "Coffee so good,\nyour taste buds\nwill love it",
+      "subtitle": "the best grain, the finest roast,\nthe most powerful flavor",
+      "home": "Home",
+      "retry": "Thử lại"
     }
   },
   "form": {
@@ -97,7 +105,13 @@
       "payment_error": "Thanh toán thất bại",
       "adding_cart_item": "Đang thêm vào giỏ...",
       "cart_item_added_success": "Đã thêm món vào giỏ hàng",
-      "cart_item_added_error": "Không thể thêm vào giỏ hàng"
+      "cart_item_added_error": "Không thể thêm vào giỏ hàng",
+      "removing_cart_item": "Đang xóa món...",
+      "cart_item_removed_success": "Đã xóa món khỏi đơn",
+      "cart_item_removed_error": "Không thể xóa món",
+      "clearing_cart_items": "Đang xóa giỏ hàng...",
+      "cart_cleared_success": "Đã xóa tất cả sản phẩm khỏi đơn",
+      "cart_cleared_error": "Không thể xóa giỏ hàng"
     },
     "checkout_title": "Thông tin thanh toán",
     "payment_method_choose": "Chọn phương thức thanh toán",

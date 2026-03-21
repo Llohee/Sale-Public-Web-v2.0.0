@@ -53,11 +53,11 @@ export function ProductCard({ product, className }: ProductCardProps) {
         }
       }}
       className={cn(
-        "relative group flex w-full flex-col gap-2 drop-shadow-md overflow-hidden rounded-xl bg-white/70 transition-all duration-300 text-left cursor-pointer supports-backdrop-filter:backdrop-blur-md hover:ring-amber-900/15 sm:gap-3 sm:rounded-2xl",
+        "relative group flex w-full flex-col gap-1.5 rounded-xl bg-white/70 drop-shadow-md transition-all duration-300 text-left cursor-pointer supports-backdrop-filter:backdrop-blur-md hover:ring-amber-900/15 sm:gap-2 sm:rounded-2xl",
         className,
       )}
     >
-      <div className="flex items-center justify-center p-2.5 pb-0 sm:p-4">
+      <div className="flex items-center justify-center p-2 pb-0 sm:p-3">
         <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-linear-to-br from-oregon-400 to-oregon-600 ring-1 ring-amber-900/10 sm:rounded-xl">
           {hasImage && !imageErrored ? (
             <Image
@@ -65,6 +65,8 @@ export function ProductCard({ product, className }: ProductCardProps) {
               alt={imageAlt}
               className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
               fill
+              sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 320px"
+              loading="lazy"
               onError={() => setImageErrored(true)}
             />
           ) : (
@@ -77,7 +79,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
           )}
         </div>
       </div>
-      <div className="px-3 sm:px-5">
+      <div className="px-2.5 sm:px-4">
         <div className="text-lg font-bold leading-snug sm:text-xl sm:leading-8">
           {product.name}
         </div>
@@ -88,8 +90,8 @@ export function ProductCard({ product, className }: ProductCardProps) {
         ) : null}
       </div>
       <div className="flex flex-1 flex-col justify-end">
-        <div className="flex items-end justify-between gap-2 sm:gap-4">
-          <div className="flex flex-col gap-0 px-3 py-1.5 sm:gap-0.5 sm:px-5 sm:py-2">
+        <div className="flex items-end justify-between gap-1.5 sm:gap-3">
+          <div className="flex flex-col gap-0 px-2.5 py-1 sm:gap-0.5 sm:px-4 sm:py-1.5">
             <div className="text-xs text-muted-foreground sm:text-sm">
               {t("addToCart")}
             </div>

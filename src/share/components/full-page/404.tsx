@@ -1,45 +1,60 @@
-// import NextLink from 'next/link'
-// import { Error404 } from '@/share/icons'
-// import { Button } from '@/share/ui/button'
-// import {
-//   Empty,
-//   EmptyContent,
-//   EmptyDescription,
-//   EmptyHeader,
-//   EmptyTitle,
-// } from '@/share/ui/empty'
-// import FullPageLayout from './layout'
-// import { useTranslations } from 'next-intl'
+"use client";
 
-// type NotFound404Props = {
-//   message?: string
-//   code?: string
-// }
+import Image from "next/image";
+import { TypewriterText } from "@/share/components/typewriter-text";
+import { Button } from "@/share/ui/button";
+import Link from "next/link";
+import { useState } from "react";
 
-// export default function NotFound404(props?: NotFound404Props) {
-//   const messageProp = props?.message
-//   const codeProp = props?.code
-//   const t = useTranslations('common')
+type NotFound404Props = {
+  line1?: string;
+  line2?: string;
+  imageAlt?: string;
+  homeLabel?: string;
+};
 
-//   return (
-//     <FullPageLayout>
-//       <Empty>
-//         <EmptyHeader>
-//           <Error404 className="size-[144px]" />
-//         </EmptyHeader>
-//         <EmptyContent>
-//           <EmptyTitle>{t('error.title')}</EmptyTitle>
-//           <EmptyDescription>
-//             {messageProp ?? t('error.description')}
-//           </EmptyDescription>
-//           <EmptyDescription className="text-grey-6">
-//             {t('error.code')}: {codeProp ?? '404'}
-//           </EmptyDescription>
-//         </EmptyContent>
-//         <Button variant="default" size="sm" rounded asChild>
-//           <NextLink href="/">{t('btn.got_it')}</NextLink>
-//         </Button>
-//       </Empty>
-//     </FullPageLayout>
-//   )
-// }
+export default function NotFound404({
+  line1 = "Something went wrong while loading this page.",
+  line2 = "Please try again or come back later.",
+  imageAlt = "Coffee cup and intro message",
+  homeLabel = "Home",
+}: NotFound404Props) {
+  const [isFirstLineDone, setIsFirstLineDone] = useState(false);
+
+  return (
+    <div className="min-h-dvh bg-[#D7A15B] px-6 py-10">
+      <div className="mx-auto flex min-h-[calc(90dvh-5rem)] w-full max-w-sm flex-col items-center justify-center gap-4 text-center">
+        <div className="flex w-full flex-col items-center gap-2">
+          <div className="flex w-full justify-center">
+            <Image
+              src="/images/error.svg"
+              alt={imageAlt}
+              width={340}
+              height={440}
+              priority
+              className="h-auto w-full max-w-[330px] object-contain"
+            />
+          </div>
+          <div className="flex min-h-16 flex-col gap-2 text-center text-base leading-relaxed font-medium text-stone-900/90">
+            <p>
+              <TypewriterText
+                text={line1}
+                speed={25}
+                cursorClassName="ml-0.5"
+                onComplete={() => setIsFirstLineDone(true)}
+              />
+            </p>
+            <p>
+              {isFirstLineDone ? (
+                <TypewriterText text={line2} speed={25} cursorClassName="ml-0.5" />
+              ) : null}
+            </p>
+          </div>
+        </div>
+        <Button type="button" variant="chocolate" size="lg" className="w-full" asChild>
+          <Link href="/">{homeLabel}</Link>
+        </Button>
+      </div>
+    </div>
+  );
+}
