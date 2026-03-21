@@ -66,17 +66,17 @@ export function OrderWrapper() {
 
   return (
     <div className="container mx-auto flex flex-col gap-6 pt-5 md:gap-8 md:pt-28">
-      <div className="relative mb-2 flex flex-col items-center gap-4 md:mb-4 md:gap-8">
+      <div className="relative mb-2 flex flex-col gap-3 md:mb-4 md:gap-8">
         <Button
           variant="outline"
           size="sm"
           onClick={() => router.back()}
-          className="hidden md:inline-flex absolute left-0 top-0"
+          className="w-fit shrink-0 md:absolute md:left-0 md:top-0"
         >
           <ChevronLeft className="size-5" />
           <span className="text-sm font-semibold">{t("btn.back")}</span>
         </Button>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center text-center md:w-full">
           <h1 className="text-2xl font-extrabold text-oregon-900 sm:text-3xl">
             {t("title")}
           </h1>
