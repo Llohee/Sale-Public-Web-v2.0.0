@@ -88,6 +88,14 @@
       "checkout": "Checkout",
       "continue": "Continue"
     },
+    "toast": {
+      "creating_order": "Creating order...",
+      "order_created_success": "Order created",
+      "order_created_error": "Could not create order",
+      "processing_payment": "Processing payment...",
+      "payment_success": "Payment successful",
+      "payment_error": "Payment failed"
+    },
     "checkout_title": "Payment information",
     "payment_method_choose": "Select payment method",
     "fields": {

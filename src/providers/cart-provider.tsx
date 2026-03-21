@@ -19,6 +19,8 @@ import {
 const CART_STORAGE_KEY = "coffee-cart";
 
 interface CartContextType {
+  /** false until cart is loaded from localStorage (first client mount). */
+  isHydrated: boolean;
   items: CartItem[];
   addItem: (params: {
     product: ProductDetail;
@@ -138,6 +140,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo(
     () => ({
+      isHydrated: hydrated,
       items,
       addItem,
       removeItem,
@@ -147,6 +150,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       clearCart,
     }),
     [
+      hydrated,
       items,
       addItem,
       removeItem,

@@ -6,7 +6,11 @@ import { useState } from "react";
 import OrderCheckoutModal from "./modal";
 import { useGetAllPaymentMethods } from "@/services/payment/payment.query-options";
 
-export default function OrderForm() {
+type OrderFormProps = {
+  onInAppPaymentSuccess?: () => void;
+};
+
+export default function OrderForm({ onInAppPaymentSuccess }: OrderFormProps) {
   const t = useTranslations("order");
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
   const [openCheckoutModal, setOpenCheckoutModal] = useState(false);
@@ -129,6 +133,7 @@ export default function OrderForm() {
           title={t("checkout_title")}
           confirmDisabled={false}
           paymentMethods={paymentMethods.data}
+          onInAppPaymentSuccess={onInAppPaymentSuccess}
         />
       </>
     );

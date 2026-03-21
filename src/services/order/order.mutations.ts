@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CheckoutPaymentDetailResponse,
   OrderCheckoutRequest,
@@ -7,6 +9,7 @@ import {
 import { useAnimatedToast } from "@/share/ui/animated-toast";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useTranslations } from "next-intl";
 import orderApi from "./order.service";
 import { BaseAPIResponse } from "@/models/api/common";
 import { CartItem } from "@/types/cart";
@@ -16,17 +19,17 @@ export type UseOrderFormProps = {
   items: CartItem[];
   paymentMethod: PaymentMethodDetail;
   onSuccess: () => void;
+  onNoPaymentUrl?: () => void;
 };
 
-export const useCreateOrderMutation = ({
-  items,
-  paymentMethod,
-  onSuccess,
-}: UseOrderFormProps) => {
+export const useCreateOrderMutation = (props: UseOrderFormProps) => {
+  const { paymentMethod, onSuccess, onNoPaymentUrl } = props;
+  const t = useTranslations("order.toast");
   const { addToast } = useAnimatedToast();
 
   const checkoutMutation = useOrderCheckoutMutation({
-    onSuccess: () => {},
+    onSuccess,
+    onNoPaymentUrl,
   });
 
   return useMutation<
@@ -38,29 +41,44 @@ export const useCreateOrderMutation = ({
       return orderApi.create(data);
     },
     onMutate: () => {
-      addToast({ message: "Đang tạo đơn...", type: "info" });
+      addToast({
+        message: t("creating_order"),
+        type: "info",
+        dismissOthers: true,
+      });
     },
     onSuccess: (data) => {
-      addToast({ message: "Tạo đơn thành công", type: "success" });
+      addToast({
+        message: t("order_created_success"),
+        type: "success",
+        dismissOthers: true,
+      });
       checkoutMutation.mutate({
-        method: paymentMethod.id,
+        method: paymentMethod.channel,
         provider_code: paymentMethod.provider_code,
         order_id: data.data.externalOrderId,
       });
     },
     onError: () => {
-      addToast({ message: "Tạo đơn thất bại", type: "error" });
+      addToast({
+        message: t("order_created_error"),
+        type: "error",
+        dismissOthers: true,
+      });
     },
   });
 };
 
 export type UseOrderCheckoutProps = {
   onSuccess: () => void;
+  onNoPaymentUrl?: () => void;
 };
 
 export const useOrderCheckoutMutation = ({
   onSuccess,
+  onNoPaymentUrl,
 }: UseOrderCheckoutProps) => {
+  const t = useTranslations("order.toast");
   const { addToast } = useAnimatedToast();
   return useMutation<
     CheckoutPaymentDetailResponse,
@@ -71,15 +89,37 @@ export const useOrderCheckoutMutation = ({
       return orderApi.checkout(data);
     },
     onMutate: () => {
-      addToast({ message: "Đang xử lý...", type: "info" });
+      addToast({
+        message: t("processing_payment"),
+        type: "info",
+        dismissOthers: true,
+      });
     },
     onSuccess: (data) => {
-      window.location.href = data.data.payment.payment_url;
-      addToast({ message: "Thanh toán thành công", type: "success" });
       onSuccess();
+      const paymentUrl = data.data.payment.payment_url?.trim() ?? "";
+      if (paymentUrl) {
+        addToast({
+          message: t("payment_success"),
+          type: "success",
+          dismissOthers: true,
+        });
+        window.location.href = paymentUrl;
+        return;
+      }
+      addToast({
+        message: t("payment_success"),
+        type: "success",
+        dismissOthers: true,
+      });
+      onNoPaymentUrl?.();
     },
     onError: () => {
-      addToast({ message: "Thanh toán thất bại", type: "error" });
+      addToast({
+        message: t("payment_error"),
+        type: "error",
+        dismissOthers: true,
+      });
     },
   });
 };

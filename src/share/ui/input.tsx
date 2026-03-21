@@ -83,6 +83,7 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
     ref: registerRef,
     onBlur: registerOnBlur,
     onFocus: registerOnFocus,
+    onChange: registerOnChange,
     ...registerRest
   } = registerPayload as {
     ref?: React.Ref<HTMLInputElement>;
@@ -97,6 +98,7 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
     onBlur: propsOnBlur,
     onFocus: propsOnFocus,
     onKeyDown: propsOnKeyDown,
+    onChange: propsOnChange,
     ...restProps
   } = props;
 
@@ -104,6 +106,18 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
 
   const inputType = () =>
     type === "password" && isShowPassword ? "text" : type;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (type === "tel") {
+      const el = e.target;
+      const cleaned = el.value.replace(/[^\d+]/g, "");
+      if (cleaned !== el.value) {
+        el.value = cleaned;
+      }
+    }
+    registerOnChange?.(e);
+    propsOnChange?.(e);
+  };
 
   return (
     <div className="relative flex flex-1 items-center gap-2 z-0">
@@ -113,14 +127,10 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
           ? {
               ...registerRest,
               name,
-              onChange: (
-                registerRest as {
-                  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-                }
-              ).onChange,
               ref: registerRef,
             }
           : {})}
+        onChange={handleChange}
         onBlur={(e) => {
           registerOnBlur?.(e);
           propsOnBlur?.(e);
@@ -142,20 +152,16 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
         }
         disabled={disabled}
         onKeyDown={(e) => {
-          if (type === "tel" && /[a-zA-Z]/.test(e.key)) {
+          // Only block printable keys; e.g. /[a-zA-Z]/.test("Backspace") is true — broke delete.
+          if (
+            type === "tel" &&
+            e.key.length === 1 &&
+            !/[\d+]/.test(e.key)
+          ) {
             e.preventDefault();
             return;
           }
           propsOnKeyDown?.(e);
-        }}
-        onPaste={(e) => {
-          if (type === "tel") {
-            const text = e.clipboardData.getData("text");
-            if (/[a-zA-Z]/.test(text)) {
-              e.preventDefault();
-              return;
-            }
-          }
         }}
         className={cn(
           inputVariants({

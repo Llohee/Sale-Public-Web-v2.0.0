@@ -34,9 +34,11 @@ interface Toast {
   };
 }
 
+export type AddToastPayload = Omit<Toast, "id"> & { dismissOthers?: boolean };
+
 interface ToastContextType {
   toasts: Toast[];
-  addToast: (toast: Omit<Toast, "id">) => string;
+  addToast: (toast: AddToastPayload) => string;
   removeToast: (id: string) => void;
   clearAll: () => void;
 }
@@ -58,10 +60,12 @@ export function AnimatedToastProvider({
   const [toasts, setToasts] = React.useState<Toast[]>([]);
 
   const addToast = React.useCallback(
-    (toast: Omit<Toast, "id">) => {
+    (input: AddToastPayload) => {
+      const { dismissOthers, ...toast } = input;
       const id = Math.random().toString(36).substr(2, 9);
       setToasts((prev) => {
-        const newToasts = [...prev, { ...toast, id }];
+        const base = dismissOthers ? [] : prev;
+        const newToasts = [...base, { ...toast, id }];
         return newToasts.slice(-maxToasts);
       });
       return id;
@@ -169,7 +173,7 @@ function ToastItem({ toast, index, onRemove, isTop }: ToastItemProps) {
         transition: { duration: 0.2 },
       }}
       className={cn(
-        "pointer-events-auto min-w-[320px] max-w-[420px] rounded-lg border border-l-4 bg-card p-4 shadow-lg",
+        "pointer-events-auto relative min-w-[320px] max-w-[420px] rounded-lg border border-l-4 bg-card p-4 shadow-lg",
         borderColors[type],
       )}
     >
@@ -190,8 +194,10 @@ function ToastItem({ toast, index, onRemove, isTop }: ToastItemProps) {
           )}
         </div>
         <button
+          type="button"
           onClick={onRemove}
           className="flex-shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          aria-label="Đóng thông báo"
         >
           <X className="h-4 w-4" />
         </button>
