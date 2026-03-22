@@ -27,6 +27,14 @@ export function parseFilterSearchParams(
   })
 }
 
+export function filterKeyForInfinite(
+  filter: Filter,
+): Omit<Filter, "offset"> {
+  const { offset, ...rest } = filter
+  void offset
+  return rest
+}
+
 export const convertQueryAPI = (
   filter: Filter,
   nameSearch?: string | string[],

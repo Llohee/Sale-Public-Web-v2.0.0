@@ -1,13 +1,14 @@
 "use client";
 
-import { BANNER_BACKGROUND_URL } from "@/constants/product";
+import { BANNER_BACKGROUND_URL, PRODUCT_LIST_PAGE_SIZE } from "@/constants/product";
 import { useFilter } from "@/providers/filter-provider";
 import {
   useGetAllProductCategories,
-  useGetAllProducts,
+  useInfiniteProductList,
 } from "@/services/product/product.query-options";
 import type { ProductDetail } from "@/services/product/product.schema";
 import { LoadingPage } from "@/share/components/full-page/loading";
+import NotFoundPage from "@/share/components/full-page/404";
 import { cn } from "@/share/lib/utils";
 import { Button } from "@/share/ui/button";
 import { useTranslations } from "next-intl";
@@ -23,11 +24,14 @@ import { ProductCard } from "./card";
 
 export function ProductsWrapper() {
   const t = useTranslations("ProductPage");
-  const { filter, onSearchChange, updateParam } = useFilter();
+  const { filter, updateParam } = useFilter();
   const selectedCategoryId = filter.productCategoryId?.trim() || undefined;
   const categorySwiperRef = useRef<SwiperClass | null>(null);
+  const productSwiperRef = useRef<SwiperClass | null>(null);
+  const isUserSwipingProductRef = useRef(false);
   /** Autoplay category strip chỉ trên mobile (dưới breakpoint `md`). */
   const [isMobileCategoryStrip, setIsMobileCategoryStrip] = useState(false);
+  const [productViewportWidth, setProductViewportWidth] = useState(0);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
@@ -37,6 +41,18 @@ export function ProductsWrapper() {
     return () => mq.removeEventListener("change", update);
   }, []);
 
+  useEffect(() => {
+    const update = () => setProductViewportWidth(window.innerWidth);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const productListFilter = useMemo(
+    () => ({ ...filter, limit: PRODUCT_LIST_PAGE_SIZE }),
+    [filter],
+  );
+
   const {
     data: productCategories,
     isLoading: isLoadingProductCategories,
@@ -44,11 +60,19 @@ export function ProductsWrapper() {
     isSuccess: isSuccessProductCategories,
   } = useGetAllProductCategories();
   const {
-    data: products,
-    isLoading: isLoadingProducts,
+    data: productsPages,
+    isPending: isPendingProducts,
     isError: isErrorProducts,
     isSuccess: isSuccessProducts,
-  } = useGetAllProducts(filter);
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteProductList(productListFilter);
+
+  const flatProducts = useMemo(
+    () => productsPages?.pages.flatMap((p) => p.data) ?? [],
+    [productsPages],
+  );
 
   const filterOptions = useMemo(() => {
     const categories = productCategories?.data ?? [];
@@ -61,10 +85,32 @@ export function ProductsWrapper() {
       })),
     ];
   }, [productCategories, t]);
+  const productsCount = flatProducts.length;
+
+  const productSwiperConfig = useMemo(() => {
+    if (productViewportWidth >= 1280) return { slidesPerView: 4, spaceBetween: 32 };
+    if (productViewportWidth >= 1024) return { slidesPerView: 3, spaceBetween: 28 };
+    if (productViewportWidth >= 640) return { slidesPerView: 2, spaceBetween: 24 };
+    return { slidesPerView: productsCount > 1 ? 1.2 : 1, spaceBetween: 8 };
+  }, [productViewportWidth, productsCount]);
+  const shouldShowInitialLoading =
+    (isPendingProducts && !productsPages) ||
+    (isLoadingProductCategories && !productCategories);
+
+  useEffect(() => {
+    const swiper = productSwiperRef.current;
+    if (!swiper) return;
+    requestAnimationFrame(() => {
+      swiper.update();
+      swiper.updateSlides();
+      swiper.updateProgress();
+    });
+  }, [productViewportWidth, productsCount, productSwiperConfig.slidesPerView, productSwiperConfig.spaceBetween]);
 
   useEffect(() => {
     const swiper = categorySwiperRef.current;
     if (!swiper) return;
+    if (selectedCategoryId !== undefined) return;
     const idx = filterOptions.findIndex(
       (o) => (o.value?.trim() || undefined) === selectedCategoryId,
     );
@@ -76,24 +122,26 @@ export function ProductsWrapper() {
   useEffect(() => {
     const swiper = categorySwiperRef.current;
     if (!swiper?.autoplay) return;
-    if (isMobileCategoryStrip) {
+    const shouldAutoplay =
+      isMobileCategoryStrip && selectedCategoryId === undefined;
+    if (shouldAutoplay) {
       swiper.autoplay.start();
     } else {
       swiper.autoplay.stop();
     }
-  }, [isMobileCategoryStrip]);
+  }, [isMobileCategoryStrip, selectedCategoryId]);
 
-  if (isLoadingProducts || isLoadingProductCategories) {
+  if (shouldShowInitialLoading) {
     return <LoadingPage />;
   }
 
   if (isErrorProducts || isErrorProductCategories) {
-    return <div>Error loading products</div>;
+    return <NotFoundPage />;
   }
 
   if (isSuccessProducts && isSuccessProductCategories) {
     return (
-      <div className="flex min-h-0 w-full flex-col">
+      <div className="flex min-h-0 min-w-0 w-full flex-col">
         <div className="relative flex h-[min(38vh,240px)] min-h-[200px] shrink-0 items-center justify-center overflow-hidden sm:h-[min(42vh,320px)] sm:min-h-[260px] md:h-[380px] md:min-h-0 lg:h-[400px]">
           <Image
             src={BANNER_BACKGROUND_URL}
@@ -120,97 +168,130 @@ export function ProductsWrapper() {
           </div>
         </div>
 
-        <div className="w-full">
-          <div className="container mx-auto px-4 py-8">
-            <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:gap-x-6">
-              <div className="order-2 min-w-0 max-w-full shrink-0 overflow-hidden md:order-1">
-                <Swiper
-                  modules={[Autoplay, FreeMode]}
-                  slidesPerView="auto"
-                  spaceBetween={10}
-                  freeMode={{ enabled: true, momentumRatio: 0.65 }}
-                  autoplay={
-                    isMobileCategoryStrip
-                      ? {
-                          delay: 2800,
-                          disableOnInteraction: false,
-                          pauseOnMouseEnter: true,
-                        }
-                      : false
-                  }
-                  loop={filterOptions.length > 4 && isMobileCategoryStrip}
-                  watchOverflow
-                  className="category-filter-swiper w-full [&_.swiper-scrollbar]:hidden"
-                  wrapperClass="!flex items-center"
-                  onSwiper={(instance) => {
-                    categorySwiperRef.current = instance;
-                  }}
-                >
-                  {filterOptions.map((option) => {
-                    const optionValue = option.value?.trim() || undefined;
-                    const selected = selectedCategoryId === optionValue;
-
-                    return (
-                      <SwiperSlide
-                        key={option.value || "all"}
-                        className="w-auto!"
-                      >
-                        <Button
-                          variant={selected ? "chocolate" : "chocolate-outline"}
-                          size="lg"
-                          className={cn("rounded-[33px] px-4 py-2")}
-                          onClick={() =>
-                            updateParam("productCategoryId", optionValue, {
-                              removeKeys: ["category", "productCategoryCode"],
-                            })
-                          }
-                        >
-                          {option.label}
-                        </Button>
-                      </SwiperSlide>
-                    );
-                  })}
-                </Swiper>
-              </div>
-              <div
-                className="hidden shrink-0 md:order-2 md:block md:w-60"
-                aria-hidden
-              />
-              {/* <div className="order-1 md:order-3 min-w-0 flex-1 w-full">
-                <SearchInput
-                  value={filter.keyword}
-                  onChange={onSearchChange}
-                  placeholder={t("filter.search_placeholder")}
-                  className="w-full"
-                />
-              </div> */}
-            </div>
-
-            <div className="relative overflow-hidden py-6">
+        <div className="w-full min-w-0">
+          <div className="container mx-auto min-w-0 px-4 py-5 sm:py-6">
+            <div
+              role="region"
+              aria-label={t("filter.categories_region")}
+              className="relative w-full min-w-0 overflow-x-hidden overflow-y-visible py-2 sm:py-3"
+            >
               <Swiper
-                modules={[Autoplay]}
-                slidesPerView={products.data.length > 1 ? 1.2 : 1}
-                spaceBetween={8}
-                breakpoints={{
-                  640: { slidesPerView: 2, spaceBetween: 24 },
-                  1024: { slidesPerView: 3, spaceBetween: 28 },
-                  1280: { slidesPerView: 4, spaceBetween: 32 },
-                }}
-                watchOverflow={false}
-                loop={false}
-                rewind={products.data.length > 1}
+                modules={[Autoplay, FreeMode]}
+                slidesPerView="auto"
+                spaceBetween={6}
+                noSwiping={false}
+                freeMode={{ enabled: true, momentumRatio: 0.65 }}
                 autoplay={
-                  products.data.length > 1
+                  isMobileCategoryStrip && selectedCategoryId === undefined
                     ? {
-                        delay: 3000,
+                        delay: 2800,
                         disableOnInteraction: false,
                         pauseOnMouseEnter: true,
                       }
                     : false
                 }
-                className="w-full"
+                loop={
+                  filterOptions.length > 4 &&
+                  isMobileCategoryStrip &&
+                  selectedCategoryId === undefined
+                }
+                watchOverflow={false}
+                className="category-filter-swiper w-full min-w-0 touch-pan-x [&_.swiper]:min-w-0 [&_.swiper-scrollbar]:hidden"
+                wrapperClass="!flex items-center"
+                onSwiper={(instance) => {
+                  categorySwiperRef.current = instance;
+                }}
               >
-                {products.data.map((product: ProductDetail) => (
+                {filterOptions.map((option) => {
+                  const optionValue = option.value?.trim() || undefined;
+                  const selected = selectedCategoryId === optionValue;
+
+                  return (
+                    <SwiperSlide
+                      key={option.value || "all"}
+                      className="w-auto! py-1!"
+                    >
+                      <Button
+                        variant={selected ? "chocolate" : "chocolate-outline"}
+                        size="lg"
+                        className={cn(
+                          "touch-pan-x rounded-[33px] px-3 py-1.5 sm:px-4 sm:py-2",
+                        )}
+                        onClick={() =>
+                          updateParam("productCategoryId", optionValue, {
+                            removeKeys: [
+                              "category",
+                              "productCategoryCode",
+                              "page",
+                            ],
+                          })
+                        }
+                      >
+                        {option.label}
+                      </Button>
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </div>
+
+            <div className="relative max-w-full min-w-0 overflow-x-hidden overflow-y-visible pb-4 pt-2 sm:pb-5 sm:pt-3">
+              <Swiper
+                modules={[Autoplay]}
+                slidesPerView={productSwiperConfig.slidesPerView}
+                spaceBetween={productSwiperConfig.spaceBetween}
+                speed={420}
+                watchOverflow={false}
+                loop={false}
+                rewind={flatProducts.length > 1 && !hasNextPage}
+                observer
+                observeParents
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                  waitForTransition: true,
+                }}
+                className="product-list-swiper w-full"
+                onSwiper={(instance) => {
+                  productSwiperRef.current = instance;
+                  requestAnimationFrame(() => {
+                    instance.update();
+                  });
+                }}
+                onReachEnd={() => {
+                  if (hasNextPage && !isFetchingNextPage) {
+                    fetchNextPage();
+                  }
+                }}
+                onSlideChangeTransitionEnd={(swiper) => {
+                  if (
+                    swiper.isEnd &&
+                    hasNextPage &&
+                    !isFetchingNextPage
+                  ) {
+                    fetchNextPage();
+                  }
+                }}
+                onTouchStart={() => {
+                  isUserSwipingProductRef.current = true;
+                }}
+                onTouchEnd={(instance) => {
+                  if (!isUserSwipingProductRef.current) return;
+                  isUserSwipingProductRef.current = false;
+                  if (!instance.isEnd) return;
+                  if (hasNextPage && !isFetchingNextPage) {
+                    fetchNextPage();
+                    return;
+                  }
+                  if (flatProducts.length > 1) {
+                    requestAnimationFrame(() => {
+                      instance.slideTo(0, 420);
+                    });
+                  }
+                }}
+              >
+                {flatProducts.map((product: ProductDetail) => (
                   <SwiperSlide key={product.id} className="h-auto!">
                     <ProductCard
                       product={product}

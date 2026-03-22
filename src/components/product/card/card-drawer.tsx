@@ -21,6 +21,7 @@ import { DEFAULT_QUANTITY, DEFAULT_SIZE } from "@/constants/product";
 import { AddToCartModal } from "./modal";
 import { useTranslations } from "next-intl";
 import { costFormat } from "@/util/format";
+import { cn } from "@/share/lib/utils";
 
 interface AddToCartDrawerProps {
   product: ProductDetail;
@@ -226,13 +227,19 @@ export function AddToCartDrawer({
               </span>
             </p>
             <Button
-              variant="dive"
-              size="lg"
-              className="shrink-0 rounded-full"
+              type="button"
+              variant="default"
+              aria-label={t("add_to_cart")}
+              className={cn(
+                "h-14 w-14 shrink-0 border-0 p-0 shadow-md",
+                "rounded-[18px_0px_18px_0] ring-1 ring-amber-950/15",
+                "hover:bg-oregon-600 hover:shadow-lg hover:-translate-y-px active:translate-y-0",
+                "[&_svg]:size-6",
+              )}
               onClick={handleAddToCart}
             >
-              <ShoppingCart className="size-5" />
-              {t("add_to_cart")}
+              <ShoppingCart aria-hidden />
+              <span className="sr-only">{t("add_to_cart")}</span>
             </Button>
           </div>
         </DrawerFooter>

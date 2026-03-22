@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "@/i18n/navigation";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { Filter, FilterSort } from "@/models/api/common";
 import { serializeSort } from "@/util/filter";
 import { useSearchParams } from "next/navigation";
@@ -29,6 +29,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({
   filter,
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const onSortChange = (sort?: FilterSort) => {
@@ -52,7 +53,8 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({
     const trimmed = value?.trim();
     if (trimmed) params.set(key, trimmed);
     else params.delete(key);
-    router.push(`?${params.toString()}`);
+    const qs = params.toString();
+    router.push(qs ? `${pathname}?${qs}` : pathname);
   }
 
   return (
