@@ -35,7 +35,7 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
           speed={420}
           watchOverflow={false}
           autoplay={{
-            delay: 3000,
+            delay: 2400,
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
             waitForTransition: true,

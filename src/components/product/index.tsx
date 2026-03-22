@@ -93,6 +93,10 @@ export function ProductsWrapper() {
     if (productViewportWidth >= 640) return { slidesPerView: 2, spaceBetween: 24 };
     return { slidesPerView: productsCount > 1 ? 1.2 : 1, spaceBetween: 8 };
   }, [productViewportWidth, productsCount]);
+
+  const productLoopEnabled =
+    !hasNextPage &&
+    flatProducts.length > Math.ceil(productSwiperConfig.slidesPerView);
   const shouldShowInitialLoading =
     (isPendingProducts && !productsPages) ||
     (isLoadingProductCategories && !productCategories);
@@ -184,7 +188,7 @@ export function ProductsWrapper() {
                 autoplay={
                   isMobileCategoryStrip && selectedCategoryId === undefined
                     ? {
-                        delay: 2800,
+                        delay: 2200,
                         disableOnInteraction: false,
                         pauseOnMouseEnter: true,
                       }
@@ -242,12 +246,12 @@ export function ProductsWrapper() {
                 spaceBetween={productSwiperConfig.spaceBetween}
                 speed={420}
                 watchOverflow={false}
-                loop={false}
-                rewind={flatProducts.length > 1 && !hasNextPage}
+                loop={productLoopEnabled}
+                rewind={false}
                 observer
                 observeParents
                 autoplay={{
-                  delay: 3000,
+                  delay: 2400,
                   disableOnInteraction: false,
                   pauseOnMouseEnter: true,
                   waitForTransition: true,
@@ -282,12 +286,6 @@ export function ProductsWrapper() {
                   if (!instance.isEnd) return;
                   if (hasNextPage && !isFetchingNextPage) {
                     fetchNextPage();
-                    return;
-                  }
-                  if (flatProducts.length > 1) {
-                    requestAnimationFrame(() => {
-                      instance.slideTo(0, 420);
-                    });
                   }
                 }}
               >
