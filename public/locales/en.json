@@ -21,6 +21,7 @@
     "subtitle": "Pick the coffee you'd like to enjoy today.",
     "empty": "No matching products found.",
     "addToCart": "Add to cart",
+    "no_image": "No image",
     "filter": {
       "all": "All",
       "search_placeholder": "Search your favorite drink",
@@ -43,6 +44,10 @@
     }
   },
   "form": {
+    "input": {
+      "placeholder": "Enter {label}",
+      "search_placeholder": "Search drinks"
+    },
     "btn": {
       "cancel": "Cancel",
       "save": "Save",
@@ -63,8 +68,6 @@
       "relatedSubtitle": "Explore more items from the same category.",
       "sizeLabel": "Select size",
       "quantityLabel": "Quantity",
-      "decrease": "Decrease",
-      "increase": "Increase",
       "totalLabel": "Total",
       "addToOrder": "Add to order"
     },

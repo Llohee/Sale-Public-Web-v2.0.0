@@ -73,7 +73,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-amber-900/60 sm:gap-2">
               <ImageOff className="size-6 sm:size-8" />
               <span className="text-xs font-semibold tracking-wide sm:text-xs">
-                {t("imageUnavailable", { default: "No image" })}
+                {t("no_image")}
               </span>
             </div>
           )}

@@ -1,12 +1,10 @@
 "use client";
 
 import { Link, useRouter } from "@/i18n/navigation";
-import { LAST_ORDER_SNAPSHOT_KEY } from "@/constants/order";
 import { useCart } from "@/providers/cart-provider";
 import { Button } from "@/share/ui/button";
 import { ChevronLeft, Receipt } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useLayoutEffect, useState } from "react";
 import OrderForm from "./create";
 import OrderListItem from "./list_item";
 
