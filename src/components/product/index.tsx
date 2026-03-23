@@ -50,12 +50,16 @@ export function ProductsWrapper() {
 
   const filterOptions = useMemo(() => {
     const categories = productCategories?.data ?? [];
-    return [
-      { value: '', label: t('filter.all') },
-      ...categories.map((c) => ({
+    const categoryOptions = categories
+      .filter((c) => c.id?.trim())
+      .map((c) => ({
         value: c.id,
         label: c.name,
-      })),
+      }));
+
+    return [
+      { value: '', label: t('filter.all') },
+      ...categoryOptions,
     ];
   }, [productCategories, t]);
 
