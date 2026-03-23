@@ -27,8 +27,7 @@ export default function SearchInput({
     setText(value)
   }, [value])
 
-  const placeholderText =
-    placeholder ?? t('input.search_placeholder', { label: 'undefined' })
+  const placeholderText = placeholder ?? t('input.search_placeholder')
 
   return (
     <InputGroup

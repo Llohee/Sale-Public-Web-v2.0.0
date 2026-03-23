@@ -21,6 +21,7 @@
     "subtitle": "Chọn món cà phê bạn muốn thưởng thức hôm nay.",
     "empty": "Chưa có sản phẩm phù hợp.",
     "addToCart": "Thêm vào giỏ",
+    "no_image": "Không có ảnh",
     "filter": {
       "all": "Tất cả",
       "search_placeholder": "Tìm kiếm đồ uống yêu thích",
@@ -43,6 +44,10 @@
     }
   },
   "form": {
+    "input": {
+      "placeholder": "Nhập {label}",
+      "search_placeholder": "Tìm kiếm món uống"
+    },
     "btn": {
       "cancel": "Hủy",
       "save": "Lưu",
@@ -63,8 +68,6 @@
       "relatedSubtitle": "Khám phá thêm những món cùng danh mục.",
       "sizeLabel": "Chọn size",
       "quantityLabel": "Số lượng",
-      "decrease": "Giảm",
-      "increase": "Tăng",
       "totalLabel": "Tổng",
       "addToOrder": "Thêm vào đơn hàng"
     },
@@ -133,6 +136,7 @@
     "size": "Size: {size}",
     "note": "Ghi chú: {note}",
     "quantity": "Số lượng",
+    "checkout": "Thanh toán",
     "line_total_label": "Thành tiền",
     "note_label": "Ghi chú",
     "note_placeholder": "Ví dụ: ít đá, ít ngọt, thêm ống hút...",
