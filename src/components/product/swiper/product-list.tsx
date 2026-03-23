@@ -35,8 +35,8 @@ function layoutForViewport(width: number, productCount: number): SwiperLayout {
     }
   }
   return {
-    slidesPerView: productCount > 1 ? 1.2 : 1,
-    spaceBetween: 8,
+    slidesPerView: productCount > 1 ? 1.35 : 1,
+    spaceBetween: 0,
   };
 }
 
@@ -107,7 +107,9 @@ export function ProductListSwiper({
   }, [viewportWidth, productCount, layout.slidesPerView, layout.spaceBetween]);
 
   return (
-    <div className='relative max-w-full min-w-0 overflow-x-hidden overflow-y-visible pb-4 pt-2 sm:pb-5 sm:pt-3'>
+    <div className='relative max-w-full min-w-0 overflow-x-hidden overflow-y-visible bg-white pb-4 pt-2 sm:pb-5 sm:pt-3'>
+      <div className='pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-white via-white/85 to-transparent sm:w-28' />
+      <div className='pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-white via-white/85 to-transparent sm:w-28' />
       <Swiper
         modules={[Autoplay]}
         slidesPerView={layout.slidesPerView}
@@ -157,8 +159,8 @@ export function ProductListSwiper({
         }}
       >
         {products.map((product) => (
-          <SwiperSlide key={product.id} className='h-auto!'>
-            <ProductCard product={product} className='scale-[0.9] origin-top sm:scale-100' />
+          <SwiperSlide key={product.id} className='h-auto! px-3 sm:px-0'>
+            <ProductCard product={product} className='origin-top' />
           </SwiperSlide>
         ))}
       </Swiper>

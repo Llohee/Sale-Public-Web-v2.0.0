@@ -88,13 +88,15 @@ export function ProductsWrapper() {
         subtitle={t('subtitle')}
       />
       <div className='w-full min-w-0'>
-        <div className='container mx-auto min-w-0 px-4 py-5 sm:py-6'>
-          <CategoryFilterSwiper
-            options={filterOptions}
-            selectedCategoryId={selectedCategoryId}
-            categoriesRegionLabel={t('filter.categories_region')}
-            updateParam={updateParam}
-          />
+        <div className='min-w-0 px-4 py-5 sm:py-6 flex flex-col gap-5 sm:gap-6'>
+          <div className='container mx-auto min-w-0 px-0'>
+            <CategoryFilterSwiper
+              options={filterOptions}
+              selectedCategoryId={selectedCategoryId}
+              categoriesRegionLabel={t('filter.categories_region')}
+              updateParam={updateParam}
+            />
+          </div>
           <ProductListSwiper
             products={flatProducts}
             hasNextPage={!!hasNextPage}

@@ -20,7 +20,7 @@ export const PRODUCT_LIST_SWIPER_WRAPPER_EASING =
 export const PRODUCT_LIST_SWIPER_RESISTANCE_RATIO = 0.92;
 
 export const PRODUCT_LIST_SWIPER_LAYOUT_BY_BREAKPOINT = [
-  { minWidth: 1280, slidesPerView: 4, spaceBetween: 32 },
+  { minWidth: 1280, slidesPerView: 5, spaceBetween: 24 },
   { minWidth: 1024, slidesPerView: 3, spaceBetween: 28 },
   { minWidth: 640, slidesPerView: 2, spaceBetween: 24 },
 ] as const;
