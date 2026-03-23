@@ -3,8 +3,20 @@
     "header": {
       "landing_page": "Home",
       "products": "Products",
+      "location": "Location",
       "order": "Order"
     }
+  },
+  "location": {
+    "title": "Store locations",
+    "subtitle": "Choose a nearby branch to visit or open directions quickly in Google Maps.",
+    "distance": "{km} km",
+    "open_hours": "Open hours",
+    "view_map": "Get directions",
+    "map_title": "Sale Coffee store map",
+    "current_buying_location": "Current location",
+    "hanoi": "Ha Noi",
+    "other_stores": "Other stores"
   },
   "LandingPage": {
     "headingTexts": [

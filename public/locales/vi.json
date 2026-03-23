@@ -3,8 +3,20 @@
     "header": {
       "landing_page": "Trang chủ",
       "products": "Sản phẩm",
+      "location": "Địa điểm",
       "order": "Đơn hàng"
     }
+  },
+  "location": {
+    "title": "Hệ thống cửa hàng",
+    "subtitle": "Chọn chi nhánh gần bạn để ghé quán hoặc mở chỉ đường nhanh trên Google Maps.",
+    "distance": "{km} km",
+    "open_hours": "Giờ mở cửa",
+    "view_map": "Xem chỉ đường",
+    "map_title": "Bản đồ cửa hàng Sale Coffee",
+    "current_buying_location": "Đang mua hàng",
+    "hanoi": "Hà Nội",
+    "other_stores": "Các cửa hàng khác"
   },
   "LandingPage": {
     "headingTexts": [
