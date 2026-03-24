@@ -178,7 +178,7 @@ export function AddToCartDrawer({
         </DrawerHeader>
 
         <div
-          className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain px-4 [-webkit-overflow-scrolling:touch]"
+          className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain [-webkit-overflow-scrolling:touch]"
         >
           {imageSrc ? (
             <div className="pb-4">
@@ -216,7 +216,7 @@ export function AddToCartDrawer({
           </div>
         </div>
 
-        <DrawerFooter className="shrink-0 gap-3 border-t border-border/30 bg-background pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <DrawerFooter className="shrink-0 gap-3 border-t border-border/30 bg-background pt-3 px-0 pb-0">
           <div className="flex w-full items-center justify-between gap-3">
             <p className="flex min-w-0 flex-none flex-col text-sm font-semibold text-oregon-900">
               <span className="text-xs font-normal text-oregon-700/60">
