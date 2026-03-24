@@ -16,12 +16,17 @@ import { SubmitHandler, useForm } from "react-hook-form";
 export const useOrderForm = ({
   onSuccess,
   items,
+  comboItems,
   paymentMethod,
 }: UseOrderFormProps) => {
   const orderForm = useForm<OrderFormRequest>({
     defaultValues: {
       ordererName: "",
       phoneNumber: "",
+      comboItems: comboItems.map((item) => ({
+        comboId: item.comboId,
+        quantity: item.quantity,
+      })),
       items: items.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
@@ -34,17 +39,22 @@ export const useOrderForm = ({
     orderForm.reset({
       ordererName: "",
       phoneNumber: "",
+      comboItems: comboItems.map((item) => ({
+        comboId: item.comboId,
+        quantity: item.quantity,
+      })),
       items: items.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
         note: item.note,
       })),
     });
-  }, [orderForm, items]);
+  }, [orderForm, items, comboItems]);
 
   const mutation = useCreateOrderMutation({
     onSuccess,
     items,
+    comboItems,
     paymentMethod,
   });
   const handleFormSubmit: SubmitHandler<OrderFormRequest> = (data) => {

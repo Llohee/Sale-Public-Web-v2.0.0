@@ -12,7 +12,8 @@ export function OrderWrapper() {
   const router = useRouter();
   const t = useTranslations("order");
 
-  const { items, isHydrated } = useCart();
+  const { items, comboItems } = useCart();
+  const hasAnyCartItem = items.length > 0 || comboItems.length > 0;
 
   // useLayoutEffect(() => {
   //   if (!isHydrated) return;
@@ -22,7 +23,7 @@ export function OrderWrapper() {
   //   router.replace("/order/success");
   // }, [isHydrated, items.length, router]);
 
-  if (items.length === 0) {
+  if (!hasAnyCartItem) {
     return (
       <div className="flex min-h-0 w-full flex-1 flex-col pt-[calc(7rem+env(safe-area-inset-top,0px))] md:pt-28">
         <div className="flex flex-1 flex-col items-center justify-center gap-5 px-4 py-8 text-center">
@@ -73,7 +74,7 @@ export function OrderWrapper() {
       </div>
 
       <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-12">
-        <div className="col-span-12 lg:col-span-8 flex flex-col gap-8">
+        <div className="col-span-12 flex flex-col gap-5 lg:col-span-8 md:gap-8">
           <OrderListItem />
         </div>
         <div className="relative col-span-12 lg:col-span-4 lg:sticky lg:top-28 lg:z-10 lg:self-start">

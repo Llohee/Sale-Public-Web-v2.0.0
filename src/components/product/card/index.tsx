@@ -53,12 +53,12 @@ export function ProductCard({ product, className }: ProductCardProps) {
         }
       }}
       className={cn(
-        "relative group flex w-full flex-col gap-1.5 rounded-xl bg-white/70 drop-shadow-md transition-all duration-300 text-left cursor-pointer supports-backdrop-filter:backdrop-blur-md hover:ring-amber-900/15 sm:gap-2 sm:rounded-2xl",
+        "relative group flex w-full flex-col gap-1.5 overflow-hidden rounded-xl bg-white shadow-[0_16px_36px_rgba(15,23,42,0.2)] transition-all duration-300 text-left cursor-pointer supports-backdrop-filter:backdrop-blur-md hover:ring-amber-900/15 sm:gap-2 sm:rounded-2xl",
         className,
       )}
     >
-      <div className="flex items-center justify-center p-2 pb-0 sm:p-3">
-        <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-linear-to-br from-oregon-400 to-oregon-600 ring-1 ring-amber-900/10 sm:rounded-xl">
+      <div className="flex items-center justify-center p-0 sm:p-3">
+        <div className="relative aspect-square w-full overflow-hidden rounded-t-xl bg-linear-to-br from-oregon-400 to-oregon-600 ring-1 ring-amber-900/10 sm:w-full sm:rounded-xl">
           {hasImage && !imageErrored ? (
             <Image
               src={imageSrc}
@@ -80,22 +80,22 @@ export function ProductCard({ product, className }: ProductCardProps) {
         </div>
       </div>
       <div className="px-2.5 sm:px-4">
-        <div className="text-lg font-bold leading-snug sm:text-xl sm:leading-8">
+        <div className="text-base font-bold leading-snug sm:text-xl sm:leading-8">
           {product.name}
         </div>
         {product.description ? (
-          <p className="mt-0.5 line-clamp-2 text-sm leading-snug text-muted-foreground sm:mt-1 sm:text-sm">
+          <p className="mt-0.5 line-clamp-2 text-xs leading-snug text-muted-foreground sm:mt-1 sm:text-sm">
             {product.description}
           </p>
         ) : null}
       </div>
       <div className="flex flex-1 flex-col justify-end">
         <div className="flex items-end justify-between gap-1.5 sm:gap-3">
-          <div className="flex flex-col gap-0 px-2.5 py-1 sm:gap-0.5 sm:px-4 sm:py-1.5">
-            <div className="text-xs text-muted-foreground sm:text-sm">
+          <div className="flex flex-col gap-0.5 px-2.5 py-1 sm:gap-0.5 sm:px-4 sm:py-1.5">
+            <div className="text-[11px] text-muted-foreground sm:text-sm">
               {t("addToCart")}
             </div>
-            <div className="text-lg font-bold tracking-tight text-oregon-900 sm:text-lg">
+            <div className="text-base font-bold tracking-tight text-oregon-900 sm:text-lg">
               {costFormat(price)}
             </div>
           </div>
@@ -110,9 +110,9 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") e.stopPropagation();
                 }}
-                className="inline-flex h-14 min-w-13 shrink-0 items-center justify-center gap-2 rounded-[16px_0px_8px_0] bg-oregon-700 px-2.5 text-sm font-medium text-white hover:bg-oregon-600 sm:h-18 sm:min-w-0 sm:rounded-[20px_0px_10px_00px] sm:px-3 sm:text-base"
+                className="inline-flex h-12 min-w-11 shrink-0 items-center justify-center gap-2 rounded-[14px_0px_8px_0] bg-oregon-700 px-2 text-sm font-medium text-white hover:bg-oregon-600 sm:h-18 sm:min-w-0 sm:rounded-[20px_0px_10px_00px] sm:px-3 sm:text-base"
               >
-                <Plus className="size-6 sm:size-8" />
+                <Plus className="size-5 sm:size-8" />
               </span>
             }
           />

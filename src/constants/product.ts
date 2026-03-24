@@ -18,9 +18,16 @@ export const PRODUCT_LIST_SWIPER_TRANSITION_MS = 420;
 export const PRODUCT_LIST_SWIPER_WRAPPER_EASING =
   "cubic-bezier(0.33, 1, 0.68, 1)";
 export const PRODUCT_LIST_SWIPER_RESISTANCE_RATIO = 0.92;
+export const PRODUCT_LIST_SWIPER_TOUCH_RATIO = 1.1;
+export const PRODUCT_LIST_SWIPER_TOUCH_THRESHOLD_PX = 4;
+export const PRODUCT_LIST_SWIPER_LONG_SWIPES_RATIO = 0.22;
+export const PRODUCT_LIST_SWIPER_LONG_SWIPES_MS = 220;
+export const PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_RATIO = 0.82;
+export const PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO = 0.88;
+export const PRODUCT_LIST_SWIPER_FREE_MODE_MINIMUM_VELOCITY = 0.01;
 
 export const PRODUCT_LIST_SWIPER_LAYOUT_BY_BREAKPOINT = [
-  { minWidth: 1280, slidesPerView: 4, spaceBetween: 32 },
+  { minWidth: 1280, slidesPerView: 5, spaceBetween: 24 },
   { minWidth: 1024, slidesPerView: 3, spaceBetween: 28 },
   { minWidth: 640, slidesPerView: 2, spaceBetween: 24 },
 ] as const;

@@ -13,7 +13,7 @@ import { AxiosError } from "axios";
 import { useTranslations } from "next-intl";
 import orderApi from "./order.service";
 import { BaseAPIResponse } from "@/models/api/common";
-import { CartItem } from "@/types/cart";
+import { CartItem, ComboCartItem } from "@/types/cart";
 import { PaymentMethodDetail } from "../payment/payment.schema";
 
 export function useAddCartItemToasts() {
@@ -111,6 +111,7 @@ export function useClearCartItemsToasts() {
 
 export type UseOrderFormProps = {
   items: CartItem[];
+  comboItems: ComboCartItem[];
   paymentMethod: PaymentMethodDetail;
   onSuccess: () => void;
 };

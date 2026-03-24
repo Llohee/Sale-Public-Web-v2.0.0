@@ -79,7 +79,7 @@ export default function Modal({
             </div>
           ) : null}
 
-          <div className="px-6 pb-6 pt-2">
+          <div className="flex flex-col gap-6 px-6 pb-6 pt-2">
             <DialogHeader>
               <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
               {description ? (
@@ -89,9 +89,9 @@ export default function Modal({
               ) : null}
             </DialogHeader>
 
-            <div className="mt-6">{children}</div>
+            <div>{children}</div>
 
-            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
               {showCancelButton ? (
                 <Button
                   type="button"

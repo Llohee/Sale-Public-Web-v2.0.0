@@ -9,7 +9,7 @@ import { useCart } from "@/providers/cart-provider";
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const { items } = useCart();
+  const { totalItems } = useCart();
   const tabFromPath =
     headerTabs.find(
       (tab) =>
@@ -110,7 +110,7 @@ export default function Header() {
                     {tab.icon}
                     {tab.value === "order" && (
                       <span className="absolute -top-2 -right-2 bg-oregon-50 text-oregon-900 rounded-full px-1 text-xs">
-                        {items.length}
+                        {totalItems}
                       </span>
                     )}
                   </span>

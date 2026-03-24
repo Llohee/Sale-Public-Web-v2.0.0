@@ -17,8 +17,22 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface ComboCartItem {
+  id: string;
+  comboId: string;
+  comboName: string;
+  imageUrl: string;
+  unitPrice: number;
+  note?: string;
+  quantity: number;
+}
+
 export function getCartItemLineTotal(item: CartItem): number {
   const sizeMod =
     PRODUCT_SIZES.find((s) => s.value === item.size)?.priceModifier ?? 0;
   return (item.unitPrice + sizeMod) * item.quantity;
+}
+
+export function getComboCartItemLineTotal(item: ComboCartItem): number {
+  return item.unitPrice * item.quantity;
 }
