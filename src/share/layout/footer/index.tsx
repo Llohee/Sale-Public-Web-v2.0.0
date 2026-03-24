@@ -14,7 +14,7 @@ export function Footer() {
   return (
     <footer className="fixed inset-x-0 bottom-0 z-50 md:hidden">
       <div className="container mx-auto py-4 flex items-center justify-center ">
-        <div className="flex gap-2 items-center justify-between p-1 rounded-full bg-oregon-800/85 backdrop-blur-sm">
+        <div className="flex gap-2 items-center justify-between p-1 rounded-full bg-oregon-800/85 backdrop-blur-sm shadow-xl">
           {headerTabs.map((tab) => (
             <div
               key={tab.value}
