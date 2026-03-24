@@ -3,6 +3,7 @@
     "header": {
       "landing_page": "Home",
       "products": "Products",
+      "combo": "Combo",
       "location": "Location",
       "order": "Order"
     }
@@ -38,6 +39,38 @@
       "all": "All",
       "search_placeholder": "Search your favorite drink",
       "categories_region": "Filter by category"
+    }
+  },
+  "combo": {
+    "banner": {
+      "alt": "Combo banner",
+      "eyebrow": "Combo",
+      "title": "Tasty combos, better value",
+      "subtitle": "Pick a convenient combo to enjoy more and save more every day."
+    },
+    "section": {
+      "title": "Promo combos"
+    },
+    "card": {
+      "no_image": "No image",
+      "discount_label": "Discount",
+      "add_to_order_aria": "Add combo to order"
+    },
+    "detail": {
+      "back": "Back",
+      "status_active": "Active",
+      "status_inactive": "Inactive",
+      "unlimited": "Unlimited",
+      "quantity": "Combo quantity",
+      "discount_total": "Discount",
+      "subtotal": "Subtotal",
+      "note": "Note",
+      "note_placeholder": "e.g. less ice, less sugar, quick delivery...",
+      "total": "Total",
+      "add_to_order": "Add combo to order",
+      "items_title": "Products in Combo",
+      "items_subtitle": "The items included in this Combo.",
+      "item_quantity": "Quantity in Combo"
     }
   },
   "LoadingPage": {

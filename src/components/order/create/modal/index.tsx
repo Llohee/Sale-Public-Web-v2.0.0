@@ -12,7 +12,7 @@ import { CreditCard, ImageOff } from "lucide-react";
 import { Checkbox } from "@/share/ui/checkbox";
 import { OrderCheckoutDrawer } from "./drawer";
 import { LAST_ORDER_SNAPSHOT_KEY } from "@/constants/order";
-import { getCartItemLineTotal } from "@/types/cart";
+import { getCartItemLineTotal, getComboCartItemLineTotal } from "@/types/cart";
 import { cn } from "@/share/lib/utils";
 
 type OrderCheckoutModalProps = {
@@ -31,7 +31,7 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
   const t = useTranslations("order");
   const { open, onOpenChange, title, confirmDisabled, paymentMethods } = props;
 
-  const { items, clearCart } = useCart();
+  const { items, comboItems, clearCart } = useCart();
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<PaymentMethodDetail>(paymentMethods[0]);
@@ -49,9 +49,13 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
   const { orderForm, handleFormSubmit } = useOrderForm({
     onSuccess: () => {
       if (typeof window !== "undefined") {
-        const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
-        const totalAmount = items
-          .reduce((sum, i) => sum + getCartItemLineTotal(i), 0)
+        const totalItems =
+          items.reduce((sum, i) => sum + i.quantity, 0) +
+          comboItems.reduce((sum, i) => sum + i.quantity, 0);
+        const totalAmount = (
+          items.reduce((sum, i) => sum + getCartItemLineTotal(i), 0) +
+          comboItems.reduce((sum, i) => sum + getComboCartItemLineTotal(i), 0)
+        )
           .toFixed(2);
 
         sessionStorage.setItem(
@@ -61,6 +65,7 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
               ...i,
               note: i.note ?? "",
             })),
+            comboItems,
             amount: totalAmount,
             totalItems,
             paidAt: new Date().toISOString(),
@@ -74,6 +79,7 @@ function OrderCheckout(props: OrderCheckoutModalProps) {
       onOpenChange(false);
     },
     items,
+    comboItems,
     paymentMethod: selectedPaymentMethod,
   });
 

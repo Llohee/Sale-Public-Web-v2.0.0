@@ -48,16 +48,6 @@ const MOCK_LOCATIONS: StoreLocation[] = [
     distanceKm: 3.4,
     mapQuery: "66 Tran Thai Tong, Cau Giay, Ha Noi",
   },
-  {
-    id: "district-1",
-    name: "Sale Coffee - District 1",
-    address: "12 Nguyen Hue, Ben Nghe Ward, District 1, Ho Chi Minh City",
-    city: "Ho Chi Minh City",
-    phone: "0909 345 678",
-    openHours: "06:30 - 22:00",
-    distanceKm: 7.1,
-    mapQuery: "12 Nguyen Hue, District 1, Ho Chi Minh City",
-  },
 ];
 
 export function LocationWrapper() {

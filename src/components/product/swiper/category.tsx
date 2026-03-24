@@ -5,7 +5,10 @@ import {
   CATEGORY_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
   CATEGORY_SWIPER_SLIDE_TO_SPEED_MS,
   CATEGORY_SWIPER_SPACE_BETWEEN,
+  PRODUCT_LIST_SWIPER_LONG_SWIPES_RATIO,
   PRODUCT_LIST_SWIPER_RESISTANCE_RATIO,
+  PRODUCT_LIST_SWIPER_TOUCH_RATIO,
+  PRODUCT_LIST_SWIPER_TOUCH_THRESHOLD_PX,
   PRODUCT_LIST_SWIPER_WRAPPER_EASING,
 } from '@/constants/product';
 import { cn } from '@/share/lib/utils';
@@ -83,6 +86,11 @@ export function CategoryFilterSwiper({
         grabCursor
         passiveListeners
         roundLengths
+        touchRatio={PRODUCT_LIST_SWIPER_TOUCH_RATIO}
+        threshold={PRODUCT_LIST_SWIPER_TOUCH_THRESHOLD_PX}
+        followFinger
+        shortSwipes
+        longSwipesRatio={PRODUCT_LIST_SWIPER_LONG_SWIPES_RATIO}
         resistanceRatio={PRODUCT_LIST_SWIPER_RESISTANCE_RATIO}
         style={
           {
@@ -96,8 +104,8 @@ export function CategoryFilterSwiper({
           momentumRatio: CATEGORY_SWIPER_FREE_MODE_MOMENTUM_RATIO,
           momentumVelocityRatio: CATEGORY_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
           momentumBounce: true,
-          momentumBounceRatio: 0.92,
-          minimumVelocity: 0.015,
+          momentumBounceRatio: 0.72,
+          minimumVelocity: 0.012,
         }}
         watchOverflow={false}
         className='category-filter-swiper w-full min-w-0 touch-pan-x [&_.swiper]:min-w-0 [&_.swiper-scrollbar]:hidden'

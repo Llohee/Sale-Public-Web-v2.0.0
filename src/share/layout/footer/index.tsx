@@ -8,7 +8,7 @@ import { Dock, DockIcon, DockItem, DockLabel } from "@/share/ui/dock";
 export function Footer() {
   const pathname = usePathname();
   const router = useRouter();
-  const { items } = useCart();
+  const { totalItems } = useCart();
 
   return (
     <footer className="fixed inset-x-0 bottom-0 z-50 md:hidden">
@@ -28,9 +28,9 @@ export function Footer() {
                   className={`relative inline-flex ${isActive ? "text-white [&>svg]:size-6" : ""}`}
                 >
                   {tab.icon}
-                  {tab.value === "order" && items.length > 0 && (
+                  {tab.value === "order" && totalItems > 0 && (
                     <span className="absolute -top-2 -right-2 rounded-full bg-oregon-50 px-1 text-[10px] font-semibold text-oregon-900">
-                      {items.length}
+                      {totalItems}
                     </span>
                   )}
                 </span>

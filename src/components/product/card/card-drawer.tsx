@@ -231,9 +231,9 @@ export function AddToCartDrawer({
               variant="default"
               aria-label={t("add_to_cart")}
               className={cn(
-                "h-14 w-14 shrink-0 border-0 p-0 shadow-md",
+                "h-14 w-14 shrink-0 border-0 p-0 shadow-none sm:shadow-md",
                 "rounded-[18px_0px_18px_0] ring-1 ring-amber-950/15",
-                "hover:bg-oregon-600 hover:shadow-lg hover:-translate-y-px active:translate-y-0",
+                "hover:bg-oregon-600 hover:shadow-none hover:-translate-y-px active:translate-y-0 sm:hover:shadow-lg",
                 "[&_svg]:size-6",
               )}
               onClick={handleAddToCart}

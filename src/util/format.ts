@@ -32,3 +32,25 @@ export function costFormat(
     }).format(value);
   }
 }
+
+export function dateFormat(
+  value: string | Date | null | undefined,
+  locale = "vi-VN",
+): string {
+  if (!value) return "";
+
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return typeof value === "string" ? value : "";
+  }
+
+  try {
+    return new Intl.DateTimeFormat(locale, {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }).format(date);
+  } catch {
+    return typeof value === "string" ? value : "";
+  }
+}

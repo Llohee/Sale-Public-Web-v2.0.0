@@ -53,12 +53,12 @@ export function ProductCard({ product, className }: ProductCardProps) {
         }
       }}
       className={cn(
-        "relative group flex w-full flex-col gap-1.5 rounded-xl bg-white shadow-[0_16px_36px_rgba(15,23,42,0.2)] transition-all duration-300 text-left cursor-pointer supports-backdrop-filter:backdrop-blur-md hover:ring-amber-900/15 sm:gap-2 sm:rounded-2xl",
+        "relative group flex w-full flex-col gap-1.5 overflow-hidden rounded-xl bg-white shadow-[0_16px_36px_rgba(15,23,42,0.2)] transition-all duration-300 text-left cursor-pointer supports-backdrop-filter:backdrop-blur-md hover:ring-amber-900/15 sm:gap-2 sm:rounded-2xl",
         className,
       )}
     >
-      <div className="flex items-center justify-center p-1.5 pb-0 sm:p-3">
-        <div className="relative aspect-square w-[84%] overflow-hidden rounded-lg bg-linear-to-br from-oregon-400 to-oregon-600 ring-1 ring-amber-900/10 sm:w-full sm:rounded-xl">
+      <div className="flex items-center justify-center p-0 sm:p-3">
+        <div className="relative aspect-square w-full overflow-hidden rounded-t-xl bg-linear-to-br from-oregon-400 to-oregon-600 ring-1 ring-amber-900/10 sm:w-full sm:rounded-xl">
           {hasImage && !imageErrored ? (
             <Image
               src={imageSrc}

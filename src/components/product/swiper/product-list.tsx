@@ -1,23 +1,24 @@
 'use client';
 
 import type { ProductDetail } from '@/services/product/product.schema';
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type CSSProperties,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import type { Swiper as SwiperClass } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/autoplay';
-import { Autoplay } from 'swiper/modules';
+import 'swiper/css/free-mode';
+import { Autoplay, FreeMode } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {
   PRODUCT_LIST_SWIPER_AUTOPLAY_DELAY_MS,
+  PRODUCT_LIST_SWIPER_FREE_MODE_MINIMUM_VELOCITY,
+  PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_RATIO,
+  PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
+  PRODUCT_LIST_SWIPER_LONG_SWIPES_MS,
+  PRODUCT_LIST_SWIPER_LONG_SWIPES_RATIO,
   PRODUCT_LIST_SWIPER_LAYOUT_BY_BREAKPOINT,
   PRODUCT_LIST_SWIPER_RESISTANCE_RATIO,
+  PRODUCT_LIST_SWIPER_TOUCH_RATIO,
+  PRODUCT_LIST_SWIPER_TOUCH_THRESHOLD_PX,
   PRODUCT_LIST_SWIPER_TRANSITION_MS,
   PRODUCT_LIST_SWIPER_WRAPPER_EASING,
 } from '@/constants/product';
@@ -88,11 +89,10 @@ export function ProductListSwiper({
 
   const layout = useMemo(
     () => layoutForViewport(viewportWidth, productCount),
-    [viewportWidth, productCount],
+    [viewportWidth, productCount]
   );
 
-  const loopEnabled =
-    !hasNextPage && productCount > Math.ceil(layout.slidesPerView);
+  const loopEnabled = !hasNextPage && productCount > Math.ceil(layout.slidesPerView);
 
   const canFetchNext = hasNextPage && !isFetchingNextPage;
   const tryFetchNext = useCallback(() => {
@@ -108,10 +108,10 @@ export function ProductListSwiper({
 
   return (
     <div className='relative max-w-full min-w-0 overflow-x-hidden overflow-y-visible bg-white pb-4 pt-2 sm:pb-5 sm:pt-3'>
-      <div className='pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-white via-white/85 to-transparent sm:w-28' />
-      <div className='pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-white via-white/85 to-transparent sm:w-28' />
+      <div className='pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-linear-to-r from-white via-white/65 to-transparent sm:w-20' />
+      <div className='pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-linear-to-l from-white via-white/65 to-transparent sm:w-20' />
       <Swiper
-        modules={[Autoplay]}
+        modules={[Autoplay, FreeMode]}
         slidesPerView={layout.slidesPerView}
         spaceBetween={layout.spaceBetween}
         speed={PRODUCT_LIST_SWIPER_TRANSITION_MS}
@@ -123,12 +123,26 @@ export function ProductListSwiper({
         grabCursor
         passiveListeners
         roundLengths
+        touchRatio={PRODUCT_LIST_SWIPER_TOUCH_RATIO}
+        threshold={PRODUCT_LIST_SWIPER_TOUCH_THRESHOLD_PX}
+        followFinger
+        shortSwipes
+        longSwipes
+        longSwipesRatio={PRODUCT_LIST_SWIPER_LONG_SWIPES_RATIO}
         resistanceRatio={PRODUCT_LIST_SWIPER_RESISTANCE_RATIO}
-        longSwipesMs={280}
+        longSwipesMs={PRODUCT_LIST_SWIPER_LONG_SWIPES_MS}
+        freeMode={{
+          enabled: true,
+          sticky: true,
+          momentum: true,
+          momentumRatio: PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_RATIO,
+          momentumVelocityRatio: PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
+          momentumBounce: false,
+          minimumVelocity: PRODUCT_LIST_SWIPER_FREE_MODE_MINIMUM_VELOCITY,
+        }}
         style={
           {
-            '--swiper-wrapper-transition-timing-function':
-              PRODUCT_LIST_SWIPER_WRAPPER_EASING,
+            '--swiper-wrapper-transition-timing-function': PRODUCT_LIST_SWIPER_WRAPPER_EASING,
           } as CSSProperties
         }
         autoplay={{
@@ -160,7 +174,7 @@ export function ProductListSwiper({
       >
         {products.map((product) => (
           <SwiperSlide key={product.id} className='h-auto! px-3 sm:px-0'>
-            <ProductCard product={product} className='origin-top' />
+            <ProductCard product={product} className='origin-top bg-stone-100 shadow-none' />
           </SwiperSlide>
         ))}
       </Swiper>

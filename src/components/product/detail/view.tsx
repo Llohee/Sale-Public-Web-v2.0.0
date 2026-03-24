@@ -71,7 +71,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
   return (
     <div className="container mx-auto pt-6 pb-16 md:py-28 flex flex-col gap-6 md:gap-8">
       <div className="shrink-0 md:hidden">{backButton}</div>
-      <div className="p-5 md:bg-transparent md:p-0 md:shadow-none md:ring-0">
+      <div className="p-0 md:bg-transparent md:shadow-none md:ring-0">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4">
           <div className="flex flex-col gap-6 md:gap-8 col-span-12 md:col-span-7 order-2 md:order-1">
             <div className="hidden md:block shrink-0">{backButton}</div>
@@ -184,8 +184,8 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
                     variant="dive"
                     aria-label={t("addToOrder")}
                     className={cn(
-                      "h-12 w-12 shrink-0 rounded-full p-0 shadow-md ring-1 ring-amber-950/20",
-                      "hover:shadow-lg hover:-translate-y-px active:translate-y-0 active:scale-[0.98]",
+                      "h-12 w-12 shrink-0 rounded-full p-0 shadow-none ring-1 ring-amber-950/20 sm:shadow-md",
+                      "hover:shadow-none hover:-translate-y-px active:translate-y-0 active:scale-[0.98] sm:hover:shadow-lg",
                       "[&_svg]:size-6",
                     )}
                     onClick={handleAddToOrder}

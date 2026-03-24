@@ -3,6 +3,7 @@
     "header": {
       "landing_page": "Trang chủ",
       "products": "Sản phẩm",
+      "combo": "Combo",
       "location": "Địa điểm",
       "order": "Đơn hàng"
     }
@@ -38,6 +39,38 @@
       "all": "Tất cả",
       "search_placeholder": "Tìm kiếm đồ uống yêu thích",
       "categories_region": "Lọc theo danh mục"
+    }
+  },
+  "combo": {
+    "banner": {
+      "alt": "Ảnh bìa combo",
+      "eyebrow": "Combo",
+      "title": "Combo ngon, giá hời",
+      "subtitle": "Chọn ngay combo tiện lợi để ăn ngon hơn và tiết kiệm hơn mỗi ngày."
+    },
+    "section": {
+      "title": "Combo ưu đãi"
+    },
+    "card": {
+      "no_image": "Không có ảnh",
+      "discount_label": "Giảm giá",
+      "add_to_order_aria": "Thêm combo vào đơn"
+    },
+    "detail": {
+      "back": "Quay lại",
+      "status_active": "Đang áp dụng",
+      "status_inactive": "Ngưng áp dụng",
+      "unlimited": "Không giới hạn",
+      "quantity": "Số lượng combo",
+      "discount_total": "Giảm giá",
+      "subtotal": "Tạm tính",
+      "note": "Ghi chú",
+      "note_placeholder": "Ví dụ: giảm đá, ít ngọt, giao nhanh...",
+      "total": "Tổng",
+      "add_to_order": "Thêm combo vào đơn",
+      "items_title": "Sản phẩm trong Combo",
+      "items_subtitle": "Các món đã bao gồm trong Combo này.",
+      "item_quantity": "Số lượng"
     }
   },
   "LoadingPage": {
