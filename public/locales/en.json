@@ -54,6 +54,7 @@
     "card": {
       "no_image": "No image",
       "discount_label": "Discount",
+      "total_label": "Total",
       "add_to_order_aria": "Add combo to order"
     },
     "detail": {
