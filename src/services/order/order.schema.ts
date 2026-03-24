@@ -77,6 +77,7 @@ export type OrderFormRequest = z.infer<typeof OrderFormRequestSchema>;
 export const OrderCheckoutRequestSchema = z.object({
   method: z.string(),
   provider_code: z.string(),
+  tenant_code: z.string(),
   order_id: z.string(),
 });
 export type OrderCheckoutRequest = z.infer<typeof OrderCheckoutRequestSchema>;

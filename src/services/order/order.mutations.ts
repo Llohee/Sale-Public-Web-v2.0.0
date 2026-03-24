@@ -149,6 +149,7 @@ export const useCreateOrderMutation = (props: UseOrderFormProps) => {
       checkoutMutation.mutate({
         method: paymentMethod.channel,
         provider_code: paymentMethod.provider_code,
+        tenant_code: 'COFFEE',
         order_id: data.data.externalOrderId,
       });
     },
