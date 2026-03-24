@@ -20,6 +20,17 @@ export function ComboCard({ combo }: ComboCardProps) {
   const firstProductImage = combo.products[0]?.product.imageUrl?.trim() ?? ''
   const hasImage = !!firstProductImage
   const imageAlt = useMemo(() => combo.name || t('banner.alt'), [combo.name, t])
+  const comboTotal = useMemo(
+    () =>
+      Math.max(
+        0,
+        combo.products.reduce(
+          (sum, item) => sum + (item.product.price ?? 0) * item.quantityRequired,
+          0
+        ) - combo.discountAmount
+      ),
+    [combo.discountAmount, combo.products]
+  )
 
   return (
     <article
@@ -80,9 +91,9 @@ export function ComboCard({ combo }: ComboCardProps) {
 
       <div className='mt-auto flex items-end justify-between gap-1.5 sm:gap-3'>
         <div className='flex flex-col gap-0.5 px-2.5 py-1 sm:px-4 sm:py-1.5'>
-          <p className='text-[11px] text-muted-foreground sm:text-sm'>{t('card.discount_label')}</p>
+          <p className='text-[11px] text-muted-foreground sm:text-sm'>{t('card.total_label')}</p>
           <p className='text-base font-bold tracking-tight text-oregon-900 sm:text-lg'>
-            {costFormat(combo.discountAmount)}
+            {costFormat(comboTotal)}
           </p>
         </div>
         <AddToCartDrawer
