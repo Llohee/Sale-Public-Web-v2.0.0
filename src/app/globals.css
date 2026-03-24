@@ -81,7 +81,6 @@
   --sidebar-accent-foreground: oklch(0.214 0.009 43.1);
   --sidebar-border: oklch(0.922 0.005 34.3);
   --sidebar-ring: oklch(0.714 0.014 41.2);
-  
 }
 
 .dark {
@@ -130,9 +129,7 @@
   }
 
   @media (hover: none) and (pointer: coarse) {
-    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(
-        [type="file"]
-      ),
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
     textarea,
     select {
       font-size: 16px;
@@ -161,4 +158,25 @@
     background-color: #bebdbf;
     border-radius: 100px;
   }
+}
+
+.slickOverlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.9) 6%,
+    rgba(255, 255, 255, 0) 18%,
+    rgba(255, 255, 255, 0) 82%,
+    rgba(255, 255, 255, 0.9) 94%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+.slickOverlay {
+  position: relative;
 }

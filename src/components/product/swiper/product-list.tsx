@@ -1,13 +1,20 @@
-'use client';
+"use client";
 
-import type { ProductDetail } from '@/services/product/product.schema';
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import type { Swiper as SwiperClass } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/autoplay';
-import 'swiper/css/free-mode';
-import { Autoplay, FreeMode } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import type { ProductDetail } from "@/services/product/product.schema";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
+import type { Swiper as SwiperClass } from "swiper";
+import "swiper/css";
+import "swiper/css/autoplay";
+import "swiper/css/free-mode";
+import { Autoplay, FreeMode } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import {
   PRODUCT_LIST_SWIPER_AUTOPLAY_DELAY_MS,
   PRODUCT_LIST_SWIPER_FREE_MODE_MINIMUM_VELOCITY,
@@ -21,8 +28,9 @@ import {
   PRODUCT_LIST_SWIPER_TOUCH_THRESHOLD_PX,
   PRODUCT_LIST_SWIPER_TRANSITION_MS,
   PRODUCT_LIST_SWIPER_WRAPPER_EASING,
-} from '@/constants/product';
-import { ProductCard } from '../card';
+} from "@/constants/product";
+import { Progress } from "@/share/ui/progress";
+import { ProductCard } from "../card";
 
 type SwiperLayout = {
   slidesPerView: number;
@@ -32,7 +40,10 @@ type SwiperLayout = {
 function layoutForViewport(width: number, productCount: number): SwiperLayout {
   for (const row of PRODUCT_LIST_SWIPER_LAYOUT_BY_BREAKPOINT) {
     if (width >= row.minWidth) {
-      return { slidesPerView: row.slidesPerView, spaceBetween: row.spaceBetween };
+      return {
+        slidesPerView: row.slidesPerView,
+        spaceBetween: row.spaceBetween,
+      };
     }
   }
   return {
@@ -50,10 +61,10 @@ function useWindowInnerWidth(): number {
       raf = requestAnimationFrame(() => setWidth(window.innerWidth));
     };
     schedule();
-    window.addEventListener('resize', schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener('resize', schedule);
+      window.removeEventListener("resize", schedule);
     };
   }, []);
   return width;
@@ -71,6 +82,7 @@ function refreshSwiperLayout(swiper: SwiperClass): number {
 
 type ProductListSwiperProps = {
   products: ProductDetail[];
+  totalElements: number;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: () => void;
@@ -78,6 +90,7 @@ type ProductListSwiperProps = {
 
 export function ProductListSwiper({
   products,
+  totalElements,
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
@@ -86,18 +99,36 @@ export function ProductListSwiper({
   const isUserSwipingRef = useRef(false);
   const viewportWidth = useWindowInnerWidth();
   const productCount = products.length;
+  const [progressPercent, setProgressPercent] = useState(0);
 
   const layout = useMemo(
     () => layoutForViewport(viewportWidth, productCount),
-    [viewportWidth, productCount]
+    [viewportWidth, productCount],
   );
 
-  const loopEnabled = !hasNextPage && productCount > Math.ceil(layout.slidesPerView);
+  const loopEnabled =
+    !hasNextPage && productCount > Math.ceil(layout.slidesPerView);
+  const normalizedTotal = Math.max(totalElements, productCount, 1);
 
   const canFetchNext = hasNextPage && !isFetchingNextPage;
   const tryFetchNext = useCallback(() => {
     if (canFetchNext) fetchNextPage();
   }, [canFetchNext, fetchNextPage]);
+  const updateProgressBySwiper = useCallback(
+    (swiper: SwiperClass) => {
+      if (swiper.isEnd && !hasNextPage) {
+        setProgressPercent(100);
+        return;
+      }
+      const clampedProgress = Math.min(1, Math.max(0, swiper.progress || 0));
+      const loadedShare = Math.min(productCount / normalizedTotal, 1);
+      const nextPercent = hasNextPage
+        ? clampedProgress * loadedShare * 100
+        : clampedProgress * 100;
+      setProgressPercent(Math.min(100, Math.max(0, nextPercent)));
+    },
+    [hasNextPage, normalizedTotal, productCount],
+  );
 
   useEffect(() => {
     const swiper = swiperRef.current;
@@ -107,16 +138,15 @@ export function ProductListSwiper({
   }, [viewportWidth, productCount, layout.slidesPerView, layout.spaceBetween]);
 
   return (
-    <div className='relative max-w-full min-w-0 overflow-x-hidden overflow-y-visible bg-white pb-4 pt-2 sm:pb-5 sm:pt-3'>
-      <div className='pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-linear-to-r from-white via-white/65 to-transparent sm:w-20' />
-      <div className='pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-linear-to-l from-white via-white/65 to-transparent sm:w-20' />
+    <div className="relative flex flex-col gap-4 overflow-x-hidden overflow-y-visible bg-white pb-4 pt-2 sm:pb-5 sm:pt-3">
+      <Progress value={progressPercent} />
       <Swiper
-        modules={[Autoplay, FreeMode]}
+        modules={[FreeMode]}
         slidesPerView={layout.slidesPerView}
         spaceBetween={layout.spaceBetween}
         speed={PRODUCT_LIST_SWIPER_TRANSITION_MS}
         watchOverflow={false}
-        loop={loopEnabled}
+        // loop={loopEnabled}
         rewind={false}
         observer
         observeParents
@@ -136,28 +166,34 @@ export function ProductListSwiper({
           sticky: true,
           momentum: true,
           momentumRatio: PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_RATIO,
-          momentumVelocityRatio: PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
+          momentumVelocityRatio:
+            PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
           momentumBounce: false,
           minimumVelocity: PRODUCT_LIST_SWIPER_FREE_MODE_MINIMUM_VELOCITY,
         }}
         style={
           {
-            '--swiper-wrapper-transition-timing-function': PRODUCT_LIST_SWIPER_WRAPPER_EASING,
+            "--swiper-wrapper-transition-timing-function":
+              PRODUCT_LIST_SWIPER_WRAPPER_EASING,
           } as CSSProperties
         }
-        autoplay={{
-          delay: PRODUCT_LIST_SWIPER_AUTOPLAY_DELAY_MS,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true,
-          waitForTransition: true,
-        }}
-        className='product-list-swiper w-full touch-pan-x'
+        // autoplay={{
+        //   delay: PRODUCT_LIST_SWIPER_AUTOPLAY_DELAY_MS,
+        //   disableOnInteraction: false,
+        //   pauseOnMouseEnter: true,
+        //   waitForTransition: true,
+        // }}
+        className="product-list-swiper w-full touch-pan-x"
         onSwiper={(instance) => {
           swiperRef.current = instance;
           requestAnimationFrame(() => {
             if (instance.destroyed) return;
             instance.update();
+            updateProgressBySwiper(instance);
           });
+        }}
+        onSlideChange={(swiper) => {
+          updateProgressBySwiper(swiper);
         }}
         onReachEnd={tryFetchNext}
         onSlideChangeTransitionEnd={(swiper) => {
@@ -173,8 +209,11 @@ export function ProductListSwiper({
         }}
       >
         {products.map((product) => (
-          <SwiperSlide key={product.id} className='h-auto! px-3 sm:px-0'>
-            <ProductCard product={product} className='origin-top bg-stone-100 shadow-none' />
+          <SwiperSlide key={product.id} className="h-auto! px-3 sm:px-0">
+            <ProductCard
+              product={product}
+              className="origin-top bg-stone-100 shadow-none"
+            />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -35,7 +35,7 @@ export function HeroBanner({
         className="object-cover"
       />
       <div className="absolute inset-0 backdrop-blur-xs bg-linear-to-t from-oregon-900/70 via-oregon-900/30 to-amber-50/0" />
-      <div className="container relative mx-auto px-4 py-6 sm:py-10 md:py-12 lg:py-14">
+      <div className="container relative mx-auto py-6 sm:py-10 md:py-12 lg:py-14">
         <div className="flex flex-col gap-2 sm:gap-4 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             {eyebrow ? (
