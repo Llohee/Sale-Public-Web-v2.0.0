@@ -82,7 +82,10 @@ export function ProductsWrapper() {
     return <NotFoundPage />;
   }
 
-  if (!isSuccessProducts || !isSuccessProductCategories) {
+  if (!isSuccessProductCategories) {
+    return null;
+  }
+  if (!isSuccessProducts && !productsPages) {
     return null;
   }
 

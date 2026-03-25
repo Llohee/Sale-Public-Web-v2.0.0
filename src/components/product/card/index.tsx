@@ -79,17 +79,15 @@ export function ProductCard({ product, className }: ProductCardProps) {
           )}
         </div>
       </div>
-      <div className="px-2.5 sm:px-4">
-        <div className="text-base font-bold leading-snug sm:text-xl sm:leading-8">
+      <div className="min-w-0 px-2.5 sm:px-4">
+        <div className="truncate text-base font-bold leading-snug sm:text-xl">
           {product.name}
         </div>
-        {product.description ? (
-          <p className="mt-0.5 line-clamp-2 text-xs leading-snug text-muted-foreground sm:mt-1 sm:text-sm">
-            {product.description}
-          </p>
-        ) : null}
+        <p className="mt-0.5 line-clamp-2 min-h-11 wrap-break-word text-xs leading-snug text-muted-foreground sm:mt-1 sm:min-h-12 sm:text-sm">
+          {product.description?.trim() ? product.description : "\u00A0"}
+        </p>
       </div>
-      <div className="flex flex-1 flex-col justify-end">
+      <div className="flex shrink-0 flex-col">
         <div className="flex items-end justify-between gap-1.5 sm:gap-3">
           <div className="flex flex-col gap-0.5 px-2.5 py-1 sm:gap-0.5 sm:px-4 sm:py-1.5">
             <div className="text-[11px] text-muted-foreground sm:text-sm">

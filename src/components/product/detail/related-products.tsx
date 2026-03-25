@@ -47,7 +47,10 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
         >
           {products.map((item) => (
             <SwiperSlide key={item.id} className='h-auto! px-2 sm:px-0'>
-              <ProductCard product={item} className='bg-stone-100 shadow-none' />
+              <ProductCard
+                product={item}
+                className='bg-stone-100 shadow-none'
+              />
             </SwiperSlide>
           ))}
         </Swiper>
