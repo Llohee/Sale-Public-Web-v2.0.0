@@ -25,9 +25,9 @@ export default function OrderListItem() {
         return (
           <div
             key={item.id}
-            className="relative flex gap-2 md:gap-6 justify-between rounded-xl drop-shadow-md p-2 md:p-4 bg-white/70"
+            className="relative flex items-stretch gap-3 md:gap-6 justify-between rounded-md bg-white/70 p-3 shadow-sm md:p-5"
           >
-            <div className="relative h-full w-32 overflow-hidden rounded-xl bg-linear-to-br from-amber-50 to-amber-100 ring-1 ring-amber-900/10">
+            <div className="relative aspect-square w-28 shrink-0 self-start overflow-hidden rounded-sm bg-linear-to-br from-amber-50 to-amber-100 ring-1 ring-amber-900/10 md:w-36 md:rounded-md">
               {hasImage ? (
                 <Image
                   src={item.imageUrl}
@@ -45,63 +45,61 @@ export default function OrderListItem() {
               )}
             </div>
 
-            <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-1 flex-col gap-4">
-                <div className="flex flex-col items-start justify-between">
-                  <p className="text-2xl md:text-3xl font-extrabold text-oregon-800">
-                    {item.productName}
+            <div className="flex min-h-0 min-w-0 flex-1 flex-col justify-between gap-2 sm:pr-0">
+              <div className="flex flex-col gap-0.5">
+                <p className="text-base font-bold leading-snug text-oregon-800 md:text-3xl md:font-extrabold">
+                  {item.productName}
+                </p>
+                <p className="text-xs text-oregon-700/70 md:text-sm">
+                  {t("size", { size: item.size })}
+                </p>
+                {item.note?.trim() ? (
+                  <p className="mt-1 text-xs leading-relaxed text-oregon-700/70 md:mt-2 md:text-sm">
+                    {t("note", { note: item.note })}
                   </p>
-                  <p className="text-sm text-oregon-700/70">
-                    {t("size", { size: item.size })}
-                  </p>
-                  <p className="text-sm text-oregon-700/70 mt-2">
-                    {t("note", { note: item.note ?? "N/A" })}
-                  </p>
-                </div>
+                ) : null}
+              </div>
 
-                <div className="flex flex-wrap items-end justify-between gap-3">
-                  <div className="text-right">
-                    <p className="text-xl font-extrabold text-oregon-900">
-                      {costFormat(getCartItemLineTotal(item))}
-                    </p>
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-1 sm:gap-3">
+                <p className="text-base font-bold text-oregon-900 md:text-xl md:font-extrabold">
+                  {costFormat(getCartItemLineTotal(item))}
+                </p>
+                <div className="inline-flex items-center justify-center gap-2 sm:gap-3">
+                  <Button
+                    type="button"
+                    size="icon-xs"
+                    variant="chocolate-outline"
+                    aria-label={t("decrease")}
+                    disabled={item.quantity <= 1}
+                    onClick={() =>
+                      updateQuantity(item.id, Math.max(1, item.quantity - 1))
+                    }
+                    className="rounded-full"
+                  >
+                    <Minus className="size-3.5 md:size-4" />
+                  </Button>
+                  <div className="min-w-5 text-center text-sm font-bold text-oregon-900 md:text-xl">
+                    {item.quantity}
                   </div>
-                  <div className="inline-flex items-center justify-center gap-3">
-                    <Button
-                      type="button"
-                      size="icon-xs"
-                      variant="chocolate-outline"
-                      aria-label={t("decrease")}
-                      disabled={item.quantity <= 1}
-                      onClick={() =>
-                        updateQuantity(item.id, Math.max(1, item.quantity - 1))
-                      }
-                      className="rounded-full"
-                    >
-                      <Minus className="size-4" />
-                    </Button>
-                    <div className="text-center text-lg md:text-xl font-bold text-oregon-900">
-                      {item.quantity}
-                    </div>
-                    <Button
-                      type="button"
-                      size="icon-xs"
-                      variant="chocolate-outline"
-                      aria-label={t("increase")}
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="rounded-full"
-                    >
-                      <Plus className="size-4" />
-                    </Button>
-                  </div>
+                  <Button
+                    type="button"
+                    size="icon-xs"
+                    variant="chocolate-outline"
+                    aria-label={t("increase")}
+                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    className="rounded-full"
+                  >
+                    <Plus className="size-3.5 md:size-4" />
+                  </Button>
                 </div>
               </div>
             </div>
             <button
               type="button"
               onClick={() => removeItem(item.id)}
-              className="bg-[#CC0000] p-2 md:p-3 cursor-pointer absolute right-0 top-0 rounded-[0px_8px_0_8px]"
+              className="absolute top-0 right-0 cursor-pointer rounded-tr-md rounded-bl-sm bg-[#CC0000] p-2 md:p-3"
             >
-              <Trash2 className="size-4 md:size-6 text-white" />
+              <Trash2 className="size-3.5 text-white md:size-6" />
             </button>
           </div>
         );
@@ -112,9 +110,9 @@ export default function OrderListItem() {
         return (
           <div
             key={item.id}
-            className="relative flex gap-2 md:gap-6 justify-between rounded-xl drop-shadow-md p-2 md:p-4 bg-white/70"
+            className="relative flex items-stretch gap-3 md:gap-6 justify-between rounded-md bg-white/70 p-3 shadow-sm md:p-5"
           >
-            <div className="relative h-full w-32 overflow-hidden rounded-xl bg-linear-to-br from-amber-50 to-amber-100 ring-1 ring-amber-900/10">
+            <div className="relative aspect-square w-28 shrink-0 self-start overflow-hidden rounded-sm bg-linear-to-br from-amber-50 to-amber-100 ring-1 ring-amber-900/10 md:w-36 md:rounded-md">
               {hasImage ? (
                 <Image
                   src={item.imageUrl}
@@ -132,57 +130,55 @@ export default function OrderListItem() {
               )}
             </div>
 
-            <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-1 flex-col gap-4">
-                <div className="flex flex-col items-start justify-between">
-                  <p className="text-2xl md:text-3xl font-extrabold text-oregon-800">
-                    {item.comboName}
+            <div className="flex min-h-0 min-w-0 flex-1 flex-col justify-between gap-2 sm:pr-0">
+              <div className="flex flex-col gap-0.5">
+                <p className="text-base font-bold leading-snug text-oregon-800 md:text-3xl md:font-extrabold">
+                  {item.comboName}
+                </p>
+                <p className="text-xs text-oregon-700/70 md:text-sm">Combo</p>
+                {item.note?.trim() ? (
+                  <p className="mt-1 text-xs leading-relaxed text-oregon-700/70 md:mt-2 md:text-sm">
+                    {t("note", { note: item.note })}
                   </p>
-                  <p className="text-sm text-oregon-700/70 mt-2">Combo</p>
-                    <p className="text-sm text-oregon-700/70 mt-2">
-                      {t("note", { note: item.note ?? "N/A" })}
-                    </p>
-                </div>
+                ) : null}
+              </div>
 
-                <div className="flex flex-wrap items-end justify-between gap-3">
-                  <div className="text-right">
-                    <p className="text-xl font-extrabold text-oregon-900">
-                      {costFormat(getComboCartItemLineTotal(item))}
-                    </p>
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-1 sm:gap-3">
+                <p className="text-base font-bold text-oregon-900 md:text-xl md:font-extrabold">
+                  {costFormat(getComboCartItemLineTotal(item))}
+                </p>
+                <div className="inline-flex items-center justify-center gap-2 sm:gap-3">
+                  <Button
+                    type="button"
+                    size="icon-xs"
+                    variant="chocolate-outline"
+                    disabled={item.quantity <= 1}
+                    onClick={() =>
+                      updateComboQuantity(item.id, Math.max(1, item.quantity - 1))
+                    }
+                    className="rounded-full"
+                  >
+                    <Minus className="size-3.5 md:size-4" />
+                  </Button>
+                  <div className="min-w-5 text-center text-sm font-bold text-oregon-900 md:text-xl">
+                    {item.quantity}
                   </div>
-                  <div className="inline-flex items-center justify-center gap-3">
-                    <Button
-                      type="button"
-                      size="icon-xs"
-                      variant="chocolate-outline"
-                      disabled={item.quantity <= 1}
-                      onClick={() =>
-                        updateComboQuantity(item.id, Math.max(1, item.quantity - 1))
-                      }
-                      className="rounded-full"
-                    >
-                      <Minus className="size-4" />
-                    </Button>
-                    <div className="text-center text-lg md:text-xl font-bold text-oregon-900">
-                      {item.quantity}
-                    </div>
-                    <Button
-                      type="button"
-                      size="icon-xs"
-                      variant="chocolate-outline"
-                      onClick={() => updateComboQuantity(item.id, item.quantity + 1)}
-                      className="rounded-full"
-                    >
-                      <Plus className="size-4" />
-                    </Button>
-                  </div>
+                  <Button
+                    type="button"
+                    size="icon-xs"
+                    variant="chocolate-outline"
+                    onClick={() => updateComboQuantity(item.id, item.quantity + 1)}
+                    className="rounded-full"
+                  >
+                    <Plus className="size-3.5 md:size-4" />
+                  </Button>
                 </div>
               </div>
             </div>
             <button
               type="button"
               onClick={() => removeComboItem(item.id)}
-              className="bg-[#CC0000] p-2 md:p-3 cursor-pointer absolute right-0 top-0 rounded-[0px_8px_0_8px]"
+              className="absolute top-0 right-0 cursor-pointer rounded-tr-md rounded-bl-sm bg-[#CC0000] p-2 md:p-3"
             >
               <Trash2 className="size-4 md:size-6 text-white" />
             </button>

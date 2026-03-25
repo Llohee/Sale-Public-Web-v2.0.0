@@ -1,170 +1,67 @@
 'use client';
 
 import {
-  COMBO_SWIPER_FALLBACK_SLIDES_PER_VIEW,
-  COMBO_SWIPER_LAYOUT_BY_BREAKPOINT,
-} from '@/constants/combo';
-import {
   PRODUCT_LIST_SWIPER_AUTOPLAY_DELAY_MS,
-  PRODUCT_LIST_SWIPER_FREE_MODE_MINIMUM_VELOCITY,
-  PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_RATIO,
-  PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
-  PRODUCT_LIST_SWIPER_LONG_SWIPES_MS,
-  PRODUCT_LIST_SWIPER_LONG_SWIPES_RATIO,
-  PRODUCT_LIST_SWIPER_RESISTANCE_RATIO,
-  PRODUCT_LIST_SWIPER_TOUCH_RATIO,
-  PRODUCT_LIST_SWIPER_TOUCH_THRESHOLD_PX,
-  PRODUCT_LIST_SWIPER_TRANSITION_MS,
   PRODUCT_LIST_SWIPER_WRAPPER_EASING,
 } from '@/constants/product';
 import type { ComboDetail } from '@/services/combo/combo.schema';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import type { Swiper as SwiperClass } from 'swiper';
+import { useMemo, type CSSProperties } from 'react';
+import { combosForDisplay } from './combos';
 import 'swiper/css';
 import 'swiper/css/autoplay';
-import 'swiper/css/free-mode';
-import { Autoplay, FreeMode } from 'swiper/modules';
+import 'swiper/css/pagination';
+import { Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { ComboCard } from '../card';
+import { ComboHeroSlide } from './combo-hero';
 
 type ComboSectionProps = {
   combos: ComboDetail[];
 };
 
-type SwiperLayout = {
-  slidesPerView: number;
-  spaceBetween: number;
-};
-
-function layoutForViewport(width: number, comboCount: number): SwiperLayout {
-  for (const row of COMBO_SWIPER_LAYOUT_BY_BREAKPOINT) {
-    if (width >= row.minWidth) {
-      return { slidesPerView: row.slidesPerView, spaceBetween: row.spaceBetween };
-    }
-  }
-
-  return {
-    slidesPerView: comboCount > 1 ? COMBO_SWIPER_FALLBACK_SLIDES_PER_VIEW : 1,
-    spaceBetween: 0,
-  };
-}
-
-function useWindowInnerWidth() {
-  const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    let raf = 0;
-
-    const schedule = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => setWidth(window.innerWidth));
-    };
-
-    schedule();
-    window.addEventListener('resize', schedule, { passive: true });
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', schedule);
-    };
-  }, []);
-
-  return width;
-}
-
 export function ComboSection({ combos }: ComboSectionProps) {
   const t = useTranslations('combo');
-  const swiperRef = useRef<SwiperClass | null>(null);
-  const viewportWidth = useWindowInnerWidth();
-  const comboCount = combos.length;
+  const list = useMemo(() => combosForDisplay(combos), [combos]);
+  if (!list.length) return null;
 
-  const layout = useMemo(
-    () => layoutForViewport(viewportWidth, comboCount),
-    [viewportWidth, comboCount]
-  );
-
-  const loopEnabled = comboCount > Math.ceil(layout.slidesPerView);
-
-  useEffect(() => {
-    const swiper = swiperRef.current;
-    if (!swiper) return;
-
-    const rafId = requestAnimationFrame(() => {
-      if (swiper.destroyed) return;
-      swiper.update();
-    });
-
-    return () => cancelAnimationFrame(rafId);
-  }, [viewportWidth, comboCount, layout.slidesPerView, layout.spaceBetween]);
-
-  if (!combos.length) return null;
+  const loopEnabled = list.length > 1;
 
   return (
-    <section className='min-w-0 px-0'>
-      <div className='mb-3 flex items-center justify-between sm:mb-4'>
-        <h2 className='text-lg font-bold text-oregon-900 sm:text-2xl'>{t('section.title')}</h2>
-      </div>
-      <div className='relative max-w-full min-w-0 overflow-x-hidden overflow-y-visible bg-white pb-4 pt-2 sm:pb-5 sm:pt-3'>
-        <div className='pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-linear-to-r from-white via-white/70 to-transparent sm:w-20' />
-        <div className='pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-linear-to-l from-white via-white/70 to-transparent sm:w-20' />
-        <Swiper
-          modules={[Autoplay, FreeMode]}
-          slidesPerView={layout.slidesPerView}
-          spaceBetween={layout.spaceBetween}
-          speed={PRODUCT_LIST_SWIPER_TRANSITION_MS}
-          watchOverflow={false}
-          loop={loopEnabled}
-          rewind={false}
-          observer
-          observeParents
-          grabCursor
-          passiveListeners
-          roundLengths
-          touchRatio={PRODUCT_LIST_SWIPER_TOUCH_RATIO}
-          threshold={PRODUCT_LIST_SWIPER_TOUCH_THRESHOLD_PX}
-          followFinger
-          shortSwipes
-          longSwipes
-          longSwipesRatio={PRODUCT_LIST_SWIPER_LONG_SWIPES_RATIO}
-          resistanceRatio={PRODUCT_LIST_SWIPER_RESISTANCE_RATIO}
-          longSwipesMs={PRODUCT_LIST_SWIPER_LONG_SWIPES_MS}
-          freeMode={{
-            enabled: true,
-            sticky: true,
-            momentum: true,
-            momentumRatio: PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_RATIO,
-            momentumVelocityRatio: PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
-            momentumBounce: false,
-            minimumVelocity: PRODUCT_LIST_SWIPER_FREE_MODE_MINIMUM_VELOCITY,
-          }}
-          style={
-            {
-              '--swiper-wrapper-transition-timing-function': PRODUCT_LIST_SWIPER_WRAPPER_EASING,
-            } as CSSProperties
-          }
-          autoplay={{
-            delay: PRODUCT_LIST_SWIPER_AUTOPLAY_DELAY_MS,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-            waitForTransition: true,
-          }}
-          className='combo-list-swiper w-full touch-pan-x'
-          onSwiper={(instance) => {
-            swiperRef.current = instance;
-            requestAnimationFrame(() => {
-              if (instance.destroyed) return;
-              instance.update();
-            });
-          }}
-        >
-          {combos.map((combo) => (
-            <SwiperSlide key={combo.id} className='h-auto! px-3 sm:px-0'>
-              <ComboCard combo={combo} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+    <section
+      className='relative min-w-0 w-full overflow-x-clip overflow-y-visible bg-transparent pt-0 sm:pt-3 md:bg-slate-50 md:pt-10 md:bg-[radial-gradient(circle_at_1px_1px,rgb(203_213_225/0.35)_1px,transparent_0)] md:bg-size-[20px_20px]'
+      aria-label={t('section.title')}
+    >
+      <Swiper
+        modules={[Pagination, Autoplay]}
+        slidesPerView={1}
+        spaceBetween={0}
+        speed={520}
+        loop={loopEnabled}
+        watchOverflow
+        grabCursor
+        pagination={{
+          clickable: true,
+        }}
+        autoplay={{
+          delay: PRODUCT_LIST_SWIPER_AUTOPLAY_DELAY_MS,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        style={
+          {
+            '--swiper-wrapper-transition-timing-function': PRODUCT_LIST_SWIPER_WRAPPER_EASING,
+          } as CSSProperties
+        }
+        className='combo-hero-swiper w-full touch-pan-x pb-5 max-md:pb-4 sm:pb-7 [&_.swiper-pagination]:bottom-2! [&_.swiper-pagination-bullet]:mx-0.5 [&_.swiper-pagination-bullet]:h-2 [&_.swiper-pagination-bullet]:w-2 [&_.swiper-pagination-bullet]:rounded-full [&_.swiper-pagination-bullet]:bg-slate-300! [&_.swiper-pagination-bullet]:opacity-100! [&_.swiper-pagination-bullet-active]:w-8! [&_.swiper-pagination-bullet-active]:rounded-full! [&_.swiper-pagination-bullet-active]:bg-orange-500!'
+      >
+        {list.map((combo) => (
+          <SwiperSlide key={combo.id} className='h-auto!'>
+            <ComboHeroSlide combo={combo} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </section>
   );
 }
+
+export { ComboListSection } from './combo-list';

@@ -48,6 +48,9 @@
       "title": "Tasty combos, better value",
       "subtitle": "Pick a convenient combo to enjoy more and save more every day."
     },
+    "hero": {
+      "cta": "Learn more"
+    },
     "section": {
       "title": "Promo combos"
     },

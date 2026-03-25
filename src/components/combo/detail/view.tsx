@@ -63,7 +63,6 @@ export function ComboDetailView({ combo }: ComboDetailViewProps) {
 
   return (
     <div className="container mx-auto pt-6 pb-36 md:py-28 flex flex-col gap-6 md:gap-8">
-      <div className="shrink-0 md:hidden">{backButton}</div>
       <div className="p-0 md:bg-transparent md:shadow-none md:ring-0">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4">
           <div className="col-span-12 md:col-span-4 order-3 md:order-1 flex flex-col gap-5 md:gap-8">
@@ -153,10 +152,11 @@ export function ComboDetailView({ combo }: ComboDetailViewProps) {
               <Button
                 type="button"
                 variant="dive"
-                className="h-12 w-12 shrink-0 rounded-full p-0 shadow-none ring-1 ring-amber-950/20 sm:shadow-md"
+                className="h-11 shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold shadow-none ring-1 ring-amber-950/20 sm:shadow-md"
                 onClick={handleAddToOrder}
               >
                 <ShoppingCart className="size-5" />
+                {t("detail.add_to_order")}
               </Button>
             </div>
 
