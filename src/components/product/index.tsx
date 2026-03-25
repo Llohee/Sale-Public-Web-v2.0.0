@@ -1,17 +1,15 @@
 "use client";
 
-import {
-  BANNER_BACKGROUND_URL,
-  PRODUCT_LIST_PAGE_SIZE,
-} from "@/constants/product";
+import { PRODUCT_LIST_PAGE_SIZE } from "@/constants/product";
+import { ComboSection } from "@/components/combo/swiper";
 import { useFilter } from "@/providers/filter-provider";
+import { useGetAllCombos } from "@/services/combo/combo.query-options";
 import {
   useGetAllProductCategories,
   useInfiniteProductList,
 } from "@/services/product/product.query-options";
 import { LoadingPage } from "@/share/components/full-page/loading";
 import NotFoundPage from "@/share/components/full-page/404";
-import { HeroBanner } from "@/share/ui/hero-banner";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import {
@@ -48,6 +46,9 @@ export function ProductsWrapper() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteProductList(productListFilter);
+
+  const { data: combosResponse } = useGetAllCombos();
+  const combos = combosResponse?.data ?? [];
 
   const flatProducts = useMemo(
     () => productsPages?.pages.flatMap((p) => p.data) ?? [],
@@ -91,13 +92,7 @@ export function ProductsWrapper() {
 
   return (
     <div className="flex min-h-0 min-w-0 w-full flex-col">
-      <HeroBanner
-        src={BANNER_BACKGROUND_URL}
-        alt="Hero banner"
-        eyebrow="Order Coffee"
-        title={t("title")}
-        subtitle={t("subtitle")}
-      />
+      <ComboSection combos={combos} />
       <div className="container mx-auto">
         <CategoryFilterSwiper
           options={filterOptions}
