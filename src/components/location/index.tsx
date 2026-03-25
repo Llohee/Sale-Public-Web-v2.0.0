@@ -3,6 +3,7 @@
 import { Clock3, MapPin, Navigation, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/share/ui/button";
+import { LocationMap } from "@/share/ui/expanded-map";
 
 type StoreLocation = {
   id: string;
@@ -14,6 +15,8 @@ type StoreLocation = {
   openHours: string;
   distanceKm: number;
   mapQuery: string;
+  latitude: number;
+  longitude: number;
 };
 
 const MOCK_LOCATIONS: StoreLocation[] = [
@@ -27,6 +30,8 @@ const MOCK_LOCATIONS: StoreLocation[] = [
     openHours: "06:30 - 22:30",
     distanceKm: 0.8,
     mapQuery: "25 Hang Bai, Hoan Kiem, Ha Noi",
+    latitude: 21.0268,
+    longitude: 105.8508,
   },
   {
     id: "ba-dinh",
@@ -37,6 +42,8 @@ const MOCK_LOCATIONS: StoreLocation[] = [
     openHours: "07:00 - 22:00",
     distanceKm: 2.1,
     mapQuery: "102 Kim Ma, Ba Dinh, Ha Noi",
+    latitude: 21.0339,
+    longitude: 105.8142,
   },
   {
     id: "cau-giay",
@@ -47,6 +54,8 @@ const MOCK_LOCATIONS: StoreLocation[] = [
     openHours: "07:00 - 22:00",
     distanceKm: 3.4,
     mapQuery: "66 Tran Thai Tong, Cau Giay, Ha Noi",
+    latitude: 21.0366,
+    longitude: 105.7905,
   },
 ];
 
@@ -67,6 +76,7 @@ export function LocationWrapper() {
   });
   const currentBuyingLocation =
     locations.find((location) => location.isCurrentBuyingLocation) ?? null;
+  const highlightedLocation = currentBuyingLocation ?? locations[0] ?? null;
   const remainingLocations = locations.filter(
     (location) => location.id !== currentBuyingLocation?.id,
   );
@@ -210,13 +220,13 @@ export function LocationWrapper() {
         </div>
 
         <aside className="mb-[calc(6.5rem+env(safe-area-inset-bottom,0px))] lg:col-span-5 lg:mb-0">
-          <div className="sticky top-4 overflow-hidden rounded-xl bg-muted/30 md:top-28">
-            <iframe
-              title={t("map_title")}
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(locations[0]?.mapQuery ?? "Ho Chi Minh City")}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
-              className="h-[320px] w-full border-0 sm:h-[420px]"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+          <div className="sticky top-4 overflow-hidden rounded-xl bg-muted/30 p-2 md:top-28 md:p-4">
+            <LocationMap
+              className="w-full"
+              location={highlightedLocation?.name ?? t("map_title")}
+              latitude={highlightedLocation?.latitude ?? 10.7769}
+              longitude={highlightedLocation?.longitude ?? 106.7009}
+              defaultExpanded
             />
           </div>
         </aside>
