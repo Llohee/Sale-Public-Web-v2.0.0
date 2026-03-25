@@ -24,7 +24,7 @@ export default function ErrorPage({ error, reset }: Props) {
   }, [error]);
 
   return (
-    <div className='min-h-dvh bg-[#D7A15B] px-6 py-10'>
+    <div className='min-h-dvh px-6 py-10'>
       <div className='mx-auto flex min-h-[calc(90dvh-5rem)] w-full max-w-sm flex-col items-center justify-center gap-4 text-center'>
         <div className='flex w-full flex-col items-center gap-2'>
           <div className='flex w-full justify-center'>
