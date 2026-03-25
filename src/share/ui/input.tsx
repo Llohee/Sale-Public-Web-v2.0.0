@@ -186,7 +186,6 @@ const Input = React.forwardRef(function InputInner<T extends FieldValues>(
               setIsShowPassword((prev) => !prev);
             }
           }}
-          aria-label={isShowPassword ? "Hide password" : "Show password"}
         >
           {isShowPassword ? (
             <EyeOffIcon className="size-5 stroke-grey-5" />

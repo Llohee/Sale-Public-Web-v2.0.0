@@ -32,7 +32,6 @@ export function LanguageSwitcher({ href, className }: LanguageSwitcherProps) {
       variant="chocolate-outline"
       size="icon-lg"
       className={cn("rounded-full shadow-sm", className)}
-      aria-label={t("label")}
       onClick={() => {
         router.replace(targetHref as Parameters<typeof router.replace>[0], {
           locale: nextLocale,

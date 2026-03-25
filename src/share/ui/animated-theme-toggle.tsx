@@ -41,7 +41,6 @@ export const AnimatedThemeToggle = ({ className }: { className?: string }) => {
       className={cn("rounded-full shadow-sm", className)}
       variant="chocolate-outline"
       size="icon-lg"
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       <SolarSwitch isDark={isDark} />
     </Button>

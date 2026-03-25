@@ -72,7 +72,6 @@ export default function Modal({
                 type="button"
                 onClick={close}
                 className="inline-flex size-10 items-center justify-center rounded-full border border-border/60 text-foreground transition-colors hover:bg-muted"
-                aria-label={cancelTitle ?? t("btn.cancel")}
               >
                 <X className="size-4" />
               </button>

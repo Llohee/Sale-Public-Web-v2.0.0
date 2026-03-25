@@ -57,7 +57,6 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
           <Link
             href={detailHref}
             className="absolute inset-0 z-10 md:hidden"
-            aria-label={`${combo.name} — ${t("hero.cta")}`}
           />
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col gap-3 bg-transparent px-3 pb-7 pt-10 sm:px-4 sm:pb-8 sm:pt-12 md:hidden">

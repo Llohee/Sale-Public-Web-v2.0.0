@@ -75,7 +75,6 @@ export function CategoryFilterSwiper({
   return (
     <div
       role='region'
-      aria-label={categoriesRegionLabel}
       className='relative w-full min-w-0 overflow-x-hidden overflow-y-visible py-2 sm:py-3'
     >
       <Swiper
