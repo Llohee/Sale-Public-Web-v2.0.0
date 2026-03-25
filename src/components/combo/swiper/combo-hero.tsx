@@ -26,10 +26,11 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
   const detailHref = `/combo/${combo.id}`;
 
   return (
-    <div className="container mx-auto max-md:px-0 max-md:pt-0 max-md:pb-3 px-4 pb-4 pt-0 sm:px-6 sm:pb-5 sm:pt-4 md:pt-16 md:pb-6 lg:pt-16 lg:pb-6">
-      <div className="relative grid md:grid-cols-2 md:items-start md:gap-8 lg:gap-12">
+    <div className="relative flex h-[min(38vh,240px)] min-h-[200px] items-center sm:h-[min(42vh,320px)] sm:min-h-[260px] md:h-[380px] md:min-h-0 lg:h-[400px]">
+      <div className="container mx-auto h-full max-md:px-0 px-4 sm:px-6">
+        <div className="relative grid h-full md:grid-cols-2 md:items-center md:gap-8 lg:gap-12">
         <div
-          className="relative w-full min-h-0 overflow-hidden rounded-none shadow-none ring-0 max-md:min-h-[min(38vh,280px)] max-md:w-screen max-md:max-w-none max-md:-translate-x-1/2 max-md:left-1/2 md:order-2 md:rounded-2xl md:shadow-lg md:ring-1 md:ring-slate-200/90 md:aspect-4/3 md:max-h-none md:ml-auto md:max-w-[360px] lg:max-w-[400px]"
+          className="relative h-full w-full min-h-0 overflow-hidden rounded-none shadow-none ring-0 max-md:w-screen max-md:max-w-none max-md:-translate-x-1/2 max-md:left-1/2 md:order-2 md:h-[calc(100%-24px)] md:rounded-2xl md:shadow-lg md:ring-1 md:ring-slate-200/90 md:ml-auto md:max-w-[360px] lg:max-w-[400px]"
         >
           {hasImage && !imageErrored ? (
             <Image
@@ -43,7 +44,7 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
               onError={() => setImageErrored(true)}
             />
           ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-linear-to-br from-slate-100 to-slate-200 text-slate-500 max-md:min-h-[min(38vh,280px)]">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-linear-to-br from-slate-100 to-slate-200 text-slate-500">
               <ImageOff className="size-12" />
               <span className="text-sm font-medium">{t("card.no_image")}</span>
             </div>
@@ -92,6 +93,7 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
             <Link href={detailHref}>{t("hero.cta")}</Link>
           </Button>
         </div>
+      </div>
       </div>
     </div>
   );
