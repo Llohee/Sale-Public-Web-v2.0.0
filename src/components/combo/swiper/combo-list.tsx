@@ -162,7 +162,7 @@ export function ComboListSection({ combos }: ComboListSectionProps) {
         >
           {list.map((combo) => (
             <SwiperSlide key={combo.id} className='h-auto! px-3 sm:px-0'>
-              <ComboCard combo={combo} />
+              <ComboCard combo={combo} className='bg-stone-100 shadow-none'/>
             </SwiperSlide>
           ))}
         </Swiper>
