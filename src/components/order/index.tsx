@@ -60,7 +60,7 @@ export function OrderWrapper() {
           variant="outline"
           size="sm"
           onClick={() => router.back()}
-          className="w-fit shrink-0 md:absolute md:left-0 md:top-0"
+          className="hidden w-fit shrink-0 md:inline-flex md:absolute md:left-0 md:top-0"
         >
           <ChevronLeft className="size-5" />
           <span className="text-sm font-semibold">{t("btn.back")}</span>
@@ -73,11 +73,11 @@ export function OrderWrapper() {
         </div>
       </div>
 
-      <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-12">
-        <div className="col-span-12 flex flex-col gap-5 lg:col-span-8 md:gap-8">
+      <div className="relative grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-8">
+        <div className="order-2 col-span-12 flex flex-col gap-4 lg:order-1 lg:col-span-8 lg:gap-8">
           <OrderListItem />
         </div>
-        <div className="relative col-span-12 lg:col-span-4 lg:sticky lg:top-28 lg:z-10 lg:self-start">
+        <div className="order-1 col-span-12 lg:order-2 lg:col-span-4 lg:sticky lg:top-28 lg:z-10 lg:self-start">
           <OrderForm />
         </div>
       </div>
