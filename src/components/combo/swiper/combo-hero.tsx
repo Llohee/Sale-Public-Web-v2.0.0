@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
+import { BANNER_BACKGROUND_URL } from "@/constants/product";
 import type { ComboDetail } from "@/services/combo/combo.schema";
 import { Button } from "@/share/ui/button";
 import { useTranslations } from "next-intl";
@@ -26,11 +27,22 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
   const detailHref = `/combo/${combo.id}`;
 
   return (
-    <div className="relative flex h-[min(38vh,240px)] min-h-[200px] items-center sm:h-[min(42vh,320px)] sm:min-h-[260px] md:h-[380px] md:min-h-0 lg:h-[400px]">
-      <div className="container mx-auto h-full max-md:px-0 px-4 sm:px-6">
+    <div className="relative flex h-[min(38vh,240px)] min-h-[200px] w-full shrink-0 items-center justify-center overflow-hidden sm:h-[min(42vh,320px)] sm:min-h-[260px] md:h-[380px] md:min-h-0 lg:h-[400px]">
+      <Image
+        src={BANNER_BACKGROUND_URL}
+        alt={t("banner.alt")}
+        fill
+        priority={false}
+        className="object-cover"
+      />
+      <div
+        className="absolute inset-0 backdrop-blur-xs bg-linear-to-t from-oregon-900/70 via-oregon-900/30 to-amber-50/0"
+        aria-hidden
+      />
+      <div className="container relative z-10 mx-auto h-full max-md:px-0 px-4 sm:px-6">
         <div className="relative grid h-full md:grid-cols-2 md:items-center md:gap-8 lg:gap-12">
         <div
-          className="relative h-full w-full min-h-0 overflow-hidden rounded-none shadow-none ring-0 max-md:w-screen max-md:max-w-none max-md:-translate-x-1/2 max-md:left-1/2 md:order-2 md:h-[calc(100%-24px)] md:rounded-2xl md:shadow-lg md:ring-1 md:ring-slate-200/90 md:ml-auto md:max-w-[360px] lg:max-w-[400px]"
+          className="relative h-full w-full min-h-0 overflow-hidden rounded-none shadow-none ring-0 max-md:w-screen max-md:max-w-none max-md:-translate-x-1/2 max-md:left-1/2 md:order-2 md:mt-6 md:h-[calc(100%-135px)] md:rounded-2xl md:shadow-lg md:ring-1 md:ring-slate-200/90 md:ml-auto md:max-w-[250px] lg:max-w-[290px]"
         >
           {hasImage && !imageErrored ? (
             <Image
@@ -81,11 +93,11 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
         </div>
 
         <div className="hidden min-w-0 flex-col gap-4 md:order-1 md:flex md:max-w-xl md:gap-5 md:pt-1">
-          <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-800 sm:text-3xl lg:text-4xl">
+          <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-amber-50 drop-shadow-sm sm:text-3xl lg:text-4xl">
             {combo.name}
           </h2>
           {description ? (
-            <p className="max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
+            <p className="max-w-xl text-sm leading-relaxed text-amber-50/90 sm:text-base">
               {description}
             </p>
           ) : null}

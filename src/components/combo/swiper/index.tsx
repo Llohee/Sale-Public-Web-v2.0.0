@@ -5,7 +5,6 @@ import {
   PRODUCT_LIST_SWIPER_WRAPPER_EASING,
 } from '@/constants/product';
 import type { ComboDetail } from '@/services/combo/combo.schema';
-import { useTranslations } from 'next-intl';
 import { useMemo, type CSSProperties } from 'react';
 import { combosForDisplay } from './combos';
 import 'swiper/css';
@@ -20,14 +19,13 @@ type ComboSectionProps = {
 };
 
 export function ComboSection({ combos }: ComboSectionProps) {
-  const t = useTranslations('combo');
   const list = useMemo(() => combosForDisplay(combos), [combos]);
   if (!list.length) return null;
 
   const loopEnabled = list.length > 1;
 
   return (
-    <section className='relative min-w-0 w-full overflow-x-clip overflow-y-visible bg-transparent pt-0 sm:pt-3 md:bg-slate-50 md:pt-10 md:bg-[radial-gradient(circle_at_1px_1px,rgb(203_213_225/0.35)_1px,transparent_0)] md:bg-size-[20px_20px]'>
+    <section className='relative min-w-0 w-full overflow-x-clip overflow-y-visible bg-transparent pt-0'>
       <Swiper
         modules={[Pagination, Autoplay]}
         slidesPerView={1}
