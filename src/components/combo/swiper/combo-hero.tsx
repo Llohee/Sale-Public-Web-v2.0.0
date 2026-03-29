@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
+import { BANNER_BACKGROUND_URL } from "@/constants/product";
 import type { ComboDetail } from "@/services/combo/combo.schema";
 import { Button } from "@/share/ui/button";
 import { useTranslations } from "next-intl";
@@ -26,10 +27,22 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
   const detailHref = `/combo/${combo.id}`;
 
   return (
-    <div className="container mx-auto max-md:px-0 max-md:pt-0 max-md:pb-3 px-4 pb-4 pt-0 sm:px-6 sm:pb-5 sm:pt-4 md:pt-16 md:pb-6 lg:pt-16 lg:pb-6">
-      <div className="relative grid md:grid-cols-2 md:items-start md:gap-8 lg:gap-12">
+    <div className="relative flex h-[min(38vh,240px)] min-h-[200px] w-full shrink-0 items-center justify-center overflow-hidden sm:h-[min(42vh,320px)] sm:min-h-[260px] md:h-[380px] md:min-h-0 lg:h-[400px]">
+      <Image
+        src={BANNER_BACKGROUND_URL}
+        alt={t("banner.alt")}
+        fill
+        priority={false}
+        className="object-cover"
+      />
+      <div
+        className="absolute inset-0 backdrop-blur-xs bg-linear-to-t from-oregon-900/70 via-oregon-900/30 to-amber-50/0"
+        aria-hidden
+      />
+      <div className="container relative z-10 mx-auto h-full max-md:px-0 px-4 sm:px-6">
+        <div className="relative grid h-full md:grid-cols-2 md:items-center md:gap-8 lg:gap-12">
         <div
-          className="relative w-full min-h-0 overflow-hidden rounded-none shadow-none ring-0 max-md:min-h-[min(38vh,280px)] max-md:w-screen max-md:max-w-none max-md:-translate-x-1/2 max-md:left-1/2 md:order-2 md:rounded-2xl md:shadow-lg md:ring-1 md:ring-slate-200/90 md:aspect-4/3 md:max-h-none md:ml-auto md:max-w-[360px] lg:max-w-[400px]"
+          className="relative h-full w-full min-h-0 overflow-hidden rounded-none shadow-none ring-0 max-md:w-screen max-md:max-w-none max-md:-translate-x-1/2 max-md:left-1/2 md:order-2 md:mt-6 md:h-[calc(100%-135px)] md:rounded-2xl md:shadow-lg md:ring-1 md:ring-slate-200/90 md:ml-auto md:max-w-[250px] lg:max-w-[290px]"
         >
           {hasImage && !imageErrored ? (
             <Image
@@ -43,7 +56,7 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
               onError={() => setImageErrored(true)}
             />
           ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-linear-to-br from-slate-100 to-slate-200 text-slate-500 max-md:min-h-[min(38vh,280px)]">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-linear-to-br from-slate-100 to-slate-200 text-slate-500">
               <ImageOff className="size-12" />
               <span className="text-sm font-medium">{t("card.no_image")}</span>
             </div>
@@ -57,7 +70,6 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
           <Link
             href={detailHref}
             className="absolute inset-0 z-10 md:hidden"
-            aria-label={`${combo.name} — ${t("hero.cta")}`}
           />
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col gap-3 bg-transparent px-3 pb-7 pt-10 sm:px-4 sm:pb-8 sm:pt-12 md:hidden">
@@ -81,11 +93,11 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
         </div>
 
         <div className="hidden min-w-0 flex-col gap-4 md:order-1 md:flex md:max-w-xl md:gap-5 md:pt-1">
-          <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-800 sm:text-3xl lg:text-4xl">
+          <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-amber-50 drop-shadow-sm sm:text-3xl lg:text-4xl">
             {combo.name}
           </h2>
           {description ? (
-            <p className="max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
+            <p className="max-w-xl text-sm leading-relaxed text-amber-50/90 sm:text-base">
               {description}
             </p>
           ) : null}
@@ -93,6 +105,7 @@ export function ComboHeroSlide({ combo }: ComboHeroSlideProps) {
             <Link href={detailHref}>{t("hero.cta")}</Link>
           </Button>
         </div>
+      </div>
       </div>
     </div>
   );

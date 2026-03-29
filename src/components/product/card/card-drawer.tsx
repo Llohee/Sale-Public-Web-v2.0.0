@@ -118,7 +118,6 @@ export function AddToCartDrawer({
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             size="icon-sm"
             variant="chocolate-outline"
-            aria-label={t("decrease")}
             disabled={quantity <= 1}
             className="rounded-full"
           >
@@ -132,7 +131,6 @@ export function AddToCartDrawer({
             onClick={() => setQuantity((q) => q + 1)}
             size="icon-sm"
             variant="chocolate-outline"
-            aria-label={t("increase")}
             className="rounded-full"
           >
             <Plus className="size-4" />
@@ -229,7 +227,6 @@ export function AddToCartDrawer({
             <Button
               type="button"
               variant="default"
-              aria-label={t("add_to_cart")}
               className={cn(
                 "h-14 w-14 shrink-0 border-0 p-0 shadow-none sm:shadow-md",
                 "rounded-[18px_0px_18px_0] ring-1 ring-amber-950/15",

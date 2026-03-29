@@ -69,7 +69,6 @@ export default function OrderListItem() {
                     type="button"
                     size="icon-xs"
                     variant="chocolate-outline"
-                    aria-label={t("decrease")}
                     disabled={item.quantity <= 1}
                     onClick={() =>
                       updateQuantity(item.id, Math.max(1, item.quantity - 1))
@@ -85,7 +84,6 @@ export default function OrderListItem() {
                     type="button"
                     size="icon-xs"
                     variant="chocolate-outline"
-                    aria-label={t("increase")}
                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     className="rounded-full"
                   >

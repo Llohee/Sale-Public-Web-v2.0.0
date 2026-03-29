@@ -135,7 +135,6 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
                         type="button"
                         size="icon-sm"
                         variant="chocolate-outline"
-                        aria-label={t("decrease")}
                         disabled={quantity <= 1}
                         onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                         className="rounded-full"
@@ -149,7 +148,6 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
                         type="button"
                         size="icon-sm"
                         variant="chocolate-outline"
-                        aria-label={t("increase")}
                         onClick={() => setQuantity((q) => q + 1)}
                         className="rounded-full"
                       >

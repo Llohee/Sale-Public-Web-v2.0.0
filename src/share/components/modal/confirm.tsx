@@ -98,7 +98,6 @@ export default function ConfirmModal({
               type="button"
               onClick={() => onOpenChange(false)}
               className="inline-flex size-10 items-center justify-center rounded-full border border-border/60 text-foreground transition-colors hover:bg-muted"
-              aria-label={cancelLabel}
             >
               <X className="size-4" />
             </button>

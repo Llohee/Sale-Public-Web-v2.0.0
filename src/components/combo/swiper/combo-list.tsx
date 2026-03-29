@@ -5,10 +5,6 @@ import {
   COMBO_SWIPER_LAYOUT_BY_BREAKPOINT,
 } from '@/constants/combo';
 import {
-  PRODUCT_LIST_SWIPER_AUTOPLAY_DELAY_MS,
-  PRODUCT_LIST_SWIPER_FREE_MODE_MINIMUM_VELOCITY,
-  PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_RATIO,
-  PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
   PRODUCT_LIST_SWIPER_LONG_SWIPES_MS,
   PRODUCT_LIST_SWIPER_LONG_SWIPES_RATIO,
   PRODUCT_LIST_SWIPER_RESISTANCE_RATIO,
@@ -21,10 +17,11 @@ import type { ComboDetail } from '@/services/combo/combo.schema';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import type { Swiper as SwiperClass } from 'swiper';
+import { Progress } from '@/share/ui/progress';
 import 'swiper/css';
 import 'swiper/css/autoplay';
+// kept for legacy styling; safe even without FreeMode module
 import 'swiper/css/free-mode';
-import { Autoplay, FreeMode } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { combosForDisplay } from './combos';
 import { ComboCard } from '../card';
@@ -80,6 +77,7 @@ export function ComboListSection({ combos }: ComboListSectionProps) {
   const viewportWidth = useWindowInnerWidth();
   const list = useMemo(() => combosForDisplay(combos), [combos]);
   const comboCount = list.length;
+  const [progressPercent, setProgressPercent] = useState(0);
 
   const layout = useMemo(
     () => layoutForViewport(viewportWidth, comboCount),
@@ -95,6 +93,8 @@ export function ComboListSection({ combos }: ComboListSectionProps) {
     const rafId = requestAnimationFrame(() => {
       if (swiper.destroyed) return;
       swiper.update();
+      const clampedProgress = Math.min(1, Math.max(0, swiper.progress || 0));
+      setProgressPercent(Math.round(clampedProgress * 100));
     });
 
     return () => cancelAnimationFrame(rafId);
@@ -102,16 +102,19 @@ export function ComboListSection({ combos }: ComboListSectionProps) {
 
   if (!list.length) return null;
 
+  const updateProgressBySwiper = (swiper: SwiperClass) => {
+    const clampedProgress = Math.min(1, Math.max(0, swiper.progress || 0));
+    setProgressPercent(Math.round(clampedProgress * 100));
+  };
+
   return (
-    <section className='mt-6 min-w-0 px-0 sm:mt-8'>
-      <div className='mb-3 flex items-center justify-between sm:mb-4'>
+    <section className='min-w-0 px-0'>
+      <div className='flex items-center justify-between'>
         <h2 className='text-lg font-bold text-oregon-900 sm:text-2xl'>{t('section.title')}</h2>
       </div>
       <div className='relative max-w-full min-w-0 overflow-x-hidden overflow-y-visible bg-white pb-4 pt-2 sm:pb-5 sm:pt-3'>
-        <div className='pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-linear-to-r from-white via-white/70 to-transparent sm:w-20' />
-        <div className='pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-linear-to-l from-white via-white/70 to-transparent sm:w-20' />
+        <Progress value={progressPercent} className='mb-3'/>
         <Swiper
-          modules={[Autoplay, FreeMode]}
           slidesPerView={layout.slidesPerView}
           spaceBetween={layout.spaceBetween}
           speed={PRODUCT_LIST_SWIPER_TRANSITION_MS}
@@ -131,34 +134,21 @@ export function ComboListSection({ combos }: ComboListSectionProps) {
           longSwipesRatio={PRODUCT_LIST_SWIPER_LONG_SWIPES_RATIO}
           resistanceRatio={PRODUCT_LIST_SWIPER_RESISTANCE_RATIO}
           longSwipesMs={PRODUCT_LIST_SWIPER_LONG_SWIPES_MS}
-          freeMode={{
-            enabled: true,
-            sticky: true,
-            momentum: true,
-            momentumRatio: PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_RATIO,
-            momentumVelocityRatio: PRODUCT_LIST_SWIPER_FREE_MODE_MOMENTUM_VELOCITY_RATIO,
-            momentumBounce: false,
-            minimumVelocity: PRODUCT_LIST_SWIPER_FREE_MODE_MINIMUM_VELOCITY,
-          }}
           style={
             {
               '--swiper-wrapper-transition-timing-function': PRODUCT_LIST_SWIPER_WRAPPER_EASING,
             } as CSSProperties
           }
-          autoplay={{
-            delay: PRODUCT_LIST_SWIPER_AUTOPLAY_DELAY_MS,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-            waitForTransition: true,
-          }}
           className='combo-list-swiper w-full touch-pan-x'
           onSwiper={(instance) => {
             swiperRef.current = instance;
             requestAnimationFrame(() => {
               if (instance.destroyed) return;
               instance.update();
+              updateProgressBySwiper(instance);
             });
           }}
+          onSlideChange={(swiper) => updateProgressBySwiper(swiper)}
         >
           {list.map((combo) => (
             <SwiperSlide key={combo.id} className='h-auto! px-3 sm:px-0'>

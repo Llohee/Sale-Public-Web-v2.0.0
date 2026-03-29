@@ -212,7 +212,6 @@ function ToastItem({ toast, index, onRemove, isTop }: ToastItemProps) {
           type="button"
           onClick={onRemove}
           className="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          aria-label="Đóng thông báo"
         >
           <X className="size-3.5 sm:size-4" />
         </button>
